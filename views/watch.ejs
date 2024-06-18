@@ -54,6 +54,23 @@
     </div>
   </div><br>
       
+<!-- Related Video Query -->
+<div class="results">
+  <% info.related_videos.forEach(video => { %>
+  <div class="result-item">
+      <div class="result-item-header">
+        <small class="text-muted"><a href="/c/<%= video.author.id %>"><%= video.author.name %></a></small>
+      </div>
+      <a href="/w/<%= video.id %>"><img src="<%= video.thumbnails.pop().url.slice(19); %>" class="result-item-img" alt="<%= video.title %>"></a>
+      <div class="result-item-body">
+        <h5 class="result-item-title"><%= video.title %></h5>
+      </div>
+      <div class="result-item-footer">
+        <small class="text-muted"><%= video.published %></small>
+      </div>
+  </div>
+  <% }); %>
+</div>
 
 
   <script>
