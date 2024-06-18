@@ -220,6 +220,13 @@ app.get("/send",(req, res) => {
   
 })
 
+//proxy
+app.get("/proxy",(req, res) => {
+  
+  res.render("../views/proxy.ejs")
+  
+})
+
 // 404 Handler
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
