@@ -199,6 +199,13 @@ app.get("/ytc/*", (req, res) => {
 	stream.pipe(res);
 });
 
+//blog
+app.get("/blog",(req, res) => {
+  
+  res.render("../views/blog.ejs")
+  
+})
+
 //お問い合わせ
 app.get("/send",(req, res) => {
   
@@ -206,6 +213,25 @@ app.get("/send",(req, res) => {
   
 })
 
+//proxy
+app.get("/proxy/",(req, res) => {
+  
+  res.render("../read/proxy.ejs")
+  
+})
+
+app.get('/proxy/shadow', (req, res) => {
+    res.render("../read/proxy/shadow.ejs");
+});
+app.get('/proxy/doge', (req, res) => {
+    res.render("../read/proxy/doge.ejs");
+});
+app.get('/proxy/inbox', (req, res) => {
+    res.render("../read/proxy/inbox.ejs");
+});
+app.get('/proxy/st', (req, res) => {
+    res.render("../read/proxy/st.ejs");
+});
 
 // 404 Handler
 app.use((req, res) => {
