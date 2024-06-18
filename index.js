@@ -7,13 +7,6 @@ const express = require("express");
 const ejs = require("ejs");
 const app = express();
 
-//        CONFIGURATION        //
-
-// Result Limit
-// By default, ytsr & ytpl result limit is 100.
-// For ytmous, The search result default is 50. 
-// Change it as many as you want. 0 for all result without limit.
-// The smaller, The faster.
 const limit = process.env.LIMIT || 50;
 
 // User Agent
