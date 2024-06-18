@@ -1,79 +1,31 @@
 <!DOCTYPE html>
+<html>
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>お知らせ</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
-            margin: 0;
-            padding: 20px;
-        }
 
-        .announcement {
-            border: 2px solid #ddd;
-            border-radius: 0;
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        .announcement h2 {
-            font-size: 24px;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .announcement .timestamp {
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 10px;
-        }
-
-        .announcement p {
-            font-size: 16px;
-            color: #555;
-        }
-
-        /* Profile Card Styling */
-        .profile-card {
             display: none;
             position: absolute;
-            top: 40px;
-            right: 10px;
+            bottom: -140px;
+            left: 0;
+            right: 0;
+            margin: auto;
             width: 200px;
             background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
             padding: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             z-index: 1;
         }
 
         .profile-card img {
-            width: 50px;
-            height: 50px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             margin-bottom: 10px;
         }
 
-        .profile-card h3 {
-            font-size: 18px;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .profile-card p {
-            font-size: 14px;
-            color: #555;
-        }
-
-        /* Show Profile Card on Hover */
         .announcement:hover .profile-card {
             display: block;
         }
@@ -81,27 +33,31 @@
 </head>
 
 <body>
-    <div class="announcement">
-        <h2>お知らせの名前</h2>
-        <p class="timestamp">投稿時間: 2024年6月18日 12:00</p>
-        <p>お知らせの内容をここに書きます。昔のブログ風のデザインです。</p>
-        <div class="profile-card">
-            <img src="path_to_your_profile_image.jpg" alt="Profile Image">
-            <h3>ユーザー名</h3>
-            <p>プロフィールの詳細情報などをここに記載します。</p>
+
+    <div class="announcement-container">
+        <div class="announcement">
+            <div class="profile-card">
+                <img src="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/IMG_1281.png?v=1718682861752" alt="Profile Image">
+                <p>プロフィール名</p>
+                <p>プロフィール詳細</p>
+            </div>
+            <h2>お知らせの名前</h2>
+            <p class="timestamp">投稿時間: 2024年6月18日 12:00</p>
+            <p>お知らせの内容をここに書きます。昔のブログ風に囲まれています。</p>
+        </div>
+
+        <div class="announcement">
+            <div class="profile-card">
+                <img src="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/IMG_1281.png?v=1718682861752" alt="Profile Image">
+                <p>わかめ02</p>
+                <p>まっしろの人です。いわゆる対策wiki民でもあります</p>
+            </div>
+            <h2>サイト作成</h2>
+            <p class="timestamp">投稿時間: 2024年6月18日 12:50</p>
+            <p>ytmousなどを基盤に、簡単に再生＆ダウンロード出来るサイトを作成中...</p>
         </div>
     </div>
 
-    <div class="announcement">
-        <h2>別のお知らせの名前</h2>
-        <p class="timestamp">投稿時間: 2024年6月17日 15:30</p>
-        <p>別のお知らせの内容をここに書きます。昔のブログ風のデザインです。</p>
-        <div class="profile-card">
-            <img src="path_to_your_profile_image.jpg" alt="Profile Image">
-            <h3>ユーザー名</h3>
-            <p>プロフィールの詳細情報などをここに記載します。</p>
-        </div>
-    </div>
 </body>
 
 </html>
