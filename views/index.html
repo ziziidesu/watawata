@@ -26,6 +26,9 @@
       <button class="btn btn-link" onclick="window.location.href='/'">ホーム🏠</button>
       <button class="btn btn-link" onclick="window.location.href='/blog'">お知らせ</button>
       <!-- 他のボタンもここに追加できます -->
+     <form class="d-flex" action="/s">
+        <input name="q" class="form-control" type="search" placeholder="キーワードを入力..." aria-label="Search" value="<%= query %>">
+      </form>
     </div>
   </header>
 
