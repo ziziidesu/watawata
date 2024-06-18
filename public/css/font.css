@@ -1,8 +1,5 @@
-@font-face {
-	font-family: gordita;
-	src: url(/gordita-medium.woff2);
-}
+@import url('https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap');
 
 body {
-	font-family: gordita;
+    font-family: 'Sawarabi Mincho', sans-serif;
 }
