@@ -26,8 +26,9 @@
       <button class="btn btn-link" onclick="window.location.href='/blog'">お知らせ</button>
       <!-- 他のボタンもここに追加できます -->
       <a href="/" class="navbar-brand">
-        <img width="30" src="<%= channel.author.bestAvatar.url.slice(21) %>"> <%= channel.author.name %>
+        <img width="30" src="<%= channel.author.bestAvatar.url.slice(21) %>"> <%= channel.author.name %>   
       </a>
+      <button class="btn btn-link" onclick="window.location.href='/send'">問い合わせ</button>
     </div>
   </header>
   <div class="results">
