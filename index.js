@@ -226,9 +226,18 @@ app.get("/proxy/",(req, res) => {
   res.render("../read/proxy.ejs")
   
 })
-app.get('/proxy/:anything', (req, res) => {
-    const anything = req.params.anything;
-    res.render("../read/proxy/${anything}.ejs");
+
+app.get('/proxy/shadow', (req, res) => {
+    res.render("../read/proxy/shadow.ejs");
+});
+app.get('/proxy/doge', (req, res) => {
+    res.render("../read/proxy/doge.ejs");
+});
+app.get('/proxy/inbox', (req, res) => {
+    res.render("../read/proxy/inbox.ejs");
+});
+app.get('/proxy/st', (req, res) => {
+    res.render("../read/proxy/st.ejs");
 });
 
 // 404 Handler
