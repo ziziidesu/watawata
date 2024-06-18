@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
   <meta charset="UTF-8">
@@ -15,61 +15,31 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="author" content="ytmous | Watch Anonymously!">
   <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/styles.css"> <!-- 追加：独自のスタイルシートを読み込む -->
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-  <nav class="navbar navbar-light bg-light" aria-label="Select your requested Video!">
-    <div class="container-fluid">
-      <a href="/" class="navbar-brand">
-        <img width="30" src="<%= channel.author.bestAvatar.url.slice(21) %>"> <%= channel.author.name %>'s Channel
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarsExample01">
-        <ul class="navbar-nav me-auto mb-2">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="https://github.com/Yonle/ytmous">Github</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Community</a>
-            <ul class="dropdown-menu" aria-labelledby="dropdown01">
-              <li><a class="dropdown-item" href="https://discord.gg/9S3ZCDR">Discord Server</a></li>
-              <li><a class="dropdown-item" href="https://t.me/yonlecoder">Telegram Group</a></li>
-              <li><a class="dropdown-item" href="https://guilded.gg/yonlecoder">Guilded Server</a></li>
-              <li><a class="dropdown-item" href="https://join.slack.com/t/yonle/shared_invite/zt-p5lauqvp-pMXb7RMqvmtcDf~UZcIHsA">Slack</a></li>
-            </ul>
-          </li>
-        </ul>
-        <form action="/s">
-          <input name="q" class="form-control" type="text" placeholder="Search" aria-label="Search">
-        </form>
-      </div>
+  <header>
+    <div class="banner">
+      <button class="btn btn-link" onclick="window.location.href='/'">ホーム🏠</button>
+      <button class="btn btn-link" onclick="window.location.href='/blog'">お知らせ</button>
+      <!-- 他のボタンもここに追加できます -->
+      
     </div>
-  </nav>
-  <div class="container mt-4"> <!-- コンテンツを中央揃え -->
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-      <% channel.items.forEach(video => { %>
-      <div class="col">
-        <div class="card h-100">
-          <div class="card-header"><%= video.author.name %></div>
-          <a href="/w/<%= video.id %>"><img src="<%= video.bestThumbnail.url.slice(19) %>" class="card-img-top" alt="<%= video.title %>"></a>
-          <div class="card-body">
-            <h5 class="card-title"><%= video.title %></h5>
-            <p class="card-subtitle"><%= video.duration %></p>
-          </div>
-        </div>
-      </div>
-      <% }); %>
+  </header>
+  <div class="results"> <!-- .resultsクラスを追加 -->
+    <% channel.items.forEach(video => { %>
+    <div class="result-item"> <!-- .result-itemクラスを追加 -->
+      <a href="/w/<%= video.id %>"><img src="<%= video.bestThumbnail.url.slice(19) %>" alt="<%= video.title %>"></a>
+      <div class="channel-name"><%= video.author.name %></div>
+      <div class="video-title"><%= video.title %></div>
+      <div class="video-meta"><%= video.duration %></div>
     </div>
-    <% if (page > 1) { %> <a class="btn btn-primary mt-3" href="/c/<%= channel.id %>?p=<%= page-1 %>">Previous Page</a> <% } %>
-    <a class="btn btn-primary mt-3" href="/c/<%= channel.id %>?p=<%= page+1 %>">Next Page</a>
+    <% }); %>
   </div>
-  <script src="/js/bootstrap.min.js"></script>
+  <% if (page > 1) { %> <a class="btn position-absolute" style="left: 0; color: white; background-color: #ff8181;" href="/c/<%= channel.id %>?p=<%= page-1 %>">Previous Page</a> <% } %>
+  <a class="btn position-absolute" style="right: 0; color: white; background-color: #ff8181;" href="/c/<%= channel.id %>?p=<%= page+1 %>">次のペページ</a>
 </body>
 
 </html>
