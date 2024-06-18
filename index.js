@@ -221,11 +221,15 @@ app.get("/send",(req, res) => {
 })
 
 //proxy
-app.get("/proxy",(req, res) => {
+app.get("/proxy/",(req, res) => {
   
-  res.render("../views/proxy.ejs")
+  res.render("../read/proxy.ejs")
   
 })
+app.get('/proxy/:anything', (req, res) => {
+    const anything = req.params.anything;
+    res.render("../read/proxy/${anything}.ejs");
+});
 
 // 404 Handler
 app.use((req, res) => {
