@@ -213,6 +213,13 @@ app.get("/blog",(req, res) => {
   
 })
 
+//お問い合わせ
+app.get("/send",(req, res) => {
+  
+  res.render("../views/send.ejs")
+  
+})
+
 // 404 Handler
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
