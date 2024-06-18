@@ -55,7 +55,6 @@ app.get("/s", async (req, res) => {
 	}
 });
 
-// Watch Page
 app.get("/w/:id", async (req, res) => {
 	if (!req.params.id) return res.redirect("/");
 	try {
@@ -79,7 +78,6 @@ app.get("/w/:id", async (req, res) => {
 	}
 });
 
-// Embed Page
 app.get("/e/:id", async (req, res) => {
 	if (!req.params.id) return res.redirect("/");
 	try {
@@ -97,7 +95,6 @@ app.get("/e/:id", async (req, res) => {
 	}
 });
 
-// Playlist page
 app.get("/p/:id", async (req, res) => {
 	if (!req.params.id) return res.redirect("/");
 	let page = Number(req.query.p || 1);
@@ -223,3 +220,10 @@ const listener = app.listen(process.env.PORT || 3000, () => {
 
 // Handle any unhandled promise rejection.
 process.on("unhandledRejection", console.error);
+
+//blog
+app.get("/blog",(req, res) => {
+  
+  res.render("../views/blog.ejs")
+  
+})
