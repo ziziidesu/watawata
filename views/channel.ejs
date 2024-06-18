@@ -1,103 +1,47 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>お知らせ</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .announcement-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .announcement {
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: #fff;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .announcement h2 {
-            font-size: 24px;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .announcement .timestamp {
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 10px;
-        }
-
-        .announcement p {
-            font-size: 16px;
-            color: #555;
-        }
-
-        .profile-card {
-            display: none;
-            position: absolute;
-            bottom: -140px;
-            left: 0;
-            right: 0;
-            margin: auto;
-            width: 200px;
-            background-color: #fff;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-        }
-
-        .profile-card img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-
-        .announcement:hover .profile-card {
-            display: block;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title><%= channel.author.name %>'s Channel</title>
+  <meta name="description" content="<%= channel.description || channel.descriptionShort %>">
+  <meta property="og:title" content="<%= channel.author.name %>'s Channel">
+  <meta property="og:description" content="<%= channel.description || channel.descriptionShort || "" %>">
+  <meta property="og:site_name" content="わかめtube | まっしろ">
+  <meta property="og:image" content="<%= channel.author.bestAvatar.url.slice(21) %>">
+  <meta name="theme-color" content="#ff8181">
+  <link rel="shortcut icon" href="<%= channel.author.bestAvatar.url.slice(21) %>">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="author" content="わかめtube | まっしろになっていく">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <div class="announcement-container">
-        <div class="announcement">
-            <div class="profile-card">
-                <img src="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/IMG_1281.png?v=1718682861752" alt="Profile Image">
-                <p>プロフィール名</p>
-                <p>プロフィール詳細</p>
-            </div>
-            <h2>お知らせの名前</h2>
-            <p class="timestamp">投稿時間: 2024年6月18日 12:00</p>
-            <p>お知らせの内容をここに書きます。昔のブログ風に囲まれています。</p>
-        </div>
-
-        <div class="announcement">
-            <div class="profile-card">
-                <img src="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/IMG_1281.png?v=1718682861752" alt="Profile Image">
-                <p>わかめ02</p>
-                <p>まっしろの人です。いわゆる対策wiki民でもあります</p>
-            </div>
-            <h2>サイト作成</h2>
-            <p class="timestamp">投稿時間: 2024年6月18日 12:50</p>
-            <p>ytmousなどを基盤に、簡単に再生＆ダウンロード出来るサイトを作成中...</p>
-        </div>
+  <header>
+    <div class="banner">
+      <button class="btn btn-link" onclick="window.location.href='/'">ホーム🏠</button>
+      <button class="btn btn-link" onclick="window.location.href='/blog'">お知らせ</button>
+      <!-- 他のボタンもここに追加できます -->
+      <a href="/" class="navbar-brand">
+        <img width="30" src="<%= channel.author.bestAvatar.url.slice(21) %>"> <%= channel.author.name %>
+      </a>
     </div>
+  </header>
+  <div class="results">
+    <% channel.items.forEach(video => { %>
+    <div class="result-item"> 
+      <a href="/w/<%= video.id %>"><img src="<%= video.bestThumbnail.url.slice(19) %>" alt="<%= video.title %>"></a>
+      <div class="channel-name"><%= video.author.name %></div>
+      <div class="video-title"><%= video.title %></div>
+      <div class="video-meta"><%= video.duration %></div>
+    </div>
+    <% }); %>
+  </div>
+  <% if (page > 1) { %> <a class="btn position-absolute" style="left: 0; color: white; background-color: #ff8181;" href="/c/<%= channel.id %>?p=<%= page-1 %>">前のページ</a> <% } %>
+  <a class="btn position-absolute" style="right: 0; color: white; background-color: #ff8181;" href="/c/<%= channel.id %>?p=<%= page+1 %>">次のページ</a>
 </body>
 
 </html>
