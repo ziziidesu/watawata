@@ -54,24 +54,7 @@
     </div>
   </div><br>
       
-  <div class="row row-cols-1 row-cols-md-3 g-4 results">
-    <% info.related_videos.forEach(video => { %>
-    <div class="col">
-      <div class="result-item card h-100">
-        <div class="card-header">
-          <small class="text-muted"><a href="/c/<%= video.author.id %>"><%= video.author.name %></a></small>
-        </div>
-        <a href="/w/<%= video.id %>"><img src="<%= video.thumbnails.pop().url.slice(19); %>" class="card-img-top" alt="<%= video.title %>"></a>
-        <div class="card-body">
-          <h5 class="card-title"><%= video.title %></h5>
-        </div>
-        <div class="card-footer">
-          <small class="text-muted"><%= video.published %></small>
-        </div>
-      </div>
-    </div>
-    <% }); %>
-  </div>
+
 
   <script>
    document.addEventListener('DOMContentLoaded', () => {
