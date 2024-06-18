@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title><%= query %> - ytmous</title>
   <meta name="description" content="A anonymous Youtube that does not spy on you.">
   <meta property="og:title" content="ytmous">
@@ -21,16 +21,6 @@
 </head>
 
 <body>
-  <header>
-    <div class="banner">
-      <button class="btn btn-link" onclick="window.location.href='/'">ホーム🏠</button>
-      <button class="btn btn-link" onclick="window.location.href='/blog'">ブログ</button>
-      <button class="btn btn-link" onclick="window.location.href='/about'">About</button>
-      <button class="btn btn-link" onclick="window.location.href='/contact'">Contact</button>
-      <!-- 他のボタンもここに追加できます -->
-    </div>
-  </header>
-
   <nav class="navbar navbar-light bg-light" aria-label="Select your requested Video!">
     <div class="container-fluid">
       <a href="/" class="navbar-brand">
@@ -63,60 +53,65 @@
       </div>
     </div>
   </nav>
-
-  <main class="container mt-4">
+  <br>
+  <div class="container">
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <% res.items.forEach(video => { %>
         <% if (video.type === 'video') { %>
           <div class="col">
             <div class="card h-100">
               <a href="/w/<%= video.id %>">
-                <img src="<%= video.bestThumbnail.url.slice(19) %>" class="card-img-top" alt="<%= video.title %>" style="width: 100%; height: 200px; object-fit: cover;">
+                <img src="<%= video.bestThumbnail.url.slice(19) %>" class="card-img-top" alt="<%= video.title %>" width="480" height="270">
               </a>
               <div class="card-body">
-                <p class="card-text"><a href="/c/<%= video.author.channelID %>"><%= video.author.name %></a></p>
                 <h5 class="card-title"><%= video.title %></h5>
+                <p class="card-subtitle text-muted"><a href="/c/<%= video.author.channelID %>"><%= video.author.name %></a></p>
+                <p class="card-text"><%= video.description %></p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted"><%= video.uploadedAt %> - <%= video.duration %></small>
               </div>
             </div>
           </div>
         <% } else if (video.type === 'playlist') { %>
           <div class="col">
             <div class="card h-100">
-              <div class="card-header">Playlist (<%= video.length %> Videos)</div>
               <a href="/p/<%= video.playlistID %>">
-                <img style="opacity: 0.5" src="<%= video.firstVideo.bestThumbnail.url.slice(19) %>" class="card-img-top" alt="<%= video.title %>" style="width: 100%; height: 200px; object-fit: cover;">
+                <img style="opacity: 0.5" src="<%= video.firstVideo.bestThumbnail.url.slice(19) %>" class="card-img-top" alt="<%= video.title %>" width="480" height="270">
               </a>
               <div class="card-body">
                 <h5 class="card-title"><%= video.title %></h5>
-                <% if (video.owner) { %> <p class="card-text"><a href="/u/<%= video.owner.id %>"><%= video.owner.name %></a></p> <% } %>
+                <% if (video.owner) { %> <p class="card-subtitle text-muted"><a href="/u/<%= video.owner.id %>"><%= video.owner.name %></a></p> <% } %>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted"><%= video.publishedAt %> - <%= video.length %> Videos</small>
               </div>
             </div>
           </div>
         <% } else if (video.type === 'channel') { %>
           <div class="col">
             <div class="card h-100">
-              <div class="card-header">Channel</div>
               <a href="/c/<%= video.channelID %>">
-                <img src="<%= video.bestAvatar.url.slice(21) %>" class="card-img-top" alt="<%= video.title %>" style="width: 100%; height: 200px; object-fit: cover;">
+                <img src="<%= video.bestAvatar.url.slice(21) %>" class="card-img-top" alt="<%= video.name %>" width="480" height="270">
               </a>
               <div class="card-body">
                 <h5 class="card-title"><%= video.name %></h5>
                 <p class="card-text"><%= video.description || video.descriptionShort %></p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted"><%= video.subscribers %> subscribers</small>
               </div>
             </div>
           </div>
         <% } %>
       <% }); %>
     </div>
-  </main>
+  </div>
 
-  <footer class="text-center mt-4">
-    <% if (page > 1) { %>
-      <a class="btn" style="color: white; background-color: #ff8181;" href="/s?q=<%= query %>&p=<%= page-1 %>">Previous Page</a>
-    <% } %>
-    <a class="btn" style="color: white; background-color: #ff8181;" href="/s?q=<%= query %>&p=<%= page+1 %>">Next Page</a>
-    <p class="mt-5 mb-3 text-muted">© Yonle</p>
-  </footer>
+  <% if (page > 1) { %> 
+    <a class="btn position-absolute" style="left: 0; color: white; background-color: #ff8181;" href="/s?q=<%= query %>&p=<%= page-1 %>">Previous Page</a> 
+  <% } %>
+  <a class="btn position-absolute" style="right: 0; color: white; background-color: #ff8181;" href="/s?q=<%= query %>&p=<%= page+1 %>">Next Page</a>
 
   <style>
     a {
