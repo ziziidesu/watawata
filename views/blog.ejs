@@ -15,10 +15,12 @@
 
         .announcement {
             border: 2px solid #ddd;
-            border-radius: 8px;
+            border-radius: 0;
             margin-bottom: 20px;
             padding: 15px;
             background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
         .announcement h2 {
@@ -37,6 +39,44 @@
             font-size: 16px;
             color: #555;
         }
+
+        /* Profile Card Styling */
+        .profile-card {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 10px;
+            width: 200px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .profile-card img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .profile-card h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .profile-card p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Show Profile Card on Hover */
+        .announcement:hover .profile-card {
+            display: block;
+        }
     </style>
 </head>
 
@@ -44,13 +84,23 @@
     <div class="announcement">
         <h2>お知らせの名前</h2>
         <p class="timestamp">投稿時間: 2024年6月18日 12:00</p>
-        <p>お知らせの内容をここに書きます。スタイリッシュな線で囲まれています。</p>
+        <p>お知らせの内容をここに書きます。昔のブログ風のデザインです。</p>
+        <div class="profile-card">
+            <img src="path_to_your_profile_image.jpg" alt="Profile Image">
+            <h3>ユーザー名</h3>
+            <p>プロフィールの詳細情報などをここに記載します。</p>
+        </div>
     </div>
 
     <div class="announcement">
-        <h2>サイトの作成</h2>
+        <h2>別のお知らせの名前</h2>
         <p class="timestamp">投稿時間: 2024年6月17日 15:30</p>
-        <p>ytmousなどを基に、わかめtubeを作成しました！</p>
+        <p>別のお知らせの内容をここに書きます。昔のブログ風のデザインです。</p>
+        <div class="profile-card">
+            <img src="path_to_your_profile_image.jpg" alt="Profile Image">
+            <h3>ユーザー名</h3>
+            <p>プロフィールの詳細情報などをここに記載します。</p>
+        </div>
     </div>
 </body>
 

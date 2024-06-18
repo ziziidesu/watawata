@@ -206,6 +206,13 @@ app.get("/ytc/*", (req, res) => {
 	stream.pipe(res);
 });
 
+//blog
+app.get("/blog",(req, res) => {
+  
+  res.render("../views/blog.ejs")
+  
+})
+
 // 404 Handler
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
@@ -221,9 +228,3 @@ const listener = app.listen(process.env.PORT || 3000, () => {
 // Handle any unhandled promise rejection.
 process.on("unhandledRejection", console.error);
 
-//blog
-app.get("/blog",(req, res) => {
-  
-  res.render("../views/blog.ejs")
-  
-})
