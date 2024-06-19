@@ -10,10 +10,7 @@ const app = express();
 const limit = process.env.LIMIT || 50;
 
 // User Agent
-// This is where we fake our request to youtube. 
 const user_agent = process.env.USER_AGENT || "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36";
-
-//     END OF CONFIGURATION    //
 
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
@@ -123,9 +120,6 @@ app.get("/c/:id", async (req, res) => {
 	}
 });
 
-// Proxy Area
-// This is where we make everything became anonymous
-
 // Video Streaming
 app.get("/s/:id", async (req, res) => {
 	if (!req.params.id) return res.redirect("/");
@@ -233,7 +227,7 @@ app.get('/proxy/st', (req, res) => {
     res.render("../read/proxy/st.ejs");
 });
 
-// 404 Handler
+// エラー
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
 		title: "404 Not found",
@@ -245,6 +239,5 @@ const listener = app.listen(process.env.PORT || 3000, () => {
 	console.log("Your app is now listening on port", listener.address().port);
 });
 
-// Handle any unhandled promise rejection.
 process.on("unhandledRejection", console.error);
 

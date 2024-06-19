@@ -1,5 +1,5 @@
 {
-  "name": "ytmous",
+  "name": "wakametube",
   "version": "2.0.0",
   "main": "index.js",
   "license": "CC0-v1.0",
@@ -12,17 +12,17 @@
     "ytpl": "^2.x",
     "ytsr": "^3.x"
   },
-  "description": "A anonymous Youtube that does not spy on you.",
+  "description": "YouTube代替サイト",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Yonle/ytmous.git"
+    "url": "https://glitch.com/~wakame02q"
   },
-  "author": "Yonle",
+  "author": "wakame",
   "private": false,
   "bugs": {
-    "url": "https://github.com/Yonle/ytmous/issues"
+    "url": "https://wakame02q.glitch.me/send"
   },
-  "homepage": "https://github.com/Yonle/ytmous#readme",
+  "homepage": "https://sites.google.com/view/wakametube",
   "devDependencies": {},
   "scripts": {
     "start": "node index.js",
