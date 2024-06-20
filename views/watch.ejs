@@ -44,7 +44,7 @@
 <div class="card">
   <video id="player" playsinline poster="<%= info.videoDetails.thumbnails.pop().url.slice(19); %>" controls src="/s/<%= id %>" width="100%"></video>
   <div class="card-header">
-    <small class="text-muted">再生できませんか？<button id="redirectButton">軽量化版をひらく</button></small>
+    <small class="text-muted">再生できませんか？<button id="redirectButton">軽量化版をひらく</button>       <button id="redirectButton2">新しいタブでひらく</button></small>
   </div>
   <div class="card-header">
     <small class="text-muted"><a href="/c/<%= info.videoDetails.author.id %>"><%= info.videoDetails.author.name %></a></small>
@@ -102,6 +102,11 @@
           
       window.location.href = newUrl;
     });
+document.getElementById('redirectButton2').addEventListener('click', function() {
+    const currentUrl = window.location.href;
+    const newUrl = currentUrl.replace('/w/', '/play/');
+    window.open(newUrl, '_blank');
+});
   </script>
   <style>
 	* {
