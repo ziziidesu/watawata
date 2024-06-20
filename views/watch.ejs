@@ -44,6 +44,9 @@
 <div class="card">
   <video id="player" playsinline poster="<%= info.videoDetails.thumbnails.pop().url.slice(19); %>" controls src="/s/<%= id %>" width="100%"></video>
   <div class="card-header">
+    <small class="text-muted">再生できませんか？<button id="redirectButton">こちらをクリック</button></small>
+  </div>
+  <div class="card-header">
     <small class="text-muted"><a href="/c/<%= info.videoDetails.author.id %>"><%= info.videoDetails.author.name %></a></small>
     <small class="text-muted float-right"><%= info.videoDetails.uploadDate %></small>
   </div>
@@ -91,6 +94,14 @@
      	location.reload();
      });
    });
+    
+   document.getElementById('redirectButton').addEventListener('click', function() {
+      const currentUrl = window.location.href;
+      
+      const newUrl = currentUrl.replace('/w/', '/play/');
+          
+      window.location.href = newUrl;
+    });
   </script>
   <style>
 	* {
