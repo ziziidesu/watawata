@@ -184,7 +184,7 @@ app.get('/play/:id', async (req, res) => {
   }
 });
 
-// Proxy to i.ytimg.com, Where Video Thumbnail is stored here.
+// i.ytimg.com
 app.get("/vi*", (req, res) => {
 	let stream = miniget(`https://i.ytimg.com/${req.url.split("?")[0]}`, {
 		headers: {
@@ -198,7 +198,7 @@ app.get("/vi*", (req, res) => {
 	stream.pipe(res);
 });
 
-// Proxy to yt3.ggpht.com, Where User avatar is being stored on that host.
+// yt3.ggpht.com
 app.get("/ytc/*", (req, res) => {
 	let stream = miniget(`https://yt3.ggpht.com/${req.url}`, {
 		headers: {
@@ -220,9 +220,7 @@ app.get("/blog",(req, res) => {
 })
 
 app.get("/blog/up",(req, res) => {
-  
   res.render("../views/blog/update.ejs")
-  
 })
 
 //お問い合わせ
@@ -234,9 +232,7 @@ app.get("/send",(req, res) => {
 
 //proxy
 app.get("/proxy/",(req, res) => {
-  
   res.render("../read/proxy.ejs")
-  
 })
 
 app.get('/proxy/shadow', (req, res) => {
