@@ -219,6 +219,12 @@ app.get("/blog",(req, res) => {
   
 })
 
+app.get("/blog/up",(req, res) => {
+  
+  res.render("../views/blog/update.ejs")
+  
+})
+
 //お問い合わせ
 app.get("/send",(req, res) => {
   

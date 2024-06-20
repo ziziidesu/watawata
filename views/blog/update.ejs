@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <title>ログ - わかめtube</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/font.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <header>
+    <div class="banner">
+      <button class="btn btn-link" onclick="window.location.href='/'">ホーム🏠</button>
+      <button class="btn btn-link" onclick="window.location.href='/blog'">お知らせ</button>
+      <!-- 他のボタンもここに追加できます -->
+      <form class="d-flex" action="/s">
+        <input type="text" name="q" class="form-control" placeholder="キーワードを入力..." required>
+      </form>
+      <button class="btn btn-link" style="position: absolute; right: 10px;" onclick="window.location.href='/send'">問い合わせ</button>
+    </div>
+  </header>
+    <holo>
+        <h1>アップデートログ</h1>
+    </holo>
+    <main>
+        <section class="log-entry">
+            <h2>2024年6月20日</h2>
+            <ul>
+                <li>概要欄の表示を見やすくなるように変更しました</li>
+                <li>概要欄の上に軽量化された動画を再生するボタンを設置しました</li>
+                <li>その他、UIデザインを改善しました。</li>
+            </ul>
+        </section>
+        <section class="log-entry">
+            <h2>2024年6月19日</h2>
+            <ul>
+                <li>ライブ配信を視聴可能になりました</li>
+                <li>軽量化バージョンがリリースしました(お知らせを参照)</li>
+            </ul>
+        </section>
+        <!-- 他のログエントリも追加可能 -->
+    </main>
+<style>
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+main {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.log-entry {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+}
+
+.log-entry h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.log-entry ul {
+    list-style-type: disc;
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.log-entry ul li {
+    margin-bottom: 0.5rem;
+}
+</style>
+</body>
+</html>
