@@ -247,6 +247,9 @@ app.get('/proxy/inbox', (req, res) => {
 app.get('/proxy/st', (req, res) => {
     res.render("../read/proxy/st.ejs");
 });
+app.get('/proxy/art', (req, res) => {
+    res.render("../read/proxy/art.ejs");
+});
 
 // エラー
 app.use((req, res) => {
