@@ -165,6 +165,25 @@ app.get("/s/:id", async (req, res) => {
 	}
 });
 
+//play(軽量化)
+app.get('/play/:id', async (req, res) => {
+  const videoId = req.params.id;
+  const url = `https://www.youtube.com/watch?v=${videoId}`;
+
+  if (!ytdl.validateURL(url)) {
+    return res.status(400).render('index', { error: 'Invalid YouTube URL' });
+  }
+
+  try {
+    const info = await ytdl.getInfo(url);
+    const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
+    res.render('play', { videoUrl: videoFormats[0].url });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('index', { error: 'Error fetching video info' });
+  }
+});
+
 // Proxy to i.ytimg.com, Where Video Thumbnail is stored here.
 app.get("/vi*", (req, res) => {
 	let stream = miniget(`https://i.ytimg.com/${req.url.split("?")[0]}`, {

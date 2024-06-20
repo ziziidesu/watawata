@@ -41,19 +41,18 @@
     <button class="btn btn-link" style="position: absolute; right: 10px;" onclick="window.location.href='/send'">問い合わせ</button>
  </div>
 </header>
-  <div class="card">
-    <video id="player" playsinline poster="<%= info.videoDetails.thumbnails.pop().url.slice(19); %>" controls src="/s/<%= id %>" width="100%"></video>
-    <div class="card-header">
-      <small class="text-muted"><a href="/c/<%= info.videoDetails.author.id %>"><%= info.videoDetails.author.name %></a></small>
-    </div>
-    <div class="card-body">
-      <h5><%= info.videoDetails.title %></h5>
-      <p><%- (info.videoDetails.description || "").replace(/\n/g, "<br>") %></p>
-    </div>
-    <div class="card-footer">
-      <small class="text-muted"><%= info.videoDetails.uploadDate %></small>
-    </div>
-  </div><br>
+<div class="card">
+  <video id="player" playsinline poster="<%= info.videoDetails.thumbnails.pop().url.slice(19); %>" controls src="/s/<%= id %>" width="100%"></video>
+  <div class="card-header">
+    <small class="text-muted"><a href="/c/<%= info.videoDetails.author.id %>"><%= info.videoDetails.author.name %></a></small>
+    <small class="text-muted float-right"><%= info.videoDetails.uploadDate %></small>
+  </div>
+  <div class="card-body">
+    <h5><%= info.videoDetails.title %></h5>
+    <p><%- (info.videoDetails.description || "").replace(/\n/g, "<br>") %></p>
+  </div>
+</div>
+<br>
       
 <!-- Related Video Query -->
 <div class="results">
@@ -101,6 +100,44 @@
 	a {
 		color: #ff8181;
 	}
+  .card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.card-header, .card-footer {
+  background-color: #f8f9fa;
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-body h5 {
+  margin-bottom: 10px;
+}
+
+.card-body p {
+  margin: 0;
+  white-space: pre-line;
+}
+
   </style>
 </body>
 
