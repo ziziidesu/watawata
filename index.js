@@ -189,7 +189,7 @@ app.get("/pytd/:id", (req, res) => {
   const videoID = req.params.id;
   const URL = `https://www.youtube.com/watch?v=${videoID}`;
   
-  res.header('Content-Disposition', 'attachment; filename="video.mp4"');
+  res.header('Content-Disposition', 'attachment; filename="wakame.mp4"');
   ytdl(URL, { quality: '18' }).pipe(res);
 });
 
