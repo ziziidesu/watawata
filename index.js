@@ -223,9 +223,7 @@ app.get("/ytc/*", (req, res) => {
 
 //blog
 app.get("/blog",(req, res) => {
-  
   res.render("../views/blog.ejs")
-  
 })
 
 app.get("/blog/up",(req, res) => {
@@ -234,9 +232,7 @@ app.get("/blog/up",(req, res) => {
 
 //お問い合わせ
 app.get("/send",(req, res) => {
-  
   res.render("../views/send.ejs")
-  
 })
 
 //proxy
@@ -267,7 +263,7 @@ app.get('/proxy/rammer', (req, res) => {
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
 		title: "404 Not found",
-		content: "A resource that you tried to get is not found or deleted."
+		content: "このページは削除されているか、存在していません。問題がありましたら「問い合わせ」からどうぞ。"
 	});
 });
 
