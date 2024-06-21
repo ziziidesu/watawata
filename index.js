@@ -259,6 +259,9 @@ app.get('/proxy/st', (req, res) => {
 app.get('/proxy/art', (req, res) => {
     res.render("../read/proxy/art.ejs");
 });
+app.get('/proxy/rammer', (req, res) => {
+    res.render("../read/proxy/rammer.ejs");
+});
 
 // エラー
 app.use((req, res) => {
