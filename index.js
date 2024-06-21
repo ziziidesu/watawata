@@ -226,6 +226,12 @@ app.get("/tool/calculator",(req, res) => {
   res.render("../tool/calculator.ejs")
 })
 
+
+//tst
+app.get("/tst12",(req, res) => {
+  res.render("../views/blog.ejs")
+})
+
 //blog
 app.get("/blog",(req, res) => {
   res.render("../views/blog.ejs")
