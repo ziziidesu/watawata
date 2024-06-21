@@ -184,6 +184,15 @@ app.get('/play/:id', async (req, res) => {
   }
 });
 
+//ダウンロード(軽量化)
+app.get("/pytd/:id", (req, res) => {
+  const videoID = req.params.id;
+  const URL = `https://www.youtube.com/watch?v=${videoID}`;
+  
+  res.header('Content-Disposition', 'attachment; filename="video.mp4"');
+  ytdl(URL, { quality: '18' }).pipe(res);
+});
+
 // i.ytimg.com
 app.get("/vi*", (req, res) => {
 	let stream = miniget(`https://i.ytimg.com/${req.url.split("?")[0]}`, {
