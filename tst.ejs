@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>時間ツール</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .time-display {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .stopwatch-display {
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+        .button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .button:disabled {
+            background: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="clock" class="time-display"></div>
+        <div class="stopwatch-display">
+            <span id="stopwatch">00:00:00</span>
+            <br>
+            <button id="start" class="button">スタート</button>
+            <button id="stop" class="button" disabled>ストップ</button>
+            <button id="reset" class="button" disabled>リセット</button>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        let stopwatchInterval;
+        let stopwatchTime = 0;
+
+        document.getElementById('start').addEventListener('click', function() {
+            this.disabled = true;
+            document.getElementById('stop').disabled = false;
+            document.getElementById('reset').disabled = false;
+
+            stopwatchInterval = setInterval(function() {
+                stopwatchTime++;
+                const hours = String(Math.floor(stopwatchTime / 3600)).padStart(2, '0');
+                const minutes = String(Math.floor((stopwatchTime % 3600) / 60)).padStart(2, '0');
+                const seconds = String(stopwatchTime % 60).padStart(2, '0');
+                document.getElementById('stopwatch').textContent = `${hours}:${minutes}:${seconds}`;
+            }, 1000);
+        });
+
+        document.getElementById('stop').addEventListener('click', function() {
+            clearInterval(stopwatchInterval);
+            this.disabled = true;
+            document.getElementById('start').disabled = false;
+        });
+
+        document.getElementById('reset').addEventListener('click', function() {
+            clearInterval(stopwatchInterval);
+            stopwatchTime = 0;
+            document.getElementById('stopwatch').textContent = '00:00:00';
+            document.getElementById('start').disabled = false;
+            document.getElementById('stop').disabled = true;
+            this.disabled = true;
+        });
+    </script>
+</body>
+</html>

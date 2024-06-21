@@ -228,8 +228,8 @@ app.get("/tool/calculator",(req, res) => {
 
 
 //tst
-app.get("/tst12",(req, res) => {
-  res.render("../views/blog.ejs")
+app.get("/tst1234",(req, res) => {
+  res.render("../tst.ejs")
 })
 
 //blog
