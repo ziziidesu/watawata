@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
+  <title>Encoder/Decoder</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Encoder/Decoder</h1>
+    <div class="form-group">
+      <label for="inputText">Input Text:</label>
+      <textarea id="inputText" rows="4"></textarea>
+    </div>
+    <div class="form-group">
+      <button id="encodeButton">Encode</button>
+      <button id="decodeButton">Decode</button>
+    </div>
+    <div class="form-group">
+      <label for="outputText">Output Text:</label>
+      <textarea id="outputText" rows="4" readonly></textarea>
+    </div>
+  </div>
+<style>
+  body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ddd;
+}
+</style>
+
+  <script>
+    document.getElementById('encodeButton').addEventListener('click', () => {
+  const inputText = document.getElementById('inputText').value;
+  const encodedText = btoa(inputText);
+  document.getElementById('outputText').value = encodedText;
+});
+
+document.getElementById('decodeButton').addEventListener('click', () => {
+  const inputText = document.getElementById('inputText').value;
+  try {
+    const decodedText = atob(inputText);
+    document.getElementById('outputText').value = decodedText;
+  } catch (e) {
+    document.getElementById('outputText').value = 'Invalid Base64 string';
+  }
+});
+
+</script>
+</body>
+</html>

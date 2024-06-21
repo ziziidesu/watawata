@@ -221,6 +221,11 @@ app.get("/ytc/*", (req, res) => {
 	stream.pipe(res);
 });
 
+//tool
+app.get("/tool/code",(req, res) => {
+  res.render("../tool/code.ejs")
+})
+
 //blog
 app.get("/blog",(req, res) => {
   res.render("../views/blog.ejs")
