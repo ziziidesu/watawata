@@ -13,10 +13,9 @@
         <div class="logo">対策委員会 (Task Force)</div>
         <nav class="navbar">
             <ul>
-                <li><a href="#home">ホーム</a></li>
+                <li><a href="/">ホーム</a></li>
                 <li><a href="#about">概要</a></li>
-                <li><a href="#projects">プロジェクト</a></li>
-                <li><a href="#contact">お問い合わせ</a></li>
+                <li><a href="/send">お問い合わせ</a></li>
             </ul>
         </nav>
     </header>
@@ -48,7 +47,7 @@
         <p>&copy; 2024 対策委員会 (Task Force)</p>
     </footer>
 <style>
-  /* Basic reset */
+/* Basic reset */
 * {
     margin: 0;
     padding: 0;
@@ -60,7 +59,8 @@ body {
     color: #fff;
     background: #000;
     line-height: 1.6;
-    background-size: cover;
+    background-size: auto;
+    background-attachment: fixed;
     transition: background 1s ease-in-out;
 }
 
@@ -167,17 +167,18 @@ section {
     padding: 20px;
     background: rgba(0, 0, 0, 0.9);
 }
+
 </style>
-    <script>
-  document.addEventListener('scroll', function() {
+<script>
+document.addEventListener('scroll', function() {
     const scrollPosition = window.scrollY;
     const windowHeight = window.innerHeight;
 
     const images = [
-        'url(https://source.unsplash.com/1600x900/?universe,space)',
-        'url(https://source.unsplash.com/1600x900/?galaxy,stars)',
-        'url(https://source.unsplash.com/1600x900/?nebula)',
-        'url(https://source.unsplash.com/1600x900/?planet)',
+        'url("https://upload.wikimedia.org/wikipedia/commons/a/a8/STS-130_EVA3_Nicholas_Patrick_1.jpg")',
+        'url("https://upload.wikimedia.org/wikipedia/commons/0/04/Hurricane_Isabel_from_ISS.jpg")',
+        'url("https://upload.wikimedia.org/wikipedia/commons/3/3b/Good_Morning_From_the_International_Space_Station.jpg")',
+        'url("https://upload.wikimedia.org/wikipedia/commons/0/0d/Hubble_ultra_deep_field_high_rez_edit1.jpg")'
     ];
 
     const index = Math.floor(scrollPosition / windowHeight) % images.length;
