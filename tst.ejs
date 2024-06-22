@@ -3,102 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>時間ツール</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-        }
-        .container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .time-display {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-        .stopwatch-display {
-            font-size: 1.5em;
-            margin: 20px 0;
-        }
-        .button {
-            margin: 5px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background: #007bff;
-            color: #fff;
-            font-size: 1em;
-            cursor: pointer;
-        }
-        .button:disabled {
-            background: #ccc;
-        }
-    </style>
+    <title>対策委員会 (Task Force)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <div id="clock" class="time-display"></div>
-        <div class="stopwatch-display">
-            <span id="stopwatch">00:00:00</span>
-            <br>
-            <button id="start" class="button">スタート</button>
-            <button id="stop" class="button" disabled>ストップ</button>
-            <button id="reset" class="button" disabled>リセット</button>
+    <header class="header">
+        <div class="logo">対策委員会 (Task Force)</div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#home">ホーム</a></li>
+                <li><a href="#about">概要</a></li>
+                <li><a href="#projects">プロジェクト</a></li>
+                <li><a href="#contact">お問い合わせ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>対策委員会 (Task Force)</h1>
+            <p>現実に目を向け、正しい道を探るために</p>
+            <a href="#about" class="btn">もっと見る</a>
         </div>
-    </div>
+    </section>
 
+    <section class="about" id="about">
+        <h2>概要</h2>
+        <p>対策委員会は、すべての情報にアクセスできるようにすることを使命としています。</p>
+    </section>
+
+    <section class="projects" id="projects">
+        <h2>プロジェクト</h2>
+        <p>進行中のプロジェクトに関する情報をここに書きます。</p>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2>お問い合わせ</h2>
+        <p>お問い合わせ方法をここに書きます。</p>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2024 対策委員会 (Task Force)</p>
+    </footer>
+<style>
+  /* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #fff;
+    background: #000;
+    line-height: 1.6;
+    background-size: cover;
+    transition: background 1s ease-in-out;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+}
+
+.navbar li {
+    margin: 0 15px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #1e90ff;
+}
+
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    z-index: 1;
+    color: #fff;
+}
+
+.hero h1 {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.btn {
+    padding: 15px 30px;
+    background: #1e90ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: #63b8ff;
+}
+
+section {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.about, .projects, .contact {
+    background: rgba(255, 255, 255, 0.1);
+    margin: 20px 0;
+    border-radius: 10px;
+    padding: 40px 20px;
+}
+
+.about h2, .projects h2, .contact h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.about p, .projects p, .contact p {
+    font-size: 18px;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.9);
+}
+</style>
     <script>
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
-        }
+  document.addEventListener('scroll', function() {
+    const scrollPosition = window.scrollY;
+    const windowHeight = window.innerHeight;
 
-        setInterval(updateClock, 1000);
-        updateClock();
+    const images = [
+        'url(https://source.unsplash.com/1600x900/?universe,space)',
+        'url(https://source.unsplash.com/1600x900/?galaxy,stars)',
+        'url(https://source.unsplash.com/1600x900/?nebula)',
+        'url(https://source.unsplash.com/1600x900/?planet)',
+    ];
 
-        let stopwatchInterval;
-        let stopwatchTime = 0;
-
-        document.getElementById('start').addEventListener('click', function() {
-            this.disabled = true;
-            document.getElementById('stop').disabled = false;
-            document.getElementById('reset').disabled = false;
-
-            stopwatchInterval = setInterval(function() {
-                stopwatchTime++;
-                const hours = String(Math.floor(stopwatchTime / 3600)).padStart(2, '0');
-                const minutes = String(Math.floor((stopwatchTime % 3600) / 60)).padStart(2, '0');
-                const seconds = String(stopwatchTime % 60).padStart(2, '0');
-                document.getElementById('stopwatch').textContent = `${hours}:${minutes}:${seconds}`;
-            }, 1000);
-        });
-
-        document.getElementById('stop').addEventListener('click', function() {
-            clearInterval(stopwatchInterval);
-            this.disabled = true;
-            document.getElementById('start').disabled = false;
-        });
-
-        document.getElementById('reset').addEventListener('click', function() {
-            clearInterval(stopwatchInterval);
-            stopwatchTime = 0;
-            document.getElementById('stopwatch').textContent = '00:00:00';
-            document.getElementById('start').disabled = false;
-            document.getElementById('stop').disabled = true;
-            this.disabled = true;
-        });
-    </script>
+    const index = Math.floor(scrollPosition / windowHeight) % images.length;
+    document.body.style.backgroundImage = images[index];
+});
+</script>
 </body>
 </html>
