@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game List</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+    <div class="banner">
+      <button class="btn btn-link" onclick="window.location.href='/'">ホーム🏠</button>
+      <button class="btn btn-link" onclick="window.location.href='/blog'">お知らせ</button>
+      <!-- 他のボタンもここに追加できます -->
+      <form class="d-flex" action="/s">
+        <input type="text" name="q" class="form-control" placeholder="キーワードを入力..." required>
+      </form>
+      <button class="btn btn-link" style="position: absolute; right: 10px;" onclick="window.location.href='/send'">問い合わせ</button>
+    </div>
+  </header>
+    <main>
+        <section class="game-list">
+            <article class="game-item">
+                <img src="game1.jpg" alt="Game 1">
+                <div class="game-info">
+                    <h2>Game Title 1</h2>
+                    <p>Short description of Game 1.</p>
+                </div>
+            </article>
+            <article class="game-item">
+                <img src="game2.jpg" alt="Game 2">
+                <div class="game-info">
+                    <h2>Game Title 2</h2>
+                    <p>Short description of Game 2.</p>
+                </div>
+            </article>
+            <!-- Add more game items here -->
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Your Game Site</p>
+    </footer>
+  <style>
+
+h1 {
+    margin: 0;
+}
+
+main {
+    padding: 20px;
+}
+
+.game-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.game-item {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 300px;
+    transition: transform 0.2s;
+}
+
+.game-item:hover {
+    transform: translateY(-5px);
+}
+
+.game-item img {
+    width: 100%;
+    height: auto;
+}
+
+.game-info {
+    padding: 15px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin: 0 0 10px;
+}
+
+p {
+    font-size: 1em;
+    margin: 0;
+    color: #666;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1em 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+</style>
+</body>
+</html>

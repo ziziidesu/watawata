@@ -248,6 +248,11 @@ app.get("/send",(req, res) => {
   res.render("../views/send.ejs")
 })
 
+//apps
+app.get("/app",(req, res) => {
+  res.render("../public/apps.ejs")
+})
+
 //game
 app.get("/game/stickman",(req, res) => {
   res.render("../game/stickman.ejs")
