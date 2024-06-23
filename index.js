@@ -225,7 +225,9 @@ app.get("/ytc/*", (req, res) => {
 app.get("/tool/calculator",(req, res) => {
   res.render("../tool/calculator.ejs")
 })
-
+app.get("/tool/android",(req, res) => {
+  res.render("../tool/android.ejs")
+})
 
 //tst
 app.get("/tst1234",(req, res) => {
@@ -252,6 +254,18 @@ app.get("/game/stickman",(req, res) => {
 })
 app.get("/game/ctr",(req, res) => {
   res.render("../game/ctr.ejs")
+})
+app.get("/game/taiko",(req, res) => {
+  res.render("../game/taiko.ejs")
+})
+app.get("/game/2048",(req, res) => {
+  res.render("../game/2048.ejs")
+})
+app.get("/game/snow",(req, res) => {
+  res.render("../game/snow.ejs")
+})
+app.get("/game/drive",(req, res) => {
+  res.render("../game/drive.ejs")
 })
 
 //proxy
