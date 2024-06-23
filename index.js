@@ -246,6 +246,14 @@ app.get("/send",(req, res) => {
   res.render("../views/send.ejs")
 })
 
+//game
+app.get("/game/stickman",(req, res) => {
+  res.render("../game/stickman.ejs")
+})
+app.get("/game/ctr",(req, res) => {
+  res.render("../game/ctr.ejs")
+})
+
 //proxy
 app.get("/proxy/",(req, res) => {
   res.render("../read/proxy.ejs")
