@@ -223,7 +223,7 @@ app.get("/ytc/*", (req, res) => {
 
 //tool
 app.get("/tool",(req, res) => {
-  res.render("../tool/calculator.ejs")
+  res.render("../tool/home.ejs")
 })
 app.get("/tool/calculator",(req, res) => {
   res.render("../tool/calculator.ejs")
