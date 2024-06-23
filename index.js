@@ -281,6 +281,9 @@ app.get("/game/topwar",(req, res) => {
 app.get("/game/interland",(req, res) => {
   res.render("../game/interland.ejs")
 })
+app.get("/game/driftboss",(req, res) => {
+  res.render("../game/driftboss.ejs")
+})
 
 //proxy
 app.get("/proxy/",(req, res) => {
