@@ -272,9 +272,6 @@ app.get("/game/2048",(req, res) => {
 app.get("/game/snow",(req, res) => {
   res.render("../game/snow.ejs")
 })
-app.get("/game/drive",(req, res) => {
-  res.render("../game/drive.ejs")
-})
 app.get("/game/topwar",(req, res) => {
   res.render("../game/topwar.ejs")
 })
