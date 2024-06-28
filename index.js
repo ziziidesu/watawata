@@ -287,6 +287,9 @@ app.get("/game/paper",(req, res) => {
 app.get("/game/drive",(req, res) => {
   res.render("../game/drive.ejs")
 })
+app.get("/game/aiothello",(req, res) => {
+  res.render("../game/aiothello.ejs")
+})
 
 //proxy
 app.get("/proxy/",(req, res) => {
