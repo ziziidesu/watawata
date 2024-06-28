@@ -44,7 +44,7 @@
 <div class="card">
   <video id="player" playsinline poster="<%= info.videoDetails.thumbnails.pop().url.slice(19); %>" controls src="/s/<%= id %>" width="100%"></video>
   <div class="card-header">
-    <small class="text-muted">再生できませんか？<button id="redirectButton">軽量化版をひらく</button>       <button id="redirectButton2">新しいタブでひらく</button></small>
+    <small class="text-muted">再生できませんか？<button id="redirectButton">軽量化版をひらく</button>       <button id="redirectButton2">新しいタブでひらく</button>         <button id="downloadbuttom">この動画をダウンロードする</button></small>
   </div>
   <div class="card-header">
     <small class="text-muted"><a href="/c/<%= info.videoDetails.author.id %>"><%= info.videoDetails.author.name %></a></small>
@@ -77,25 +77,7 @@
 
 
   <script>
-   document.addEventListener('DOMContentLoaded', () => {
-     const player = new Plyr('video', {
-       controls: [
-         'play', 'progress', 'current-time', 'duration',
-         'mute','download', 'fullscreen'
-       ],
-       title: '<%= info.videoDetails.title %>,',
-       iconUrl: '/plyr.svg',
-       autopause: false,
-       debug: true
-     });
-
-     player.on('error', err => {
-     	console.error(err);
-     	location.reload();
-     });
-   });
-    
-   document.getElementById('redirectButton').addEventListener('click', function() {
+document.getElementById('redirectButton').addEventListener('click', function() {
       const currentUrl = window.location.href;
       
       const newUrl = currentUrl.replace('/w/', '/play/');
@@ -105,6 +87,11 @@
 document.getElementById('redirectButton2').addEventListener('click', function() {
     const currentUrl = window.location.href;
     const newUrl = currentUrl.replace('/w/', '/play/');
+    window.open(newUrl, '_blank');
+});
+document.getElementById('downloadbuttom').addEventListener('click', function() {
+    const currentUrl = window.location.href;
+    const newUrl = currentUrl.replace('/play/', '/pytd/');
     window.open(newUrl, '_blank');
 });
   </script>
