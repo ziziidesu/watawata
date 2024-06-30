@@ -46,40 +46,16 @@ app.get("/s", async (req, res) => {
 });
 
 app.get("/w/:id", async (req, res) => {
-	if (!req.params.id) return res.redirect("/");
-	try {
-		let info = await ytdl.getInfo(req.params.id);
-		if (!info.formats.filter(format => format.hasVideo && format.hasAudio).length) {
-			return res.status(500).render("error.ejs", {
-				title: "Region Lock",
-				content: "Sorry. This video is not available for this server country."
-			});
-		}
-		
-		res.render("watch.ejs", {
-			id: req.params.id, info
-		});
-	} catch (error) {
-		console.error(error);
-		res.status(500).render("error.ejs", {
-			title: "ytdl Error",
-			content: error
-		});
-	}
   let videoId = req.params.id;
   let url = `https://www.youtube.com/watch?v=${videoId}`;
-	let info = await ytdl.getInfo(req.params.id);
 
   if (!ytdl.validateURL(url)) {
     return res.status(400).render('index', { error: 'Invalid YouTube URL' });
   }
 
   try {
-    const info = await ytdl.getInfo(url);
-    const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
-		res.render("watch.ejs", {
-			id: req.params.id, info
-		});
+    let info = await ytdl.getInfo(url);
+    res.render('watch.ejs', {id: req.params.id, info});
   } catch (error) {
     console.error(error);
     res.status(500).render('index', { error: 'Error fetching video info' });
