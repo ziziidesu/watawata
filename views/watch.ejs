@@ -6,15 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title><%= info.videoDetails.title %></title>
   <meta name="description" content="<%= info.videoDetails.description || "" %>">
-  <meta property="og:title" content="<%= info.videoDetails.title %> - ytmous">
-  <meta property="og:type" content="video">
-  <meta property="og:video" content="/stream/<%= id %>">
-  <meta property="og:video:type" content="video/mp4">
-  <meta property="og:video" content="/stream/<%= id %>">
-  <meta property="og:video:type" content="text/html">
-  <meta property="twitter:player" content="/stream/<%= id %>">
-  <meta name="twitter:image" content="<%= info.videoDetails.thumbnails.pop().url.slice(19); %>">
-  <meta property="og:description" content="<%= info.videoDetails.description || "" %>">
   <meta property="og:site_name" content="わかめtube | まっしろ">
   <meta property="og:image" content="<%= info.videoDetails.thumbnails.pop().url.slice(19); %>">
   <meta name="theme-color" content="#ff8181">
@@ -41,7 +32,10 @@
  </div>
 </header>
 <div class="card">
-  <video id="player" playsinline poster="<%= info.videoDetails.thumbnails.pop().url.slice(19); %>" controls src="/s/<%= id %>" width="100%"></video>
+  <video controls autoplay>
+    <source src="<%= videoUrl %>" type="video/mp4">
+    読み込み失敗。ブラウザをアップデートしてどうぞ。
+  </video>
   <div class="card-header">
     <small class="text-muted">再生できませんか？<button id="redirectButton">軽量化版をひらく</button>       <button id="redirectButton2">新しいタブでひらく</button>         <button id="downloadbuttom">この動画をダウンロードする</button></small>
   </div>

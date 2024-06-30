@@ -55,7 +55,8 @@ app.get("/w/:id", async (req, res) => {
 
   try {
     let info = await ytdl.getInfo(url);
-    res.render('watch.ejs', {id: req.params.id, info});
+    const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
+    res.render('watch.ejs', {videoUrl: videoFormats[0].url, info});
   } catch (error) {
     console.error(error);
     res.status(500).render('index', { error: 'Error fetching video info' });
