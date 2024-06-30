@@ -192,7 +192,7 @@ app.get("/pytd/:id", async (req, res) => {
 
     const info = await ytdl.getInfo(URL);
     const title = info.videoDetails.title;
-    const sanitizedTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase(); // ファイル名として安全な形式に変換
+    const sanitizedTitle = title.replace(/[\/\\:\*\?"<>\|]/g, ' ').toLowerCase(); // ファイル名として安全な形式に変換
 
     res.header('Content-Disposition', `attachment; filename="${sanitizedTitle}.mp4"`);
 
