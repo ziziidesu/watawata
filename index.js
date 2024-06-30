@@ -192,11 +192,11 @@ app.get("/pytd/:id", async (req, res) => {
 
     const info = await ytdl.getInfo(URL);
     const title = info.videoDetails.title;
-    const sanitizedTitle = title.replace(/[\/\\:\*\?"<>\|]/g, ' ').toLowerCase(); // ファイル名として安全な形式に変換
+    const sanitizedTitle = title.replace(/[^a-zA-Z0-9一-龯ぁ-ゔァ-ヴーｱ-ﾝﾞﾟー]/g, ' ');
 
-    res.header('Content-Disposition', `attachment; filename="${sanitizedTitle}.mp4"`);
+    res.header('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(sanitizedTitle)}.mp4`);
 
-    ytdl(URL, { quality: '18' }).pipe(res);
+    ytdl(URL, { quality: 'highest' }).pipe(res);
   } catch (err) {
     console.error(err);
     res.status(500).send('Failed to download video');
