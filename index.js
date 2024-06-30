@@ -185,12 +185,22 @@ app.get('/play/:id', async (req, res) => {
 });
 
 //ダウンロード(軽量化)
-app.get("/pytd/:id", (req, res) => {
-  const videoID = req.params.id;
-  const URL = `https://www.youtube.com/watch?v=${videoID}`;
-  
-  res.header('Content-Disposition', 'attachment; filename="wakame.mp4"');
-  ytdl(URL, { quality: '18' }).pipe(res);
+app.get("/pytd/:id", async (req, res) => {
+  try {
+    const videoID = req.params.id;
+    const URL = `https://www.youtube.com/watch?v=${videoID}`;
+
+    const info = await ytdl.getInfo(URL);
+    const title = info.videoDetails.title;
+    const sanitizedTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase(); // ファイル名として安全な形式に変換
+
+    res.header('Content-Disposition', `attachment; filename="${sanitizedTitle}.mp4"`);
+
+    ytdl(URL, { quality: '18' }).pipe(res);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Failed to download video');
+  }
 });
 
 // i.ytimg.com
