@@ -6,6 +6,7 @@ const miniget = require("miniget");
 const express = require("express");
 const ejs = require("ejs");
 const app = express();
+const axios = require('axios');
 
 const limit = process.env.LIMIT || 50;
 
@@ -134,6 +135,27 @@ app.get('/listen/:id', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).render('index', { error: 'Error fetching audio info' });
+  }
+});
+
+//invidious
+app.get("/inv/:id", async (req, res) => {
+  let videoId = req.params.id;
+  let url = `https://invidious.snopyta.org/api/v1/videos/${videoId}`;
+
+  try {
+    let response = await axios.get(url);
+    let videoInfo = response.data;
+
+    if (!videoInfo || !videoInfo.adaptiveFormats || videoInfo.adaptiveFormats.length === 0) {
+      return res.status(400).render('index', { error: 'Invalid YouTube URL or no video available' });
+    }
+
+    const videoFormats = videoInfo.adaptiveFormats.filter(format => format.hasAudio && format.hasVideo);
+    res.render('inv.ejs', { videoUrl: videoFormats[0].url, info: videoInfo });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('index', { error: 'Error fetching video info' });
   }
 });
 
