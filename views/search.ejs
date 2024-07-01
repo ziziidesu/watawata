@@ -45,11 +45,11 @@
           <p class="video-meta"><%= video.uploadedAt %> - <%= video.duration %></p>
         </div>
       <% } else if (video.type === 'playlist') { %>
-        <div class="result-item">
+        <div class="playresult-item">
           <a href="/p/<%= video.playlistID %>">
             <img style="opacity: 0.5" src="<%= video.firstVideo.bestThumbnail.url.slice(19) %>" alt="<%= video.title %>">
           </a>
-          <p class="video-title">Playlist (<%= video.length %> Videos)</p>
+          <p class="video-title">プレイリスト(<%= video.length %>本以上の動画)</p>
           <p class="channel-name"><a href="/u/<%= video.owner.id %>"><%= video.owner.name %></a></p>
         </div>
       <% } else if (video.type === 'channel') { %>
