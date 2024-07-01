@@ -318,6 +318,9 @@ app.get("/game/drive",(req, res) => {
 app.get("/game/aiothello",(req, res) => {
   res.render("../game/aiothello.ejs")
 })
+app.get("/game/stellar",(req, res) => {
+  res.render("../game/stellar.ejs")
+})
 
 //proxy
 app.get("/proxy/",(req, res) => {
