@@ -6,6 +6,7 @@ const miniget = require("miniget");
 const express = require("express");
 const ejs = require("ejs");
 const app = express();
+const { exec } = require('child_process');
 
 const limit = process.env.LIMIT || 50;
 
@@ -199,6 +200,21 @@ app.get('/play/:id', async (req, res) => {
     console.error(error);
     res.status(500).render('index', { error: 'Error fetching video info' });
   }
+});
+
+//tst
+app.get('/inv/:id', (req, res) => {
+  const videoId = req.params.id;
+  const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+
+  exec(`yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' -g ${videoUrl}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+      return res.status(500).send('Error processing the video URL');
+    }
+    const videoStreamUrl = stdout.trim();
+    res.render('inv.ejs', { videoStreamUrl });
+  });
 });
 
 //ダウンロード(軽量化)
