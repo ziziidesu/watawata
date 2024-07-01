@@ -115,6 +115,25 @@ app.get("/c/:id", async (req, res) => {
 	}
 });
 
+//音のみ再生
+app.get('/listen/:id', async (req, res) => {
+  let videoId = req.params.id;
+  let url = `https://www.youtube.com/watch?v=${videoId}`;
+
+  if (!ytdl.validateURL(url)) {
+    return res.status(400).render('index', { error: 'Invalid YouTube URL' });
+  }
+
+  try {
+    let info = await ytdl.getInfo(url);
+    const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
+    res.render('listen.ejs', { videoUrl: videoFormats[0].url });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('index', { error: 'Error fetching audio info' });
+  }
+});
+
 // Video Streaming
 app.get("/s/:id", async (req, res) => {
 	if (!req.params.id) return res.redirect("/");

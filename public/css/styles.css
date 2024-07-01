@@ -159,3 +159,16 @@ footer {
   margin-bottom: 10px;
   border-radius: 10px 10px 0 0;
 }
+
+.playresult-item .channel-name {
+  font-size: 7px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.playresult-item .video-title {
+  font-size: 8px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
