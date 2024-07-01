@@ -45,22 +45,6 @@ app.get("/s", async (req, res) => {
 	}
 });
 
-//超軽量化検索
-app.get("/tool/s", async (req, res) => {
-  let query = req.query.q;
-  if (!query) return res.redirect("/");
-  try {
-    const searchResults = await ytsr(query, { limit });
-    res.render("search", {
-      query,
-      results: searchResults.items
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("An error occurred while searching.");
-  }
-});
-
 app.get("/w/:id", async (req, res) => {
   let videoId = req.params.id;
   let url = `https://www.youtube.com/watch?v=${videoId}`;
