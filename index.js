@@ -213,7 +213,7 @@ app.get("/pytd/:id", async (req, res) => {
 
     res.header('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(sanitizedTitle)}.mp4`);
 
-    ytdl(URL, { quality: 'highest' }).pipe(res);
+    ytdl(URL, { quality: '18' }).pipe(res);
   } catch (err) {
     console.error(err);
     res.status(500).send('Failed to download video');
