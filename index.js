@@ -202,21 +202,6 @@ app.get('/play/:id', async (req, res) => {
   }
 });
 
-//tst
-app.get('/inv/:id', (req, res) => {
-  const videoId = req.params.id;
-  const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-
-  exec(`yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' -g ${videoUrl}`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`exec error: ${error}`);
-      return res.status(500).send('Error processing the video URL');
-    }
-    const videoStreamUrl = stdout.trim();
-    res.render('inv.ejs', { videoStreamUrl });
-  });
-});
-
 //ダウンロード(軽量化)
 app.get("/pytd/:id", async (req, res) => {
   try {
