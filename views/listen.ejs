@@ -3,13 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Music Player</title>
+  <title>(音のみ)<%= info.videoDetails.title %></title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/font.css">
+  <link rel="stylesheet" href="/css/plyr.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="/js/bootstrap.min.js"></script>
 </head>
 <body>
+<header>
+  <div class="banner">
+   <button class="btn btn-link" onclick="window.location.href='/'">ホーム🏠</button>
+   <button class="btn btn-link" onclick="window.location.href='/blog'">お知らせ</button>
+  <!-- 他のボタンもここに追加できます -->
+   <form class="d-flex" action="/s">
+    <input type="text" name="q" class="form-control" placeholder="キーワードを入力..." required>
+   </form>
+    <button class="btn btn-link" style="position: absolute; right: 10px;" onclick="window.location.href='/send'">問い合わせ</button>
+ </div>
+</header>
+  <br>
   <h1><%= info.videoDetails.title %></h1>
   <audio controls>
-    <source src="<%= videoUrl %>" type="mp3">
-    Your browser does not support the audio element.
+    <source src="<%= audioUrl %>" type="audio/webm">
+    読み込み失敗😭
   </audio>
 </body>
 </html>

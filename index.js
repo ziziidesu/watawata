@@ -126,8 +126,11 @@ app.get('/listen/:id', async (req, res) => {
 
   try {
     let info = await ytdl.getInfo(url);
-    const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
-    res.render('listen.ejs', { videoUrl: videoFormats[0].url });
+    const audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
+    if (audioFormats.length === 0) {
+      return res.status(500).render('index', { error: 'No audio formats available' });
+    }
+    res.render('listen', { audioUrl: audioFormats[0].url, info });
   } catch (error) {
     console.error(error);
     res.status(500).render('index', { error: 'Error fetching audio info' });
