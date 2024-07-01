@@ -28,5 +28,49 @@
     <source src="<%= audioUrl %>" type="audio/webm">
     読み込み失敗😭
   </audio>
+  <br>
+    <div class="container">
+    <h1>もっときく！</h1>
+    <ul>
+      <% info.related_videos.forEach(video => { %>
+        <li>
+          <a href="/play/<%= video.id %>"><%= video.title %> - <%= video.author.name %></a>
+        </li>
+      <% }) %>
+    </ul>
+    <a href="/">もどる</a>
+  </div>
+<style>
+.container {
+  width: 80%;
+  margin: 2em auto;
+  padding: 1em;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 0.5em 0;
+}
+
+a {
+  text-decoration: none;
+  color: #007BFF;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+</style>
 </body>
 </html>
