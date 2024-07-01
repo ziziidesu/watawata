@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8">
-    <title>わかめおいしい</title>
+    <title>わかめふりかけ</title>
   </head>
   <body>
     <header>
@@ -17,8 +17,8 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-const Othello = function (container) {
+    <script>
+    const Othello = function (container) {
     this.container = $(container);
     this.canvas = this.container.find("canvas")[0];
     this.context = this.canvas.getContext("2d");
@@ -61,7 +61,7 @@ const Othello = function (container) {
         if ((mob[idx[0]] >> idx[1]) & 1) {
             self.touch(x, y);
         } else {
-            self.message.text("おけないうし～");
+            self.message.text("ここには置けない余");
             self.ableclick = true;
         }
     });
@@ -69,6 +69,8 @@ const Othello = function (container) {
 $(function () {
     new Othello("#othello");
 });
+
+
 Othello.prototype.cell_index = function (x, y) {
     let idx = y * 8 + x;
     if (idx < 32) return [0, idx];
@@ -111,6 +113,7 @@ Othello.prototype.paint = function () {
     object.stroke();
 
     let mob = this.make_mobility(this.board[this.user], this.board[1 ^ this.user]);
+
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
             let idx = this.cell_index(j, i);
@@ -167,6 +170,22 @@ Othello.prototype.make_mobility = function (p, o) {
     t1 |= (t1 >>> 1) & o1;
     t1 |= (t1 >>> 1) & o1;
     r1 |= (t1 >>> 1);
+    t0 = (p0 >>> 1) & o0;
+    t0 |= (t0 >>> 1) & o0;
+    t0 |= (t0 >>> 1) & o0;
+    t0 |= (t0 >>> 1) & o0;
+    t0 |= (t0 >>> 1) & o0;
+    t0 |= (t0 >>> 1) & o0;
+    r0 |= (t0 >>> 1);
+
+    // 右
+    t1 = (p1 << 1) & o1;
+    t1 |= (t1 << 1) & o1;
+    t1 |= (t1 << 1) & o1;
+    t1 |= (t1 << 1) & o1;
+    t1 |= (t1 << 1) & o1;
+    t1 |= (t1 << 1) & o1;
+    r1 |= (t1 << 1);
     t0 = (p0 << 1) & o0;
     t0 |= (t0 << 1) & o0;
     t0 |= (t0 << 1) & o0;
@@ -212,6 +231,7 @@ Othello.prototype.make_mobility = function (p, o) {
     t1 |= (t1 << 9) & o1;
     r1 |= (t1 << 9) | (t0 >>> 23);
     r0 |= (t0 << 9);
+
     // 左上
     t1 = (p1 >>> 9) & o1;
     t1 |= (t1 >>> 9) & o1;
@@ -249,6 +269,7 @@ Othello.prototype.flip = function (p, o, bit) {
     if (bit >= 32) return this.flip_top(p, o, bit - 32);
     return this.flip_bottom(p, o, bit);
 };
+
 Othello.prototype.flip_bottom = function (p, o, bit) {
     bit = 1 << bit;
 
@@ -282,6 +303,7 @@ Othello.prototype.flip_bottom = function (p, o, bit) {
     t = (t | -t) >> 31;
     r1 |= t1 & t;
     r0 |= t0 & t;
+
     // 右上
     t0 = (bit << 7) & mo0;
     t0 |= (t0 << 7) & mo0;
@@ -325,6 +347,7 @@ Othello.prototype.flip_bottom = function (p, o, bit) {
 
     return [r0, r1];
 }
+
 Othello.prototype.flip_top = function (p, o, bit) {
     bit = 1 << bit;
 
@@ -363,6 +386,7 @@ Othello.prototype.flip_top = function (p, o, bit) {
     t1 |= (t1 >>> 1) & mo1;
     t1 |= (t1 >>> 1) & mo1;
     r1 |= t1 & -((t1 >>> 1) & p1);
+
     // 下
     t1 = (bit >>> 8) & o1;
     t1 |= (t1 >>> 8) & o1;
@@ -401,6 +425,7 @@ Othello.prototype.flip_top = function (p, o, bit) {
 
     return [r0, r1];
 };
+
 Othello.prototype.touch = function (x, y) {
     this.ableclick = false;
     this.message.text("(" + x + " ," + y + ")");
@@ -438,6 +463,7 @@ Othello.prototype.change_turn = function () {
                         self.pend();
                     }, 300);
                 }, 300);
+
                 const res = self.play_ai2();
                 self.nxt_hand = res[0];
                 self.nxt_cpu = res[1];
@@ -486,6 +512,7 @@ Othello.prototype.change_turn = function () {
         }
     }
 };
+
 Othello.prototype.pend = function() {
     const self = this;
     setTimeout(function() {
@@ -526,17 +553,17 @@ Othello.prototype.play_ai2 = function () {
         const pos = this.nega_max_search(this.board[this.user], this.board[1 ^ this.user], 8, -114514, 114514, 0);
 
         if(pos[0] >= 100) {
-            str = "かったぜ"   + " (" + this.hand + "手読んだよ)";
+            str = "かったぜ";
         } else if(pos[0] >= 50) {
-            str = "勝てそうかな??"   + " (" + this.hand + "手読んだよ)";
+            str = "勝てそうかな??";
         } else if(pos[0] >= -10) {
-            if(cnt <= 15) str = "まだ序盤だね"   + " (" + this.hand + "手読んだよ)";
-            else if(cnt <= 30) str = "中盤かな"   + " (" + this.hand + "手読んだよ)";
-            else if(cnt <= 40) str = "！？"   + " (" + this.hand + "手読んだよ)";
+            if(cnt <= 15) str = "まだ序盤だね〜";
+            else if(cnt <= 30) str = "中盤かな";
+            else if(cnt <= 40) str = "！？";
         } else if(pos[0] >= -50) {
-            str = "!?"   + " (" + this.hand + "手読んだよ)";
+            str = "!?";
         } else {
-            str = "まけた><" + " (" + this.hand + "手読んだよ)";
+            str = "まけた><";
         }
         return [pos[1], str];
     }
@@ -597,6 +624,7 @@ Othello.prototype.evalute = function (user, enemy) {
     }
     return value + Math.random();
 };
+
 Othello.prototype.nega_max_search2 = function (user, enemy, alpha, beta, pass) {
 
     const mob = this.make_mobility(user, enemy);
@@ -636,6 +664,8 @@ Othello.prototype.nega_max_search2 = function (user, enemy, alpha, beta, pass) {
 
     return [best, best_idx];
 };
+
+
 Othello.prototype.nega_max_search = function (user, enemy, depth, alpha, beta, pass) {
     if (depth === 0) {
         if(pass === 0) {
@@ -697,7 +727,6 @@ Othello.prototype.nega_max_search = function (user, enemy, depth, alpha, beta, p
 
 Othello.prototype.end = function () {
     this.message.text("黒(あなた) " + this.pop_count(this.board[0][0], this.board[0][1]) + ", 白(うし） " + this.pop_count(this.board[1][0], this.board[1][1]));
-};
-</script>
+};</script>
   </body>
 </html>
