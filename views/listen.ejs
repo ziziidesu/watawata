@@ -34,11 +34,11 @@
     <ul>
       <% info.related_videos.forEach(video => { %>
         <li>
-          <a href="/play/<%= video.id %>"><%= video.title %> - <%= video.author.name %></a>
+          <a href="/listen/<%= video.id %>"><%= video.title %> - <%= video.author.name %></a>
         </li>
       <% }) %>
     </ul>
-    <a href="" onclick="history.back()">戻る</a>
+    <a href="javascript:history.back()">戻る</a>
   </div>
 <style>
 .container {
