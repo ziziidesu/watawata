@@ -130,7 +130,8 @@ app.get('/listen/:id', async (req, res) => {
     if (audioFormats.length === 0) {
       return res.status(500).render('index', { error: 'No audio formats available' });
     }
-    res.render('listen', { audioUrl: audioFormats[0].url, info });
+    const languageCode = 'ja';
+    res.render('listen', { audioUrl: audioFormats[0].url, info , languageCode});
   } catch (error) {
     console.error(error);
     res.status(500).render('index', { error: 'Error fetching audio info' });
