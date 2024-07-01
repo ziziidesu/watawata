@@ -541,11 +541,11 @@ Othello.prototype.play_ai2 = function () {
     if(cnt >= 49) {
         const pos = this.nega_max_search2(this.board[this.user], this.board[1 ^ this.user], -114514, 114514, 0);
         if(pos[0] < 0) {
-            str = "黒が " + (32 - pos[0] / 2) + " 個とりそう... 負けた＞＜" + " (" + this.hand + "手読んだよ)";
+            str = "黒が " + (32 - pos[0] / 2) + " 個とりそう... 負けた＞＜";
         } else if(pos[0] == 0) {
-            str = "おーひきわけー"  + " (" + this.hand + "手読んだよ)";
+            str = "おーひきわけー";
         } else {
-            str = "白が " + (32 + pos[0] / 2) + " 個とりそう... かった!!"  + " (" + this.hand + "手読んだよ)";
+            str = "白が " + (32 + pos[0] / 2) + " 個とりそう... かった!!";
         }
 
         return [pos[1], str];
@@ -576,28 +576,28 @@ Othello.prototype.play_ai = function () {
     if(cnt >= 51) {
         const pos = this.nega_max_search2(this.board[this.user], this.board[1 ^ this.user], -114514, 114514, 0);
         if(pos[0] < 0) {
-            this.cpumessage.text("黒が " + (32 - pos[0] / 2) + " 個とりそう... 負けた＞＜" + " (" + this.hand + "手読んだよ)");
+            this.cpumessage.text("黒が " + (32 - pos[0] / 2) + " 個とりそう... 負けた＞＜";
         } else if(pos[0] == 0) {
-            this.cpumessage.text("おーひきわけー"  + " (" + this.hand + "手読んだよ)" );
+            this.cpumessage.text("おーひきわけー"  );
         } else {
-            this.cpumessage.text("白が " + (32 + pos[0] / 2) + " 個とりそう... かった!!"  + " (" + this.hand + "手読んだよ)" );
+            this.cpumessage.text("白が " + (32 + pos[0] / 2) + " 個とりそう... かった!!"  );
         }
         this.touch(pos[1] % 8, pos[1] / 8 | 0);
     } else {
         const pos = this.nega_max_search(this.board[this.user], this.board[1 ^ this.user], 8, -114514, 114514, 0);
 
         if(pos[0] >= 100) {
-            this.cpumessage.text("かったぜ"   + " (" + this.hand + "手読んだよ)" );
+            this.cpumessage.text("かったぜ");
         } else if(pos[0] >= 50) {
-            this.cpumessage.text("勝てそうかな??"   + " (" + this.hand + "手読んだよ)" );
+            this.cpumessage.text("勝てそうかな??" );
         } else if(pos[0] >= -10) {
-            if(cnt <= 15) this.cpumessage.text("まだ序盤だね"   + " (" + this.hand + "手読んだよ)" );
-            else if(cnt <= 30) this.cpumessage.text("中盤かな"   + " (" + this.hand + "手読んだよ)" );
-            else if(cnt <= 40) this.cpumessage.text("！？"   + " (" + this.hand + "手読んだよ)" );
+            if(cnt <= 15) this.cpumessage.text("まだ序盤だね"  );
+            else if(cnt <= 30) this.cpumessage.text("中盤かな" );
+            else if(cnt <= 40) this.cpumessage.text("！？" );
         } else if(pos[0] >= -50) {
-            this.cpumessage.text("!?"   + " (" + this.hand + "手読んだよ)" );
+            this.cpumessage.text("!?" );
         } else {
-            this.cpumessage.text("負けた＞＜"   + " (" + this.hand + "手読んだよ)" );
+            this.cpumessage.text("負けた＞＜" );
         }
 
         this.touch(pos[1] % 8, pos[1] / 8 | 0);
