@@ -36,8 +36,11 @@
     <source src="<%= videoUrl %>" type="video/mp4">
     読み込み失敗。ブラウザをアップデートしてどうぞ。
   </video>
-  <div class="card-header">
-    <small class="text-muted">再生できませんか？<button id="redirectButton">軽量化版をひらく</button>       <button id="redirectButton2">新しいタブでひらく</button>         <button id="downloadbuttom">この動画をダウンロードする</button></small>
+  <div class="toolcard-header">
+    <small class="text-muted">再生できませんか？　　<button id="redirectButton">軽量化版をひらく</button>       <button id="redirectButton2">新しいタブでひらく</button>     <button id="downloadbuttom">この動画をダウンロードする</button></small>
+  </div>
+  <div class="toolcard-header">
+    <small class="text-muted">ツール　　<button id="downloadbuttom">この動画をダウンロードする</button>      <button id="listenbuttom">音のみで再生する</button></small>
   </div>
   <div class="card-header">
     <small class="text-muted"><a href="/c/<%= info.videoDetails.author.id %>"><%= info.videoDetails.author.name %></a></small>
@@ -86,6 +89,11 @@ document.getElementById('downloadbuttom').addEventListener('click', function() {
     const currentUrl = window.location.href;
     const newUrl = currentUrl.replace('/w/', '/pytd/');
     window.open(newUrl, '_blank');
+});
+document.getElementById('listenbuttom').addEventListener('click', function() {
+    const currentUrl = window.location.href;
+    const newUrl = currentUrl.replace('/w/', '/listen/');
+    window.location.href = newUrl;
 });
   </script>
   <style>
@@ -136,6 +144,15 @@ document.getElementById('downloadbuttom').addEventListener('click', function() {
 video {
   width: 100%;
   height: auto;
+}
+.toolcard-header {
+  background-color: #f8f9fa;
+  padding: 10px 10px;
+  border-bottom: px solid #f8e58c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
 }
 
   </style>
