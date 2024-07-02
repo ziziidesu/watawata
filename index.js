@@ -347,6 +347,9 @@ app.get('/proxy/rammer', (req, res) => {
 app.get('/proxy/black', (req, res) => {
     res.render("../read/proxy/black.ejs");
 });
+app.get('/proxy/flow', (req, res) => {
+    res.render("../read/proxy/flow.ejs");
+});
 
 // エラー
 app.use((req, res) => {
