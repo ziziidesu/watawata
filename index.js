@@ -263,6 +263,12 @@ app.get("/tst1234",(req, res) => {
   res.render("../tst.ejs")
 })
 
+//url
+//tst
+app.get("/urls",(req, res) => {
+  res.render("../views/url.ejs")
+})
+
 //blog
 app.get("/blog",(req, res) => {
   res.render("../views/blog.ejs")
