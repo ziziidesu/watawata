@@ -6,7 +6,6 @@ const miniget = require("miniget");
 const express = require("express");
 const ejs = require("ejs");
 const app = express();
-const { exec } = require('child_process');
 
 const limit = process.env.LIMIT || 50;
 
