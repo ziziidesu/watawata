@@ -220,20 +220,6 @@ app.get("/pytd/:id", async (req, res) => {
   }
 });
 
-//inv
-app.get('/hinv/:id', (req, res) => {
-  const { exec } = require('child_process');
-  const videoId = req.params.id;
-  exec(`python3 main.py ${videoId}`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`exec error: ${error}`);
-      return res.status(500).send('Server error');
-    }
-    const audioUrl = stdout.trim();
-    res.json({ audio_url: audioUrl });
-  });
-});
-
 // i.ytimg.com
 app.get("/vi*", (req, res) => {
 	let stream = miniget(`https://i.ytimg.com/${req.url.split("?")[0]}`, {
