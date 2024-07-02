@@ -5,8 +5,6 @@
     <title>ふりかけ</title>
     <link rel="stylesheet" href="/css/font.css">
     <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-　  <script src="/js/bootstrap.min.js"></script>
 </head>
 <body>
   <header>
@@ -20,10 +18,11 @@
       <button class="btn btn-link" style="position: absolute; right: 10px;" onclick="window.location.href='/send'">問い合わせ</button>
     </div>
   </header>
-    <h1>Enter YouTube URL</h1>
+  <br><br>
+    <h1>YouTubeのURLを入力</h1>
     <form id="urlForm2">
         <input type="text" id="youtubeUrl" placeholder="Enter YouTube URL" required>
-        <button type="submit">Go</button>
+        <button type="submit">再生！</button>
     </form>
     <script>
         document.getElementById('urlForm2').addEventListener('submit', function(event) {
