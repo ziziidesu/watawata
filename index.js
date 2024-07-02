@@ -9,19 +9,18 @@ const app = express();
 
 const limit = process.env.LIMIT || 50;
 
-// User Agent
 const user_agent = process.env.USER_AGENT || "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36";
 
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
-// Home page 
+// ホーム
 app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/views/index.html");
 });
 
-// Search page
+// サーチ
 app.get("/s", async (req, res) => {
 	let query = req.query.q;
 	let page = Number(req.query.p || 1);
@@ -97,7 +96,7 @@ app.get("/p/:id", async (req, res) => {
 	}
 });
 
-// Channel page
+// チャンネル
 app.get("/c/:id", async (req, res) => {
 	if (!req.params.id) return res.redirect("/");
 	let page = Number(req.query.p || 1);
