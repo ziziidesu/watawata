@@ -221,9 +221,9 @@ app.get("/pytd/:id", async (req, res) => {
 });
 
 //inv
-app.get('/hinv', (req, res) => {
-  const videoId = req.query.id;
-  res.render('w', { id: videoId });
+app.get('/hinv/:id', (req, res) => {
+  const videoId = req.params.id;
+  res.render('hinv.ejs', { id: videoId });
 });
 
 // i.ytimg.com
