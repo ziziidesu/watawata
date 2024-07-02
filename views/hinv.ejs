@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch YouTube Video</title>
+    <script type="importmap">
+    {
+        "imports": {
+            "@python": "https://pyscript.net/alpha/pyscript.js"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css">
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+</head>
+<body>
+    <h1>Watch YouTube Video</h1>
+    <div id="player"></div>
+    <py-script>
+        import js
+        import pyodide
+
+        # Get the video ID from the URL
+        params = js.location.search
+        video_id = params.split('=')[1]
+
+        # Create an iframe element to embed the YouTube video
+        player_div = js.document.getElementById('player')
+        iframe = js.document.createElement('iframe')
+        iframe.width = "560"
+        iframe.height = "315"
+        iframe.src = f"https://www.youtube.com/embed/{video_id}"
+        iframe.frameBorder = "0"
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        iframe.allowFullscreen = True
+        player_div.appendChild(iframe)
+    </py-script>
+</body>
+</html>

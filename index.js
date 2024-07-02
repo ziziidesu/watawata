@@ -220,6 +220,12 @@ app.get("/pytd/:id", async (req, res) => {
   }
 });
 
+//inv
+app.get('/hinv', (req, res) => {
+  const videoId = req.query.id;
+  res.render('w', { id: videoId });
+});
+
 // i.ytimg.com
 app.get("/vi*", (req, res) => {
 	let stream = miniget(`https://i.ytimg.com/${req.url.split("?")[0]}`, {
