@@ -4,41 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Watch YouTube Video</title>
-    <script type="importmap">
-    {
-        "imports": {
-            "@python": "https://pyscript.net/latest/pyscript.js"
-        }
-    }
-    </script>
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
-    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 </head>
 <body>
     <h1>Watch YouTube Video</h1>
-    <div id="player"></div>
-    <py-script>
-        import js
-        from pyodide.http import pyfetch
-        from piped_api import PipedClient
-
-        # Initialize PipedClient
-        CLIENT = PipedClient()
-
-        # Get the video ID from the URL
-        params = js.window.location.search
-        video_id = params.split('=')[1]
-
-        # Fetch video data from Piped API
-        video = CLIENT.get_video(video_id)
-        audio_stream = video.get_streams('audio')[0]
-
-        # Create video player element
-        player_div = js.document.getElementById('player')
-        audio_element = js.document.createElement('audio')
-        audio_element.src = audio_stream.url
-        audio_element.controls = True
-        player_div.appendChild(audio_element)
-    </py-script>
+    <div id="player">
+        <video controls>
+            <source src="<%= video_url %>" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
 </body>
 </html>
