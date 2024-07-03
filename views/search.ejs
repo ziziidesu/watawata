@@ -83,6 +83,15 @@
       color: #ff8181;
     }
   </style>
+    <script>
+        function loadUdonContent() {
+            const wakames = localStorage.getItem('wakames') === 'true';
+            const message = wakames ? "https://img.youtube.com/vi/<%= video.id %>/maxresdefault.jpg" : "わかめぇえええ";
+            document.getElementById('udon-message').innerText = message;
+        }
+
+        window.onload = loadUdonContent;
+    </script>
 </body>
 
 </html>
