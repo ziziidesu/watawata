@@ -35,6 +35,7 @@
   <div class="results">
     <% res.items.forEach(video => { %>
       <% if (video.type === 'video') { %>
+        <div id="wakameyes" class="hidden">
         <div class="result-item">
           <a href="/w/<%= video.id %>">
             <img src="<%= video.bestThumbnail.url.slice(19) %>" alt="<%= video.title %>">
@@ -43,7 +44,17 @@
           <p class="video-title"><%= video.title %></p>
           <p class="video-description"><%= video.description %></p>
           <p class="video-meta"><%= video.uploadedAt %> - <%= video.duration %></p>
-        </div>
+          </div></div>
+          <div id="wakameno">
+        <div class="result-item">
+          <a href="/w/<%= video.id %>">
+            <img src="<%= video.bestThumbnail.url.slice(19) %>" alt="<%= video.title %>">
+          </a>
+          <p class="channel-name"><a href="/c/<%= video.author.channelID %>"><%= video.author.name %></a></p>
+          <p class="video-title"><%= video.title %></p>
+          <p class="video-description"><%= video.description %></p>
+          <p class="video-meta"><%= video.uploadedAt %> - <%= video.duration %></p>
+            </div></div>
       <% } else if (video.type === 'playlist') { %>
         <div class="playresult-item">
           <a href="/p/<%= video.playlistID %>">
@@ -82,12 +93,23 @@
     a {
       color: #ff8181;
     }
+    .hidden {
+       display: none;
+    }
   </style>
     <script>
         function loadUdonContent() {
             const wakames = localStorage.getItem('wakames') === 'true';
-            const message = wakames ? "https://img.youtube.com/vi/<%= video.id %>/maxresdefault.jpg" : "わかめぇえええ";
-            document.getElementById('udon-message').innerText = message;
+            const wakameYesElement = document.getElementById('wakameyes');
+            const wakameNoElement = document.getElementById('wakameno');
+
+            if (wakames) {
+                wakameYesElement.classList.remove('hidden');
+                wakameNoElement.classList.add('hidden');
+            } else {
+                wakameYesElement.classList.add('hidden');
+                wakameNoElement.classList.remove('hidden');
+            }
         }
 
         window.onload = loadUdonContent;
