@@ -331,6 +331,11 @@ app.get("/proxy/",(req, res) => {
   res.render("../read/proxy.ejs")
 })
 
+//setting
+app.get("/setting",(req, res) => {
+  res.render("../views/setting.ejs")
+})
+
 app.get('/proxy/shadow', (req, res) => {
     res.render("../read/proxy/shadow.ejs");
 });
