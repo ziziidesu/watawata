@@ -25,7 +25,27 @@ app.get("/s", async (req, res) => {
 	let query = req.query.q;
 	let page = Number(req.query.p || 1);
 	if (!query) return res.redirect("/");
-	try {
+  let wakames = req.query.wakames === 'true';
+    if (wakames) {
+        try {
+		res.render("search2.ejs", {
+			res: await ytsr(query, { limit, pages: page }),
+			query: query,
+			page
+		});
+	} catch (error) {
+		console.error(error);
+		try {
+			res.status(500).render("error.ejs", {
+				title: "ytsr Error",
+				content: error
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	}
+    } else {
+        try {
 		res.render("search.ejs", {
 			res: await ytsr(query, { limit, pages: page }),
 			query: query,
@@ -42,6 +62,7 @@ app.get("/s", async (req, res) => {
 			console.error(error);
 		}
 	}
+    }
 });
 
 app.get("/w/:id", async (req, res) => {
