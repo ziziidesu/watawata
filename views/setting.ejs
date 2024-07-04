@@ -21,10 +21,104 @@
       <button class="btn btn-link" style="position: absolute; right: 10px;" onclick="window.location.href='/send'">問い合わせ</button>
     </div>
   </header>
-    <form action="/setting" method="post">
-        <label for="wakames">Wakames設定:</label>
-        <input type="checkbox" id="wakames" name="wakames" <%= wakames ? 'checked' : '' %>>
-        <button type="submit">設定を保存</button>
-    </form>
+  <h1>
+    設定
+  </h1>
+    <div class="container">
+        <h1>Sモード</h1>
+        <p class="description">検索時のサムネ画像取得速度をアップします。ただし、一部地域ではサムネ画像を読み込めなくなります。</p>
+        <form action="/setting" method="post">
+            <div class="switch">
+                <input type="checkbox" id="wakames" name="wakames" <%= wakames ? 'checked' : '' %>>
+                <label for="wakames" class="slider"></label>
+            </div>
+            <button type="submit" class="save-button">設定を保存</button>
+        </form>
+    </div>
+<style>
+.container {
+    background-color: #fff;
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.description {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-bottom: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #66bb6a;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.save-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.save-button:hover {
+    background-color: #45a049;
+}
+
+  </style>
 </body>
 </html>
