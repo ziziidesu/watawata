@@ -66,6 +66,28 @@ app.get("/s", async (req, res) => {
     }
 });
 
+//tst
+app.get('/tst/:id', async (req, res) => {
+  let videoId = req.params.id;
+  let videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+  try {
+    let info = await ytdl.getInfo(videoUrl);
+    
+    // 動画の品質を選択
+    const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio')
+      .filter(format => format.hasVideo && format.hasAudio)
+      .sort((a, b) => b.qualityLabel - a.qualityLabel); // 品質の高い順にソート
+    
+    // 最高品質の動画フォーマットを取得
+    const highestQuality = videoFormats[0];
+
+    res.render('watchtst.ejs', { videoUrl: highestQuality.url, info });
+  } catch (err) {
+    console.error('Error fetching video info:', err);
+    res.status(500).send('Error fetching video info');
+  }
+});
+
 app.get("/w/:id", async (req, res) => {
   let videoId = req.params.id;
   let url = `https://www.youtube.com/watch?v=${videoId}`;
