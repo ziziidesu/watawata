@@ -25,7 +25,9 @@ app.get("/s", async (req, res) => {
 	let query = req.query.q;
 	let page = Number(req.query.p || 1);
 	if (!query) return res.redirect("/");
-    if (wakamesSetting) {
+    let cookies = parseCookies(req);
+    let wakames = cookies.wakames === 'true';
+    if (wakames) {
         try {
 		res.render("search2.ejs", {
 			res: await ytsr(query, { limit, pages: page }),
@@ -357,14 +359,29 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-let wakamesSetting = false;
+function parseCookies(request) {
+    const list = {};
+    const cookieHeader = request.headers.cookie;
+
+    if (cookieHeader) {
+        cookieHeader.split(';').forEach(cookie => {
+            let parts = cookie.split('=');
+            list[parts.shift().trim()] = decodeURI(parts.join('='));
+        });
+    }
+
+    return list;
+}
 
 app.get('/setting', (req, res) => {
-    res.render('setting', { wakames: wakamesSetting });
+    const cookies = parseCookies(req);
+    const wakames = cookies.wakames === 'true';
+    res.render('setting', { wakames });
 });
 
 app.post('/setting', (req, res) => {
-    wakamesSetting = req.body.wakames === 'on';
+    const wakames = req.body.wakames === 'on';
+    res.setHeader('Set-Cookie', `wakames=${wakames}; HttpOnly; Max-Age=900`);
     res.redirect('/setting');
 });
 
