@@ -25,7 +25,8 @@ app.get("/s", async (req, res) => {
 	let query = req.query.q;
 	let page = Number(req.query.p || 1);
 	if (!query) return res.redirect("/");
-    if (wakamesSetting) {
+    let wakames = req.cookies.wakames === 'true';
+    if (wakames) {
         try {
 		res.render("search2.ejs", {
 			res: await ytsr(query, { limit, pages: page }),
@@ -357,14 +358,14 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-let wakamesSetting = false;
-
 app.get('/setting', (req, res) => {
-    res.render('setting', { wakames: wakamesSetting });
+    const wakames = req.cookies.wakames === 'true';
+    res.render('setting', { wakames });
 });
 
 app.post('/setting', (req, res) => {
-    wakamesSetting = req.body.wakames === 'on';
+    const wakames = req.body.wakames === 'on';
+    res.cookie('wakames', wakames, { maxAge: 900000, httpOnly: true });
     res.redirect('/setting');
 });
 
