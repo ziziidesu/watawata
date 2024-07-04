@@ -25,8 +25,7 @@ app.get("/s", async (req, res) => {
 	let query = req.query.q;
 	let page = Number(req.query.p || 1);
 	if (!query) return res.redirect("/");
-  let wakames = req.query.wakames === 'true';
-    if (wakames) {
+    if (wakamesSetting) {
         try {
 		res.render("search2.ejs", {
 			res: await ytsr(query, { limit, pages: page }),
@@ -45,7 +44,7 @@ app.get("/s", async (req, res) => {
 		}
 	}
     } else {
-        try {
+       try {
 		res.render("search.ejs", {
 			res: await ytsr(query, { limit, pages: page }),
 			query: query,
@@ -353,10 +352,23 @@ app.get("/proxy/",(req, res) => {
 })
 
 //setting
-app.get("/setting",(req, res) => {
-  res.render("../views/setting.ejs")
-})
+const bodyParser = require('body-parser');
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
+
+let wakamesSetting = false;
+
+app.get('/setting', (req, res) => {
+    res.render('setting', { wakames: wakamesSetting });
+});
+
+app.post('/setting', (req, res) => {
+    wakamesSetting = req.body.wakames === 'on';
+    res.redirect('/setting');
+});
+
+//proxy
 app.get('/proxy/shadow', (req, res) => {
     res.render("../read/proxy/shadow.ejs");
 });

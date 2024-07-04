@@ -4,20 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>設定</title>
-    <script>
-        function loadSettings() {
-            const wakames = localStorage.getItem('wakames') === 'true';
-            document.getElementById('wakames').checked = wakames;
-        }
-
-        function saveSettings() {
-            const wakames = document.getElementById('wakames').checked;
-            localStorage.setItem('wakames', wakames);
-            alert('設定が保存されました');
-        }
-
-        window.onload = loadSettings;
-    </script>
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/font.css">
   <link rel="stylesheet" href="/css/styles.css">
@@ -35,10 +21,10 @@
       <button class="btn btn-link" style="position: absolute; right: 10px;" onclick="window.location.href='/send'">問い合わせ</button>
     </div>
   </header>
-    <form onsubmit="saveSettings(); return false;">
-        <label for="wakames">わかめを食べるか？</label>
-        <input type="checkbox" id="wakames">
-        <button type="submit">保存</button>
+    <form action="/setting" method="post">
+        <label for="wakames">Wakames設定:</label>
+        <input type="checkbox" id="wakames" name="wakames" <%= wakames ? 'checked' : '' %>>
+        <button type="submit">設定を保存</button>
     </form>
 </body>
 </html>
