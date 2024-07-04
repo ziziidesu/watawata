@@ -263,7 +263,7 @@ app.get("/pytd/:id", async (req, res) => {
   }
 });
 
-// i.ytimg.com
+// サムネ読み込み
 app.get("/vi*", (req, res) => {
 	let stream = miniget(`https://i.ytimg.com/${req.url.split("?")[0]}`, {
 		headers: {
@@ -277,7 +277,7 @@ app.get("/vi*", (req, res) => {
 	stream.pipe(res);
 });
 
-// yt3.ggpht.com
+// 画像読み込み
 app.get("/ytc/*", (req, res) => {
 	let stream = miniget(`https://yt3.ggpht.com/${req.url}`, {
 		headers: {
