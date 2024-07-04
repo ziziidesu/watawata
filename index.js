@@ -381,7 +381,7 @@ app.get('/setting', (req, res) => {
 
 app.post('/setting', (req, res) => {
     const wakames = req.body.wakames === 'on';
-    res.setHeader('Set-Cookie', `wakames=${wakames}; HttpOnly; Max-Age=900`);
+    res.setHeader('Set-Cookie', `wakames=${wakames}; HttpOnly; Max-Age=604800`);
     res.redirect('/setting');
 });
 
