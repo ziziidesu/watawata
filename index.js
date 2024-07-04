@@ -15,6 +15,11 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
+//tst3
+app.get("/tst3",(req, res) => {
+  res.render("../views/tst3.ejs")
+})
+
 // ホーム
 app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/views/index.html");
