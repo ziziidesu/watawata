@@ -20,6 +20,11 @@ app.get("/tst3",(req, res) => {
   res.render("../views/tst3.ejs")
 })
 
+//twitter
+app.get("/xtwi",(req, res) => {
+  res.render("../views/twitter.ejs")
+})
+
 // ホーム
 app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/views/index.html");
