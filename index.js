@@ -28,6 +28,11 @@ app.get("/xtwi",(req, res) => {
 // ホーム
 app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/views/index.html");
+    const referer = req.get('Referer') || 'No referer information';
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    
+    // コンソールに Referer と IP アドレスを書き込む
+    console.log(`URL: ${referer} から来た, IP: ${ip}`);
 });
 
 // サーチ
