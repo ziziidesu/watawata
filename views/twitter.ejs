@@ -3,86 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twitter ID Search</title>
+    <title>Redirect Form</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/font.css">
+  <link rel="stylesheet" href="/css/plyr.css">
+  <link rel="stylesheet" href="/css/styles.css">
+    <style>
+    <style>
+        #searchForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+            max-width: 400px;
+        }
+        #searchInput {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Twitter ID Search</h1>
-        <form id="search-form">
-            <input type="text" id="twitter-id" placeholder="Enter Twitter ID" required>
-            <button type="submit">確定</button>
-        </form>
+  <header>
+    <div class="banner">
+      <button class="btn btn-link" onclick="window.location.href='/'">ホーム🏠</button>
+      <button class="btn btn-link" onclick="window.location.href='/setting'">設定⚙️</button>
+      <button class="btn btn-link" onclick="window.location.href='/blog'">お知らせ📝</button>
+      <button class="btn btn-link" onclick="window.location.href='/send'">問い合わせ✉️</button>
+      <form class="d-flex" action="/s">
+        <input type="text" name="q" class="form-control" placeholder="キーワードを入力..." required>
+      </form>
     </div>
-    <div id="popup" class="popup">
-        <span class="close">&times;</span>
-        <iframe id="iframe" src="" frameborder="0"></iframe>
-    </div>
-<style>
- body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
-}
+  </header>
+    <form id="searchForm">
+        <input type="text" id="searchInput" placeholder="ほにゃらら" required>
+        <button type="submit">Search</button>
+    </form>
 
-.container {
-    text-align: center;
-}
-
-input {
-    padding: 10px;
-    font-size: 16px;
-    margin-right: 10px;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 80%;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    z-index: 1000;
-}
-
-.popup .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    cursor: pointer;
-}
-
-iframe {
-    width: 100%;
-    height: 100%;
-}
- </style>
-<script>
-  document.getElementById('search-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const twitterId = document.getElementById('twitter-id').value;
-    const url = `https://xcancel.com/${twitterId}`;
-    document.getElementById('iframe').src = url;
-    document.getElementById('popup').style.display = 'block';
-});
-
-document.querySelector('.close').addEventListener('click', function() {
-    document.getElementById('popup').style.display = 'none';
-});
-</script>
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const query = document.getElementById('searchInput').value;
+            if (query) {
+                window.location.href = `https://xcancel.com/search?f=users&q=${encodeURIComponent(query)}`;
+            }
+        });
+    </script>
 </body>
 </html>
