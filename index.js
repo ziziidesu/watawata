@@ -96,12 +96,12 @@ app.get('/tst/:id', async (req, res) => {
     // 最高品質の動画フォーマットを取得
     const highestQuality = videoFormats[0];
 
-    res.render('watchtst.ejs', { videoUrl: highestQuality.url, info });
-  } catch (err) {
-    console.error('Error fetching video info:', err);
-    res.status(500).send('Error fetching video info');
-  }
-});
+		if (info.videoDetails.isLiveContent && info.formats[0].type == "video/ts") {
+			return m3u8stream(info.formats[0].url).on('error', (err) => {
+				res.status(500).send(err.toString());
+				console.error(err);
+		}).pipe(res);
+}
 
 app.get("/w/:id", async (req, res) => {
   let videoId = req.params.id;
