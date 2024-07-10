@@ -85,23 +85,7 @@ app.get("/s", async (req, res) => {
 app.get('/tst/:id', async (req, res) => {
   let videoId = req.params.id;
   let videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-  try {
-    let info = await ytdl.getInfo(videoUrl);
-    
-    // 動画の品質を選択
-    const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio')
-      .filter(format => format.hasVideo && format.hasAudio)
-      .sort((a, b) => b.qualityLabel - a.qualityLabel); // 品質の高い順にソート
-    
-    // 最高品質の動画フォーマットを取得
-    const highestQuality = videoFormats[0];
-
-		if (info.videoDetails.isLiveContent && info.formats[0].type == "video/ts") {
-			return m3u8stream(info.formats[0].url).on('error', (err) => {
-				res.status(500).send(err.toString());
-				console.error(err);
-		}).pipe(res);
-}
+});
 
 app.get("/w/:id", async (req, res) => {
   let videoId = req.params.id;
