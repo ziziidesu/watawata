@@ -82,7 +82,20 @@ app.get("/s", async (req, res) => {
 });
 
 //tst
-app.get('/tst/:id', async (req, res) => {
+app.get('/tst', async (req, res) => {
+const ytstream = require('yt-stream');
+
+(async () => {
+    const info = await ytstream.getInfo(`https://www.youtube.com/watch?v=dQw4w9WgXcQ`);
+
+    console.log(info.url); // Output: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+    console.log(info.id); // Output: dQw4w9WgXcQ
+    console.log(info.author); // Output: Rick Astley
+    console.log(info.title); // Output: Rick Astley - Never Gonna Give You Up (Official Music Video)
+    console.log(info.uploaded); // Output: 2009-10-24
+    console.log(info.description); // Output: 'The official video for “Never Gonna Give You Up”...'
+    console.log(info.duration); // Output: 212000
+})();
 });
 
 app.get("/w/:id", async (req, res) => {
