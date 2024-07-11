@@ -6,7 +6,6 @@ const miniget = require("miniget");
 const express = require("express");
 const ejs = require("ejs");
 const app = express();
-const ytdlp = require('yt-dlp');
 
 const limit = process.env.LIMIT || 50;
 
@@ -84,21 +83,6 @@ app.get("/s", async (req, res) => {
 
 //tst
 app.get('/tst/:id', async (req, res) => {
-  let videoId = req.params.id;
-  let url = `https://www.youtube.com/watch?v=${videoId}`;
-
-  if (!ytdl.validateURL(url)) {
-    return res.status(400).render('index', { error: 'Invalid YouTube URL' });
-  }
-
-  try {
-    let info = await ytdlp.getInfo(url);
-    const videoFormats = ytdlp.filterFormats(info.formats, 'videoandaudio');
-    res.render('watch.ejs', {videoUrl: videoFormats[0].url, info});
-  } catch (error) {
-    console.error(error);
-    res.status(500).render('index', { error: 'Error fetching video info' });
-  }
 });
 
 app.get("/w/:id", async (req, res) => {
