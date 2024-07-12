@@ -1,10 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>YouTube Video Player</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Player</title>
 </head>
 <body>
-  <h1>YouTube Video Player</h1>
-  <a href="/">Back to Home</a>
+  <video id="video-player" controls playsinline crossorigin="anonymous"></video>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const playerConfig = {
+        schema: "https://vidstack.io/player/schema",
+        player: {
+          src: "https://www.youtube.com/watch?v=f6TytcA47rI",
+          viewType: "video",
+          streamType: "on-demand",
+          logLevel: "warn",
+          crossOrigin: true,
+          playsInline: true,
+          title: "kuuninaru",
+          poster: "",
+          layout: {
+            type: "default"
+          },
+          thumbnails: "https://files.vidstack.io/sprite-fight/thumbnails.vtt",
+          dash: {},
+          events: [
+            "can-play"
+          ]
+        }
+      };
+
+      const videoPlayer = document.getElementById('video-player');
+      videoPlayer.src = playerConfig.player.src;
+      videoPlayer.setAttribute('crossorigin', playerConfig.player.crossOrigin ? 'anonymous' : 'use-credentials');
+      videoPlayer.setAttribute('playsinline', playerConfig.player.playsInline);
+
+      if (playerConfig.player.poster) {
+        videoPlayer.poster = playerConfig.player.poster;
+      }
+
+      // Handle events
+      videoPlayer.addEventListener('canplay', function() {
+        console.log('Video can play');
+      });
+    });
+  </script>
 </body>
 </html>

@@ -17,7 +17,25 @@ app.use(express.static(__dirname + "/public"));
 
 //tst3
 app.get("/tst3",(req, res) => {
-  res.render("../views/tst3.ejs")
+
+});
+
+app.get("/w/:id", async (req, res) => {
+  let videoId = req.params.id;
+  let url = `https://www.youtube.com/watch?v=${videoId}`;
+
+  if (!ytdl.validateURL(url)) {
+    return res.status(400).render('index', { error: 'Invalid YouTube URL' });
+  }
+
+  try {
+    let info = await ytdl.getInfo(url);
+    const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
+    res.render('watch.ejs', {videoUrl: videoFormats[0].url, info});
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('index', { error: 'Error fetching video info' });
+  }
 })
 
 //twitter
@@ -79,29 +97,6 @@ app.get("/s", async (req, res) => {
 		}
 	}
     }
-});
-
-//tst
-app.get('/tst', async (req, res) => {
-  
-});
-
-app.get("/w/:id", async (req, res) => {
-  let videoId = req.params.id;
-  let url = `https://www.youtube.com/watch?v=${videoId}`;
-
-  if (!ytdl.validateURL(url)) {
-    return res.status(400).render('index', { error: 'Invalid YouTube URL' });
-  }
-
-  try {
-    let info = await ytdl.getInfo(url);
-    const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
-    res.render('watch.ejs', {videoUrl: videoFormats[0].url, info});
-  } catch (error) {
-    console.error(error);
-    res.status(500).render('index', { error: 'Error fetching video info' });
-  }
 });
 
 app.get("/e/:id", async (req, res) => {
