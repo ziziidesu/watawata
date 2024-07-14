@@ -17,27 +17,6 @@ app.use(express.static(__dirname + "/public"));
 
 //tst3
 app.get('/tst3', async (req, res) => {
-const axios = require('axios');
-    try {
-        const videoUrl = 'https://www.youtube.com/watch?v=f6TytcA47rI';
-        const invidiousInstance = 'https://invidious.snopyta.org';
-
-        // Fetch video information from Invidious
-        const response = await axios.get(`${invidiousInstance}/api/v1/videos/${videoUrl}`);
-        const videoData = response.data;
-
-        if (videoData.error) {
-            res.status(500).send('Error fetching video data');
-            return;
-        }
-
-        const videoSrc = videoData.formatStreams[0].url;
-
-        res.render('views/tst3.ejs', { videoSrc });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error processing your request');
-    }
 });
 
 app.get("/w/:id", async (req, res) => {
