@@ -16,8 +16,26 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
 //tst3
-app.get("/tst3",(req, res) => {
-
+app.get('/tst3', async (req, res) => {
+const axios = require('axios');
+const cheerio = require('cheerio');
+const videoPageUrl = 'https://banana-is-god.onrender.com/watch?v=f6TytcA47rI';
+    try {
+        const response = await axios.get(videoPageUrl);
+        const html = response.data;
+        const $ = cheerio.load(html);
+        
+        // Adjust this selector based on the actual structure of the target page
+        const videoUrl = $('video').attr('src');
+        
+        if (videoUrl) {
+            res.render('views/tst3.ejs', { videoUrl });
+        } else {
+            res.status(404).send('Video URL not found');
+        }
+    } catch (error) {
+        res.status(500).send('An error occurred while fetching the video URL');
+    }
 });
 
 app.get("/w/:id", async (req, res) => {
