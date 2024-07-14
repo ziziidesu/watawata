@@ -18,23 +18,25 @@ app.use(express.static(__dirname + "/public"));
 //tst3
 app.get('/tst3', async (req, res) => {
 const axios = require('axios');
-const cheerio = require('cheerio');
-const videoPageUrl = 'https://banana-is-god.onrender.com/watch?v=f6TytcA47rI';
     try {
-        const response = await axios.get(videoPageUrl);
-        const html = response.data;
-        const $ = cheerio.load(html);
-        
-        // Adjust this selector based on the actual structure of the target page
-        const videoUrl = $('video').attr('src');
-        
-        if (videoUrl) {
-            res.render('views/tst3.ejs', { videoUrl });
-        } else {
-            res.status(404).send('Video URL not found');
+        const videoUrl = 'https://www.youtube.com/watch?v=f6TytcA47rI';
+        const invidiousInstance = 'https://invidious.snopyta.org';
+
+        // Fetch video information from Invidious
+        const response = await axios.get(`${invidiousInstance}/api/v1/videos/${videoUrl.split('v=')[1]}`);
+        const videoData = response.data;
+
+        if (videoData.error) {
+            res.status(500).send('Error fetching video data');
+            return;
         }
+
+        const videoSrc = videoData.formatStreams[0].url;
+
+        res.render('video', { videoSrc });
     } catch (error) {
-        res.status(500).send('An error occurred while fetching the video URL');
+        console.error(error);
+        res.status(500).send('Error processing your request');
     }
 });
 
