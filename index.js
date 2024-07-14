@@ -23,7 +23,7 @@ const axios = require('axios');
         const invidiousInstance = 'https://invidious.snopyta.org';
 
         // Fetch video information from Invidious
-        const response = await axios.get(`${invidiousInstance}/api/v1/videos/${videoUrl.split('v=')[1]}`);
+        const response = await axios.get(`${invidiousInstance}/api/v1/videos/${videoUrl}`);
         const videoData = response.data;
 
         if (videoData.error) {
@@ -33,7 +33,7 @@ const axios = require('axios');
 
         const videoSrc = videoData.formatStreams[0].url;
 
-        res.render('video', { videoSrc });
+        res.render('views/tst3.ejs', { videoSrc });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error processing your request');
