@@ -30,16 +30,13 @@
     <button class="btn btn-link" style="position: absolute; right: 10px;" onclick="window.location.href='/send'">問い合わせ</button>
  </div>
 </header>
-  <p>
-    <%= streamd_url %>
-  </p>
 <div class="card">
   <video controls autoplay>
-    <source src="<%= streamd_url %>" type="video/mp4">
+    <source src="<%= stream_url %>" type="video/mp4">
     読み込み失敗。ブラウザをアップデートしてどうぞ。
   </video>
   <div class="toolcard-header">
-    <small class="text-muted">再生できませんか？　　<button id="redirectButton">軽量化版をひらく</button>       <button id="redirectButton2">新しいタブでひらく</button>     <button id="downloadbuttom">この動画をダウンロードする</button></small>
+    <small class="text-muted">再生できませんか？　　<button id="redirectButton">軽量化版をひらく</button>       <button id="redirectButton2">新しいタブでひらく</button>     <button id="livebuttom">ライブ配信をみる</button></small>
   </div>
   <div class="toolcard-header">
     <small class="text-muted">ツール　　<button id="downloadbuttom">この動画をダウンロードする</button>      <button id="listenbuttom">音のみで再生する</button></small>
@@ -99,6 +96,11 @@ document.getElementById('downloadbuttom').addEventListener('click', function() {
 document.getElementById('listenbuttom').addEventListener('click', function() {
     const currentUrl = window.location.href;
     const newUrl = currentUrl.replace('/w/', '/listen/');
+    window.location.href = newUrl;
+});
+document.getElementById('livebuttom').addEventListener('click', function() {
+    const currentUrl = window.location.href;
+    const newUrl = currentUrl.replace('/w/', '/live/');
     window.location.href = newUrl;
 });
   </script>
