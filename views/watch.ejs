@@ -32,7 +32,7 @@
 </header>
 <div class="card">
   <video controls autoplay>
-    <source src="<%= stream_url %>" type="video/mp4">
+    <source src="<%= streamd_url %>" type="video/mp4">
     読み込み失敗。ブラウザをアップデートしてどうぞ。
   </video>
   <div class="toolcard-header">
@@ -46,7 +46,7 @@
     <small class="text-muted float-right"><%= info.videoDetails.uploadDate %></small>
   </div>
   <div class="toolcard-header">
-  　<small class="text-muted"><a href="<%= videoUrl %>">共有</a>
+    <small class="text-muted"></small>
     <small class="text-muted float-right"><%= info.videoDetails.viewCount %>回再生</small>
   </div>
   <div class="card-body">
