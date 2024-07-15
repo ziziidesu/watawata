@@ -6,6 +6,7 @@ const miniget = require("miniget");
 const express = require("express");
 const ejs = require("ejs");
 const app = express();
+const axios = require('axios');
 
 const limit = process.env.LIMIT || 50;
 
@@ -20,38 +21,23 @@ app.get('/tst3', async (req, res) => {
 });
 
 app.get("/w/:id", async (req, res) => {
-  const axios = require('axios');
+  let videoId = req.params.id;
+  let url = `https://www.youtube.com/watch?v=${videoId}`;
+  const apiUrl = `https://wakameapi.glitch.me/api/w/${videoId}`;
+
+  if (!ytdl.validateURL(url)) {
+    return res.status(400).render('index', { error: 'Invalid YouTube URL' });
+  }
+  
+  const response = await axios.get(apiUrl);
+  const { streamd_url } = response.data;
   try {
-    const { id } = req.params;
-    const apiUrl = `https://wakameapi.glitch.me/api/w/${id}`;
-
-    // Make GET request to external API
-    const response = await axios.get(apiUrl);
-
-    // Extract stream_url from response
-    const { stream_url } = response.data;
-
-    // Render a simple HTML page with video player
-    res.send(`
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Video Player</title>
-      </head>
-      <body>
-        <h1>Video Player</h1>
-        <video controls autoplay>
-          <source src="${stream_url}" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </body>
-      </html>
-    `);
+    let info = await ytdl.getInfo(url);
+    const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
+    res.render('watch.ejs', { streamd_url , videoUrl: videoFormats[0].url, info});
   } catch (error) {
-    console.error('Error fetching video stream:', error);
-    res.status(500).send('Error fetching video stream');
+    console.error(error);
+    res.status(500).render('index', { error: 'Error fetching video info' });
   }
 })
 
