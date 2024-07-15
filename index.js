@@ -22,6 +22,34 @@ app.get('/tst3', async (req, res) => {
 app.get("/w/:id", async (req, res) => {
   let videoId = req.params.id;
   let url = `https://www.youtube.com/watch?v=${videoId}`;
+  const apiUrl = `https://wakameapi.glitch.me/api/w/${videoId}`;
+  
+  if (!ytdl.validateURL(url)) {
+    return res.status(400).render('index', { error: 'Invalid YouTube URL' });
+  }
+  
+   // Make GET request to external API using miniget
+  const response = await miniget(apiUrl).text();
+
+    // Parse JSON response
+  const data = JSON.parse(response);
+
+    // Extract stream_url from response
+    const { stream_url } = data;
+  
+  try {
+    let info = await ytdl.getInfo(url);
+    const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
+    res.render('watch.ejs', { stream_url } , {videoUrl: videoFormats[0].url, info});
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('index', { error: 'Error fetching video info' });
+  }
+})
+
+app.get("/live/:id", async (req, res) => {
+  let videoId = req.params.id;
+  let url = `https://www.youtube.com/watch?v=${videoId}`;
 
   if (!ytdl.validateURL(url)) {
     return res.status(400).render('index', { error: 'Invalid YouTube URL' });
@@ -30,7 +58,7 @@ app.get("/w/:id", async (req, res) => {
   try {
     let info = await ytdl.getInfo(url);
     const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
-    res.render('watch.ejs', {videoUrl: videoFormats[0].url, info});
+    res.render('live.ejs', {videoUrl: videoFormats[0].url, info});
   } catch (error) {
     console.error(error);
     res.status(500).render('index', { error: 'Error fetching video info' });
