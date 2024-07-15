@@ -30,15 +30,12 @@ app.get('/w/:id', async (req, res) => {
   }
 
   try {
-    // Make GET request to external API using axios
     const response = await axios.get(apiUrl);
     const { stream_url } = response.data;
 
-    // Get video info from YouTube
     let info = await ytdl.getInfo(url);
     const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
     
-    // Render watch.ejs with stream_url and video info
     res.render('watch', { stream_url, videoUrl: videoFormats[0].url, info });
   } catch (error) {
     console.error(error);
