@@ -23,7 +23,7 @@ app.get('/tst3', async (req, res) => {
 app.get('/w/:id', async (req, res) => {
   let videoId = req.params.id;
   let url = `https://www.youtube.com/watch?v=${videoId}`;
-  const apiUrl = `https://wakametubeapi.glitch.me`;
+  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
 
   if (!ytdl.validateURL(url)) {
     return res.status(400).render('index', { error: 'Invalid YouTube URL' });
@@ -316,6 +316,9 @@ app.get("/tool/calculator",(req, res) => {
 })
 app.get("/tool/android",(req, res) => {
   res.render("../tool/android.ejs")
+})
+app.get("/tool/check",(req, res) => {
+  res.render("../tool/check.ejs")
 })
 
 //tst
