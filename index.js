@@ -20,7 +20,7 @@ app.use(express.static(__dirname + "/public"));
 app.get('/tst3', async (req, res) => {
 });
 
-app.get("/w/:id", async (req, res) => {
+app.get('/w/:id', async (req, res) => {
   let videoId = req.params.id;
   let url = `https://www.youtube.com/watch?v=${videoId}`;
   const apiUrl = `https://wakameapi.glitch.me/api/w/${videoId}`;
@@ -28,18 +28,23 @@ app.get("/w/:id", async (req, res) => {
   if (!ytdl.validateURL(url)) {
     return res.status(400).render('index', { error: 'Invalid YouTube URL' });
   }
-  
-  const response = await axios.get(apiUrl);
-  const { streamd_url } = response.data;
+
   try {
+    // Make GET request to external API using axios
+    const response = await axios.get(apiUrl);
+    const { streamd_url } = response.data;
+
+    // Get video info from YouTube
     let info = await ytdl.getInfo(url);
     const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
-    res.render('watch.ejs', { streamd_url , videoUrl: videoFormats[0].url, info});
+    
+    // Render watch.ejs with stream_url and video info
+    res.render('watch', { streamd_url, videoUrl: videoFormats[0].url, info });
   } catch (error) {
     console.error(error);
     res.status(500).render('index', { error: 'Error fetching video info' });
   }
-})
+});
 
 app.get("/live/:id", async (req, res) => {
   let videoId = req.params.id;
