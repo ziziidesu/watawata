@@ -28,9 +28,9 @@ document.getElementById('livebuttom').addEventListener('click', function() {
     const newUrl = currentUrl.replace('/w/', '/live/');
     window.location.href = newUrl;
 });
-document.getElementById('downloadbuttom').addEventListener('click', function() {
-    const currentUrl = window.location.href;
-    const newUrl = currentUrl.replace('/w/', '/pytd/');
+document.getElementById('downloadbutton').addEventListener('click', function() {
+    let currentUrl = window.location.href;
+    let newUrl = currentUrl.replace('/w/', '/pytd/');
     window.location.href = newUrl;
 });
 </script>
@@ -55,7 +55,7 @@ document.getElementById('downloadbuttom').addEventListener('click', function() {
     <small class="text-muted">再生できませんか？　　  <button id="livebuttom">ライブ配信をみる(この動画がライブ配信の場合)</button></small>
   </div>
   <div class="toolcard-header">
-    <small class="text-muted">ツール　　<button id="downloadbuttom">この動画をダウンロードする</button>      <button id="listenbuttom">音のみで再生する(停止中)</button></small>
+    <small class="text-muted">ツール　　<button id="downloadbutton">この動画をダウンロードする</button>      <button id="listenbuttom">音のみで再生する(停止中)</button></small>
   </div>
   <div class="card-header">
     <small class="text-muted float-left"><a href="/c/<%= info.videoDetails.author.id %>"><%= info.videoDetails.author.name %></a></small>
