@@ -50,14 +50,18 @@ app.get('/w/:id', async (req, res) => {
   }
 });
 //ダウンロード
-app.get('/dd/:id', async (req, res) => {
+app.get('/pytd/:id', async (req, res) => {
   const videoId = req.params.id;
   const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
+  const URL = `https://www.youtube.com/watch?v=${videoId}`;
 
   try {
     // APIからストリームURLを取得
     const response = await axios.get(apiUrl);
     const streamUrl = response.data.stream_url;
+    const info = await ytdl.getInfo(URL);
+    const title = info.videoDetails.title;
+    const sanitizedTitle = title.replace(/[^a-zA-Z0-9一-龯ぁ-ゔァ-ヴーｱ-ﾝﾞﾟー]/g, ' ');
 
     // ストリームURLから動画をクライアントに送信
     https.get(streamUrl, (streamResponse) => {
@@ -67,7 +71,7 @@ app.get('/dd/:id', async (req, res) => {
       }
 
       // クライアントにファイルを送信するためのヘッダーを設定
-      res.setHeader('Content-Disposition', `attachment; filename="video_${videoId}.mp4"`);
+      res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(sanitizedTitle)}.mp4`);
       res.setHeader('Content-Type', 'video/mp4');
 
       // ストリームデータをクライアントに送信
@@ -298,7 +302,7 @@ app.get('/play/:id', async (req, res) => {
 });
 
 //ダウンロード(軽量化)
-app.get("/pytd/:id", async (req, res) => {
+app.get("/dd/:id", async (req, res) => {
   try {
     const videoID = req.params.id;
     const URL = `https://www.youtube.com/watch?v=${videoID}`;
