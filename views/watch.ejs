@@ -18,11 +18,6 @@
   <script src="/js/bootstrap.min.js"></script>
 </head>
 <script>
-document.getElementById('downloadbuttom').addEventListener('click', function() {
-    const currentUrl = window.location.href;
-    const newUrl = currentUrl.replace('/w/', '/pytd/');
-    window.open(newUrl, '_blank');
-});
 document.getElementById('listenbuttom').addEventListener('click', function() {
     const currentUrl = window.location.href;
     const newUrl = currentUrl.replace('/w/', '/listen/');
@@ -31,6 +26,11 @@ document.getElementById('listenbuttom').addEventListener('click', function() {
 document.getElementById('livebuttom').addEventListener('click', function() {
     const currentUrl = window.location.href;
     const newUrl = currentUrl.replace('/w/', '/live/');
+    window.location.href = newUrl;
+});
+document.getElementById('downloadbuttom').addEventListener('click', function() {
+    const currentUrl = window.location.href;
+    const newUrl = currentUrl.replace('/w/', '/pytd/');
     window.location.href = newUrl;
 });
 </script>
