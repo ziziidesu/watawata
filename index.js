@@ -19,11 +19,15 @@ app.use(express.static(__dirname + "/public"));
 //tst3
 app.get('/tst3', async (req, res) => {
 });
-
+//待って
+app.get("/tool",(req, res) => {
+  res.render("../tool/matte.ejs")
+})
+//観る
 app.get('/w/:id', async (req, res) => {
   let videoId = req.params.id;
   let url = `https://www.youtube.com/watch?v=${videoId}`;
-  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
+  const apiUrl = `https://wakametbeapi.glitch.me/api/w/${videoId}`;
 
   if (!ytdl.validateURL(url)) {
     return res.status(400).render('index', { error: 'Invalid YouTube URL' });
@@ -40,6 +44,7 @@ app.get('/w/:id', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).render('index', { error: 'Error fetching video info' });
+    res.redirect('/matte');
   }
 });
 
