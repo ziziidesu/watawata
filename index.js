@@ -7,6 +7,8 @@ const express = require("express");
 const ejs = require("ejs");
 const app = express();
 const axios = require('axios');
+const fs = require('fs');
+const { https } = require('follow-redirects');
 
 const limit = process.env.LIMIT || 50;
 
@@ -47,7 +49,37 @@ app.get('/w/:id', async (req, res) => {
     res.redirect('/matte');
   }
 });
+//ダウンロード
+app.get('/dd/:id', async (req, res) => {
+  const videoId = req.params.id;
+  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
 
+  try {
+    // APIからストリームURLを取得
+    const response = await axios.get(apiUrl);
+    const streamUrl = response.data.stream_url;
+
+    // ストリームURLから動画をクライアントに送信
+    https.get(streamUrl, (streamResponse) => {
+      if (streamResponse.statusCode !== 200) {
+        res.status(streamResponse.statusCode).send(`Failed to download video. Status code: ${streamResponse.statusCode}`);
+        return;
+      }
+
+      // クライアントにファイルを送信するためのヘッダーを設定
+      res.setHeader('Content-Disposition', `attachment; filename="video_${videoId}.mp4"`);
+      res.setHeader('Content-Type', 'video/mp4');
+
+      // ストリームデータをクライアントに送信
+      streamResponse.pipe(res);
+    }).on('error', (err) => {
+      res.status(500).send(`Request error: ${err.message}`);
+    });
+  } catch (error) {
+    res.status(500).send(`Failed to retrieve stream URL: ${error.message}`);
+  }
+});
+//ライブ配信
 app.get("/live/:id", async (req, res) => {
   let videoId = req.params.id;
   let url = `https://www.youtube.com/watch?v=${videoId}`;

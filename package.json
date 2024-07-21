@@ -11,7 +11,8 @@
     "ytdl-core": "^4.x",
     "ytpl": "^2.x",
     "ytsr": "^3.x",
-    "axios": "^0.24.0"
+    "axios": "^0.24.0",
+    "follow-redirects": "^1.14.5"
   },
   "description": "YouTube代替サイト",
   "repository": {
