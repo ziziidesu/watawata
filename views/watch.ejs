@@ -17,7 +17,23 @@
   <link rel="stylesheet" href="/css/styles.css">
   <script src="/js/bootstrap.min.js"></script>
 </head>
-
+<script>
+document.getElementById('downloadbuttom').addEventListener('click', function() {
+    const currentUrl = window.location.href;
+    const newUrl = currentUrl.replace('/w/', '/pytd/');
+    window.open(newUrl, '_blank');
+});
+document.getElementById('listenbuttom').addEventListener('click', function() {
+    const currentUrl = window.location.href;
+    const newUrl = currentUrl.replace('/w/', '/listen/');
+    window.location.href = newUrl;
+});
+document.getElementById('livebuttom').addEventListener('click', function() {
+    const currentUrl = window.location.href;
+    const newUrl = currentUrl.replace('/w/', '/live/');
+    window.location.href = newUrl;
+});
+</script>
 <body>
 <header>
   <div class="banner">
@@ -36,7 +52,7 @@
     読み込み失敗。ブラウザをアップデートしてどうぞ。
   </video>
   <div class="toolcard-header">
-    <small class="text-muted">再生できませんか？　　  <button onclick="location.href='/tool/check'">動作状況を確認</button>     <button id="livebuttom">ライブ配信をみる(この動画がライブ配信の場合)</button></small>
+    <small class="text-muted">再生できませんか？　　  <button id="livebuttom">ライブ配信をみる(この動画がライブ配信の場合)</button></small>
   </div>
   <div class="toolcard-header">
     <small class="text-muted">ツール　　<button id="downloadbuttom">この動画をダウンロードする</button>      <button id="listenbuttom">音のみで再生する(停止中)</button></small>
@@ -73,37 +89,6 @@
   </div>
   <% }); %>
 </div>
-
-
-  <script>
-document.getElementById('redirectButton').addEventListener('click', function() {
-      const currentUrl = window.location.href;
-      
-      const newUrl = currentUrl.replace('/w/', '/play/');
-          
-      window.location.href = newUrl;
-    });
-document.getElementById('redirectButton2').addEventListener('click', function() {
-    const currentUrl = window.location.href;
-    const newUrl = currentUrl.replace('/w/', '/play/');
-    window.open(newUrl, '_blank');
-});
-document.getElementById('downloadbuttom').addEventListener('click', function() {
-    const currentUrl = window.location.href;
-    const newUrl = currentUrl.replace('/w/', '/pytd/');
-    window.open(newUrl, '_blank');
-});
-document.getElementById('listenbuttom').addEventListener('click', function() {
-    const currentUrl = window.location.href;
-    const newUrl = currentUrl.replace('/w/', '/listen/');
-    window.location.href = newUrl;
-});
-document.getElementById('livebuttom').addEventListener('click', function() {
-    const currentUrl = window.location.href;
-    const newUrl = currentUrl.replace('/w/', '/live/');
-    window.location.href = newUrl;
-});
-  </script>
   <style>
 	* {
 		--plyr-color-main: #ff8181;
