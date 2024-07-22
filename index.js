@@ -46,7 +46,7 @@ app.get('/w/:id', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).render('index', { error: 'Error fetching video info' });
-    res.redirect('/matte');
+    res.render("../tool/matte.ejs")
   }
 });
 //ダウンロード
