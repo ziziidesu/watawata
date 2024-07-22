@@ -23,7 +23,7 @@ app.get('/tst3', async (req, res) => {
 });
 //待って
 app.get("/matte",(req, res) => {
-  res.render("../tool/matte.ejs")
+  res.render("../views/matte.ejs")
 })
 //観る
 app.get('/w/:id', async (req, res) => {
@@ -45,8 +45,7 @@ app.get('/w/:id', async (req, res) => {
     res.render('watch', { videoId, stream_url, videoUrl: videoFormats[0].url, info });
   } catch (error) {
     console.error(error);
-    res.status(500).render('index', { error: 'Error fetching video info' });
-    res.render("../tool/matte.ejs")
+    res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
   }
 });
 //ダウンロード
