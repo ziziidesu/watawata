@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title><%= query %> - わかめtube</title>
+  <title>わかめ食え</title>
   <meta name="description" content="まっしろになっていく">
   <meta property="og:title" content="わかめtube">
   <meta property="og:description" content="まっしろになっていく">
@@ -27,49 +27,19 @@
       <button class="btn btn-link" onclick="window.location.href='/blog'">お知らせ</button>
       <!-- 他のボタンもここに追加できます -->
       <form class="d-flex" action="/s">
-        <input name="q" class="form-control" type="search" placeholder="キーワードを入力..." aria-label="Search" value="<%= query %>">
+        <input type="text" name="q" class="form-control" placeholder="キーワードを入力..." required>
       </form>
       <button class="btn btn-link" style="position: absolute; right: 10px;" onclick="window.location.href='/send'">問い合わせ</button>
     </div>
   </header>
   <div class="results">
-    <% res.items.forEach(video => { %>
-      <% if (video.type === 'video') { %>
         <div class="result-item">
-          <a href="/w/<%= video.id %>">
-            <img src="<%= video.bestThumbnail.url.slice(19) %>" alt="<%= video.title %>">
-          </a>
-          <p class="channel-name"><a href="/c/<%= video.author.channelID %>"><%= video.author.name %></a></p>
-          <p class="video-title"><%= video.title %></p>
-          <p class="video-description"><%= video.description %></p>
-          <p class="video-meta"><%= video.uploadedAt %> - <%= video.duration %></p>
+            <video src="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/kuuninaru.mp4?v=1721696636763" alt="くうになる">
+          <p class="channel-name">MIMI</p>
+          <p class="video-title">『くうになる』 / feat. 初音ミク ＆ 可不</p>
+          <p class="video-description">2:35</p>
+          <p class="video-meta"></p>
           </div>
-      <% } else if (video.type === 'playlist') { %>
-        <div class="playresult-item">
-          <a href="/p/<%= video.playlistID %>">
-            <img style="opacity: 0.5" src="<%= video.firstVideo.bestThumbnail.url.slice(19) %>" alt="<%= video.title %>">
-          </a>
-          <p class="video-title">プレイリスト(<%= video.length %>本以上の動画)</p>
-          <p class="channel-name"><a href="/u/<%= video.owner.id %>"><%= video.owner.name %></a></p>
-        </div>
-      <% } else if (video.type === 'channel') { %>
-        <div class="result-item">
-          <a href="/c/<%= video.channelID %>">
-            <img src="<%= video.bestAvatar.url.slice(21) %>" alt="<%= video.name %>">
-          </a>
-          <p class="video-title"><%= video.name %></p>
-          <p class="video-description"><%= video.description || video.descriptionShort %></p>
-          <p class="video-meta"><%= video.subscribers %> subscribers</p>
-        </div>
-      <% } %>
-    <% }); %>
-  </div>
-
-  <div class="pagination">
-    <% if (page > 1) { %>
-      <a class="btn" href="/s?q=<%= query %>&p=<%= page-1 %>">前のページ</a>
-    <% } %>
-    <a class="btn" href="/s?q=<%= query %>&p=<%= page+1 %>">次のページ</a>
   </div>
       
   <style>
