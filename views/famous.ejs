@@ -19,7 +19,20 @@
   <link rel="stylesheet" href="/css/styles.css">
   <script src="/js/bootstrap.min.js"></script>
 </head>
+<style>
+.result-item:hover {
+  transform: scale(2.00);
+}
+    .pagination {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+    }
 
+    a {
+      color: #ff8181;
+    }
+</style>
 <body>
   <header>
     <div class="banner">
@@ -32,6 +45,9 @@
       <button class="btn btn-link" style="position: absolute; right: 10px;" onclick="window.location.href='/send'">問い合わせ</button>
     </div>
   </header>
+  <p>
+    曲をきこう！
+  </p>
   <div class="results">
         <div class="result-item">
             <video controls autoplay>
@@ -53,26 +69,24 @@
         </div>
         <div class="result-item">
             <video controls autoplay>
-               <source src="https://cdn.glitch.me/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/a%CC%83%C2%80%C2%90Animation%20MVa%CC%83%C2%80%C2%91%20What%20an%20amazing%20swing%20_e%CC%80%C2%A7%C2%92a%CC%8A%C2%B7%C2%BBa%CC%83%C2%82%C2%8Fa%CC%83%C2%81%C2%9Fa%CC%83%C2%82%C2%81a%CC%83%C2%80%C2%90originala%CC%83%C2%80%C2%91.mp4?v=1721697807240" type="video/mp4">
+               <source src="https://cdn.glitch.global/07c1f87a-06fc-4159-8a78-1d6bf0407b94/video%209.mp4?v=1721698248740" type="video/mp4">
             </video>
           <p class="channel-name">猫又おかゆ</p>
-          <p class="video-title">【Animation MV】 What an amazing swing /角巻わため【original】</p>
-          <p class="video-description">3:18</p>
+          <p class="video-title">ウミユリ海底譚 / 猫又おかゆ(cover)</p>
+          <p class="video-description">4:02</p>
+          <p class="video-meta"></p>
+        </div>
+        <div class="result-item">
+            <video controls autoplay>
+               <source src="https://cdn.glitch.global/07c1f87a-06fc-4159-8a78-1d6bf0407b94/video%207.mp4?v=1721698248743" type="video/mp4">
+            </video>
+          <p class="channel-name">角巻わため</p>
+          <p class="video-title">RAINBOW</p>
+          <p class="video-description">3:38</p>
           <p class="video-meta"></p>
         </div>
   </div>
       
-  <style>
-    .pagination {
-      display: flex;
-      justify-content: space-between;
-      padding: 20px;
-    }
-
-    a {
-      color: #ff8181;
-    }
-  </style>
 </body>
 
 </html>
