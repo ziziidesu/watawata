@@ -25,6 +25,52 @@ app.get('/tst3', async (req, res) => {
 app.get("/matte",(req, res) => {
   res.render("../views/matte.ejs")
 })
+
+app.get("/s", async (req, res) => {
+	let query = req.query.q;
+	let page = Number(req.query.p || 1);
+	if (!query) return res.redirect("/");
+    let cookies = parseCookies(req);
+    let wakames = cookies.wakames === 'true';
+    if (wakames) {
+        try {
+		res.render("search2.ejs", {
+			res: await ytsr(query, { limit, pages: page }),
+			query: query,
+			page
+		});
+	} catch (error) {
+		console.error(error);
+		try {
+			res.status(500).render("error.ejs", {
+				title: "ytsr Error",
+				content: error
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	}
+    } else {
+       try {
+		res.render("search.ejs", {
+			res: await ytsr(query, { limit, pages: page }),
+			query: query,
+			page
+		});
+	} catch (error) {
+		console.error(error);
+		try {
+			res.status(500).render("error.ejs", {
+				title: "ytsr Error",
+				content: error
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	}
+    }
+});
+
 //観る
 app.get('/w/:id', async (req, res) => {
   let videoId = req.params.id;
