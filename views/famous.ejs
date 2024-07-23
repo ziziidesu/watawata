@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>わかめ食え</title>
+  <title>講義3</title>
   <meta name="description" content="まっしろになっていく">
   <meta property="og:title" content="わかめtube">
   <meta property="og:description" content="まっしろになっていく">
@@ -46,7 +46,7 @@
     </div>
   </header>
   <p>
-    曲をきこう！
+    曲をきこう！。動画を読み込むまで少し待ってください:)
   </p>
   <div class="results">
         <div class="result-item">
@@ -121,8 +121,26 @@
           <p class="video-description">2:35</p>
           <p class="video-meta"></p>
         </div>
+        <div class="result-item">
+            <video controls autoplay>
+               <source src="87a-06fc-4159-8a78-1d6bf0407b94/video%2013.mp4?v=1721699154025" type="video/mp4">
+            </video>
+          <p class="channel-name">ツユ</p>
+          <p class="video-title">泥の分際で私だけの大切を奪おうだなんて</p>
+          <p class="video-description">3:13</p>
+          <p class="video-meta"></p>
+        </div>
   </div>
-      
+  
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var videos = document.querySelectorAll('video');
+            videos.forEach((video) => {
+                video.pause();
+                video.currentTime = 0;
+            });
+        });
+    </script>
 </body>
 
 </html>
