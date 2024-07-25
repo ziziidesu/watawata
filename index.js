@@ -20,6 +20,7 @@ app.use(express.static(__dirname + "/public"));
 
 //tst3
 app.get('/tst3', async (req, res) => {
+  res.render("../views/tst3.ejs")
 });
 //待って
 app.get("/matte",(req, res) => {
