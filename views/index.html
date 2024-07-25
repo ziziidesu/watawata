@@ -108,9 +108,49 @@ wakamep {
     margin: 0;
     color: #666;
 }
+.hover-target {
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-card {
+            display: none;
+            left: 50%;
+            border-radius: 10px;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .hover-target:hover .profile-card {
+            display: block;
+        }
+
+        .profile-card img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+        }
+
+        .profile-card .name {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        .profile-card .description {
+            font-size: 1em;
+            color: #666;
+}
 </style>
   <wakame02>
+  <div class="hover-target">
     <wakamep>&copy; 2024 わかめ02</wakamep>
+    <div class="profile-card">
+        <img src="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/IMG_1281.png?v=1718682861752" alt="アイコン">
+        <div class="name">わかめ02</div>
+        <div class="description">わーい</div>
+    </div>
+</div>
   </wakame02>
 </body>
 
