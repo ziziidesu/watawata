@@ -23,16 +23,6 @@ document.getElementById('listenbuttom').addEventListener('click', function() {
     const newUrl = currentUrl.replace('/w/', '/listen/');
     window.location.href = newUrl;
 });
-document.addEventListener("DOMContentLoaded", () => {
-      const descriptionDiv = document.querySelector('.description');
-      const twitterRegex = /https:\/\/(twitter\.com|x\.com)\/(\w+\/status\/\d+)/g;
-
-      // EJSで埋め込まれたHTMLの文字列を変更
-      descriptionDiv.innerHTML = descriptionDiv.innerHTML.replace(twitterRegex, (match, p1, p2) => {
-        const newUrl = `https://xcancel.com/${p2}`;
-        return `<a href="${newUrl}" target="_blank">${match}</a>`;
-      });
-    });
 </script>
 <body>
 <header>
@@ -67,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
   </div>
   <div class="card-body">
     <h5><%= info.videoDetails.title %></h5>
-    <div class="description"><%- (info.videoDetails.description || "").replace(/\n/g, "<br>").replace(/https:\/\/twitter\.com\/([^ ]+)/g, '<a href="https://xcancel.com/$1" target="_blank" rel="noopener noreferrer">https://twitter.com/$1</a>') %></div>
+      <p><%- (info.videoDetails.description || "").replace(/\n/g, "<br>") %></p>
   </div>
 </div>
 <br>
