@@ -42,8 +42,10 @@
     </div>
     <% }); %>
   </div>
+<div class="pagination">
   <% if (page > 1) { %> <a class="btn position-absolute" style="left: 0; color: white; background-color: #ff8181;" href="/c/<%= channel.id %>?p=<%= page-1 %>">前のページ</a> <% } %>
   <a class="btn position-absolute" style="right: 0; color: white; background-color: #ff8181;" href="/c/<%= channel.id %>?p=<%= page+1 %>">次のページ</a>
+ </div>
 </body>
 
 </html>
