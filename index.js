@@ -2,6 +2,7 @@ const m3u8stream = require('m3u8stream');
 const ytdl = require("ytdl-core");
 const ytsr = require("ytsr");
 const ytpl = require("ytpl");
+const miniget = require("miniget");
 const express = require("express");
 const ejs = require("ejs");
 const app = express();
@@ -29,8 +30,26 @@ app.get("/matte",(req, res) => {
 app.get("/famous",(req, res) => {
   res.render("../views/famous.ejs")
 })
-//観る
+
+//緊急
 app.get('/w/:id', async (req, res) => {
+  let videoId = req.params.id;
+  let url = `https://www.youtube.com/watch?v=${videoId}`;
+  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
+  
+  try {
+    const response = await axios.get(apiUrl);
+    const { stream_url } = response.data;
+    
+    res.render('kwatch.ejs', { videoId, stream_url});
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
+  }
+});
+
+//観る
+app.get('/p/:id', async (req, res) => {
   let videoId = req.params.id;
   let url = `https://www.youtube.com/watch?v=${videoId}`;
   const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
@@ -38,7 +57,7 @@ app.get('/w/:id', async (req, res) => {
   if (!ytdl.validateURL(url)) {
     return res.status(400).render('index', { error: 'Invalid YouTube URL' });
   }
-
+  
   try {
     const response = await axios.get(apiUrl);
     const { stream_url } = response.data;
