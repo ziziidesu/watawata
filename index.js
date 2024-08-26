@@ -2,7 +2,6 @@ const m3u8stream = require('m3u8stream');
 const ytdl = require("ytdl-core");
 const ytsr = require("ytsr");
 const ytpl = require("ytpl");
-const miniget = require("miniget");
 const express = require("express");
 const ejs = require("ejs");
 const app = express();
@@ -45,9 +44,8 @@ app.get('/w/:id', async (req, res) => {
     const { stream_url } = response.data;
 
     let info = await ytdl.getInfo(url);
-    const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
     
-    res.render('watch', { videoId, stream_url, videoUrl: videoFormats[0].url, info });
+    res.render('watch.ejs', { videoId, stream_url, info });
   } catch (error) {
     console.error(error);
     res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
