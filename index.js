@@ -31,31 +31,7 @@ app.get("/famous",(req, res) => {
   res.render("../views/famous.ejs")
 })
 //てすとー！
-app.get('/sc', (req, res) => {
-  res.send(`
-    <form method="post" action="/scrape">
-      <input type="text" name="url" placeholder="Enter URL" required>
-      <button type="submit">Scrape</button>
-    </form>
-  `);
-});
 
-app.post('/scrape', async (req, res) => {
-  const { url } = req.body;
-
-  if (!url) {
-    return res.send('URL is required.');
-  }
-
-  try {
-    const response = await axios.get(url);
-
-    res.send(response.data);
-  } catch (error) {
-    console.error('Error fetching the URL:', error.message);
-    res.status(500).send('Error fetching the URL. Make sure the URL is valid and try again.');
-  }
-});
 
 //緊急
 app.get('/w/:id', async (req, res) => {
