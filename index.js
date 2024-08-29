@@ -9,6 +9,7 @@ const app = express();
 const axios = require('axios');
 const fs = require('fs');
 const { https } = require('follow-redirects');
+const { default: NiconicoDL } = require("niconico-dl.js/dist");
 
 const limit = process.env.LIMIT || 50;
 
@@ -30,6 +31,22 @@ app.get("/matte",(req, res) => {
 app.get("/famous",(req, res) => {
   res.render("../views/famous.ejs")
 })
+//にっこにこ
+app.get('/nico/v/:id', async (req, res) => {
+  const videoId = req.params.id;
+  const URL = `https://nicovideo.jp/watch/${videoId}`;
+
+  try {
+    let nico = new NiconicoDL(URL);
+
+    const streamUrl = (await nico.getVideoUrl()).url;
+
+    res.render('nico.ejs', { videoUrl: streamUrl });
+  } catch (error) {
+    console.error('Error getting video stream URL:', error);
+    res.status(500).send('動画のストリームURLを取得中にエラーが発生しました。');
+  }
+});
 
 //緊急
 app.get('/w/:id', async (req, res) => {
