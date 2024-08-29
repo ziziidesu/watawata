@@ -9,7 +9,7 @@ const app = express();
 const axios = require('axios');
 const fs = require('fs');
 const { https } = require('follow-redirects');
-const { default: NiconicoDL } = require("niconico-dl.js/dist");
+const nico = require('niconico-dl');
 
 const limit = process.env.LIMIT || 50;
 
@@ -32,19 +32,26 @@ app.get("/famous",(req, res) => {
   res.render("../views/famous.ejs")
 })
 //にっこにこ
-app.get('/nico/v/:id', async (req, res) => {
+app.get('/nico/:id', async (req, res) => {
   const videoId = req.params.id;
-  const URL = `https://nicovideo.jp/watch/${videoId}`;
 
   try {
-    let nico = new NiconicoDL(URL);
+    const video = await nico.getVideoInfo(`https://www.nicovideo.jp/watch/${videoId}`);
+    const streamUrl = await nico.getVideoUrl(video);
 
-    const streamUrl = (await nico.getVideoUrl()).url;
-
-    res.render('nico.ejs', { videoUrl: streamUrl });
+    res.send(`
+      <html>
+      <body>
+        <video width="640" height="360" controls>
+          <source src="${streamUrl}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </body>
+      </html>
+    `);
   } catch (error) {
-    console.error('Error getting video stream URL:', error);
-    res.status(500).send('動画のストリームURLを取得中にエラーが発生しました。');
+    console.error('Error fetching video:', error);
+    res.status(500).send('Failed to load video');
   }
 });
 
