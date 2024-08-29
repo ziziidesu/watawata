@@ -516,25 +516,6 @@ app.post('/setting', (req, res) => {
     res.redirect('/setting');
 });
 
-//ニコニコ
-app.get('/nico/:id', async (req, res) => {
-  const videoId = req.params.id;
-
-  try {
-    const response = await axios.get(`https://niconico-api.example.com/api/video/${videoId}`);
-    const videoStreamUrl = response.data.streamUrl;
-
-    res.render('nico.ejs', { videoUrl: videoStreamUrl });
-  } catch (error) {
-    console.error(error);
-    res.render('nico.ejs', { videoUrl: null });
-  }
-});
-
-app.get('/nicotst/:id' , async (req, res) => {
-  let videoId = req.params.id
-}
-
 //proxy
 app.get('/proxy/shadow', (req, res) => {
     res.render("../read/proxy/shadow.ejs");
