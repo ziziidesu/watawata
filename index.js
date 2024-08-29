@@ -26,7 +26,7 @@ app.get('/tst3', async (req, res) => {
 app.get("/matte",(req, res) => {
   res.render("../views/matte.ejs")
 })
-//famous
+//曲をきく！
 app.get("/famous",(req, res) => {
   res.render("../views/famous.ejs")
 })
