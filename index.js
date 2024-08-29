@@ -9,7 +9,6 @@ const app = express();
 const axios = require('axios');
 const fs = require('fs');
 const { https } = require('follow-redirects');
-const nico = require('niconico-dl');
 
 const limit = process.env.LIMIT || 50;
 
@@ -31,29 +30,6 @@ app.get("/matte",(req, res) => {
 app.get("/famous",(req, res) => {
   res.render("../views/famous.ejs")
 })
-//にっこにこ
-app.get('/nico/:id', async (req, res) => {
-  const videoId = req.params.id;
-
-  try {
-    const video = await nico.getVideoInfo(`https://www.nicovideo.jp/watch/${videoId}`);
-    const streamUrl = await nico.getVideoUrl(video);
-
-    res.send(`
-      <html>
-      <body>
-        <video width="640" height="360" controls>
-          <source src="${streamUrl}" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </body>
-      </html>
-    `);
-  } catch (error) {
-    console.error('Error fetching video:', error);
-    res.status(500).send('Failed to load video');
-  }
-});
 
 //緊急
 app.get('/w/:id', async (req, res) => {
@@ -71,6 +47,7 @@ app.get('/w/:id', async (req, res) => {
     res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
   }
 });
+
 
 //観る
 app.get('/p/:id', async (req, res) => {
