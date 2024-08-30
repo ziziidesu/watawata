@@ -10,6 +10,7 @@ const axios = require('axios');
 const fs = require('fs');
 const { https } = require('follow-redirects');
 const cors = require('cors');
+const { chromium } = require('playwright');
 
 const limit = process.env.LIMIT || 50;
 
@@ -66,7 +67,7 @@ app.get('/holo', async (req, res) => {
 
 //わかめわかめ
 app.get('/mimi', async (req, res) => {
-  const videoUrl = 'https://dble.bn-ent.net/jp/';
+  const videoUrl = 'https://www.youtube.com/watch?v=7Y9sJvLI3Po';
   const pageinfo = await getYouTubePageTitle(videoUrl);
   res.send(`${pageinfo}`);
 });
