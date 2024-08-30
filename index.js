@@ -44,45 +44,42 @@ app.get('/w/:id', async (req, res) => {
     const { stream_url } = response.data;
     
     res.render('kwatch.ejs', { videoId, stream_url});
-  } catch (error) 
-    console.error(error){
+  } catch (error) {
+    console.error(error);
     res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
   }
 });
 
 //てーすと
-const PIPE_API_URL = 'https://invidio.us';
+async function get1080pStream(videoId) {
+    try {
+        const response = await axios.get(`https://invidio.us/api/v1/videos/${videoId}`);
+        const streams = response.data.formatStreams;
 
-// 1080pのストリームURLを取得する関数
-async function get1080pStreamUrl(videoId) {
-  try {
-    const response = await axios.get(`${PIPE_API_URL}/api/v1/videos/${videoId}`);
-    console.log(response.data); // レスポンスデータを出力
-    const streams = response.data.videoStreams;
+        // 1080pのストリームURLを探す
+        const stream1080p = streams.find(stream => stream.qualityLabel === '1080p');
 
-    const stream1080p = streams.find(stream => stream.quality === '1080p' && stream.container === 'mp4');
-
-    if (stream1080p) {
-      return stream1080p.url;
-    } else {
-      throw new Error('1080pのストリームが見つかりませんでした');
+        if (stream1080p) {
+            return stream1080p.url;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error("APIリクエスト中にエラーが発生しました:", error);
+        return null;
     }
-  } catch (error) {
-    console.error('エラーが発生しました:', error.message); // エラーメッセージを出力
-    throw error;
-  }
 }
 
-// エンドポイントを設定
+// /stream/:id エンドポイントの実装
 app.get('/stream/:id', async (req, res) => {
-  const videoId = req.params.id;
+    const videoId = req.params.id;
+    const streamUrl = await get1080pStream(videoId);
 
-  try {
-    const streamUrl = await get1080pStreamUrl(videoId);
-    res.json({ url: streamUrl });
-  } catch (error) {
-    res.status(500).json({ error: 'ストリームURLの取得に失敗しました' });
-  }
+    if (streamUrl) {
+        res.json({ streamUrl });
+    } else {
+        res.status(404).json({ error: '1080pのストリームが見つかりませんでした。' });
+    }
 });
 
 //観る
