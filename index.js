@@ -10,7 +10,6 @@ const axios = require('axios');
 const fs = require('fs');
 const { https } = require('follow-redirects');
 const cors = require('cors');
-const cheerio = require('cheerio');
 
 const limit = process.env.LIMIT || 50;
 
@@ -34,33 +33,31 @@ app.get("/famous",(req, res) => {
   res.render("../views/famous.ejs")
 })
 //てすとー！
-async function getYouTubeVideoTitles(url) {
+async function getYouTubePageTitle(url) {
   try {
     // YouTubeページのHTMLを取得
     const { data } = await axios.get(url);
-    
-    // cheerioでHTMLをパース
-    const $ = cheerio.load(data);
-    
-    // 動画タイトルを取得
-    const videoTitles = [];
-    $('h3.title a').each((index, element) => {
-      videoTitles.push($(element).attr('title'));
-    });
 
-    return videoTitles;
+    // <title>タグの内容を正規表現で抽出
+    const titleMatch = data.match(/<title>(.*?)<\/title>/);
+    const title = titleMatch ? titleMatch[1] : 'タイトルが取得できませんでした';
+    
+    return title;
   } catch (error) {
     console.error('Error fetching YouTube data:', error);
-    return [];
+    return 'エラーが発生しました';
   }
 }
 
-// /titleエンドポイントにアクセスしたときに動画タイトルを表示
+// /titleエンドポイントにアクセスしたときにページタイトルを表示
 app.get('/title', async (req, res) => {
-  const url = 'https://www.youtube.com/c/YourChannel/videos'; // 対象のYouTubeチャンネルのURL
-  const titles = await getYouTubeVideoTitles(url);
-  res.send(titles.join('<br>')); // HTMLの改行タグでタイトルを区切って表示
+  const videoUrl = 'https://www.youtube.com/watch?v=f6TytcA47rI'; // 対象のYouTube動画のURL
+  const title = await getYouTubePageTitle(videoUrl);
+  res.send(`ページタイトル: ${title}`);
 });
+
+
+
 //サジェスト
 app.use(cors());
 
