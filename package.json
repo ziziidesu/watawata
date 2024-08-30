@@ -13,8 +13,7 @@
     "ytsr": "^3.x",
     "axios": "^0.24.0",
     "follow-redirects": "^1.14.5",
-    "cors": "^2.8.5",
-    "playwright": "^1.42.0"
+    "cors": "^2.8.5"
   },
   "description": "YouTube代替サイト",
   "repository": {

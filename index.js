@@ -10,7 +10,6 @@ const axios = require('axios');
 const fs = require('fs');
 const { https } = require('follow-redirects');
 const cors = require('cors');
-const { chromium } = require('playwright');
 
 const limit = process.env.LIMIT || 50;
 
@@ -91,7 +90,6 @@ app.get('/suggestions', async (req, res) => {
     }
 });
 
-
 //緊急
 app.get('/w/:id', async (req, res) => {
   let videoId = req.params.id;
@@ -103,6 +101,25 @@ app.get('/w/:id', async (req, res) => {
     const { stream_url } = response.data;
     
     res.render('kwatch.ejs', { videoId, stream_url});
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
+  }
+});
+
+//おもしろい🤣
+app.get('/jehena', async (req, res) => {
+  const videoUrl = 'https://www.youtube.com/watch?v=7Y9sJvLI3Po';
+  const pageinfo = await getYouTubePageTitle(videoUrl);
+  const videoId = '7Y9sJvLI3Po';
+  let url = `https://www.youtube.com/watch?v=${videoId}`;
+  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
+  try {
+    const response = await axios.get(apiUrl);
+    const { stream_url } = response.data;
+    
+    res.setHeader('Content-Type', 'text/plain');
+    res.send(`${pageinfo}`);
   } catch (error) {
     console.error(error);
     res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
