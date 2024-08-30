@@ -66,7 +66,7 @@ app.get('/holo', async (req, res) => {
 
 //わかめわかめ
 app.get('/mimi', async (req, res) => {
-  const videoUrl = 'https://pipedapi.kavin.rocks/watch?v=-2KzcaiyBFo&vl=ja';
+  const videoUrl = 'https://dble.bn-ent.net/jp/';
   const pageinfo = await getYouTubePageTitle(videoUrl);
   res.send(`${pageinfo}`);
 });
