@@ -57,7 +57,8 @@ const instances = [
     'https://invidious.flokinet.to',
     'https://inv.tux.pizza',
     'https://iv.ggtyler.dev',
-    'https://inv.nadeko.net'
+    'https://inv.nadeko.net',
+    "https://invidious.lunar.icu/","https://onion.tube/","https://inv.riverside.rocks/","https://invidio.xamh.de/","https://y.com.sb/","https://invidious.sethforprivacy.com/","https://invidious.tiekoetter.com/","https://inv.bp.projectsegfau.lt/","https://inv.vern.cc/","https://invidious.nerdvpn.de/","https://inv.privacy.com.de/","https://invidious.rhyshl.live/","https://invidious.slipfox.xyz/","https://invidious.weblibre.org/","https://invidious.namazso.eu/"
 ];
 
 async function get1080pStream(videoId) {
