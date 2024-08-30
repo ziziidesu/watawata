@@ -57,6 +57,13 @@ app.get('/title', async (req, res) => {
   res.send(`ページタイトル: ${pageinfo}`);
 });
 
+app.get('/lili', async (req, res) => {
+  const videoUrl = 'https://schedule.hololive.tv/'; // 対象のYouTube動画のURL
+  const pageinfo = await getYouTubePageTitle(videoUrl);
+  res.setHeader('Content-Type', 'text/plain');
+  res.send(`ページタイトル: ${pageinfo}`);
+});
+
 //わかめわかめ
 app.get('/wakame', (req, res) => {
   res.send(`
