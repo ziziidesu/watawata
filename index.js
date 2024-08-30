@@ -54,14 +54,14 @@ async function getYouTubePageTitle(url) {
 app.get('/title', async (req, res) => {
   const videoUrl = 'https://www.youtube.com/watch?v=f6TytcA47rI'; // 対象のYouTube動画のURL
   const pageinfo = await getYouTubePageTitle(videoUrl);
-  res.send(`ページタイトル: ${pageinfo}`);
+  res.setHeader('Content-Type', 'text/plain');
+  res.send(`${pageinfo}`);
 });
 
-app.get('/lili', async (req, res) => {
-  const videoUrl = 'https://schedule.hololive.tv/'; // 対象のYouTube動画のURL
+app.get('/holo', async (req, res) => {
+  const videoUrl = 'https://schedule.hololive.tv/';
   const pageinfo = await getYouTubePageTitle(videoUrl);
-  res.setHeader('Content-Type', 'text/plain');
-  res.send(`ページタイトル: ${pageinfo}`);
+  res.send(`<link rel="stylesheet" href="/css/hololo.css"> ${pageinfo}`);
 });
 
 //わかめわかめ
