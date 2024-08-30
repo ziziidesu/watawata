@@ -1,0 +1,120 @@
+<main class="container text-center">
+    <div class="search-bar">
+        <form action="/s" method="get" autocomplete="off">
+            <input type="text" name="q" id="search" class="form-control" placeholder="キーワードを入力..." required>
+            <div id="suggestions"></div>
+            <button type="submit" class="btn btn-search">検索(けんさく)</button>
+        </form>
+    </div>
+</main>
+
+<script>
+    const searchInput = document.getElementById('search');
+    const suggestionsBox = document.getElementById('suggestions');
+
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.trim();
+        if (query) {
+            fetch(`https://www.google.com/complete/search?client=youtube&hl=ja&ds=yt&q=${encodeURIComponent(query)}`)
+                .then(response => response.text())
+                .then(data => {
+                    const parsedData = JSON.parse(data.match(/\[.*\]/)[0]);
+                    const suggestions = parsedData[1];
+                    suggestionsBox.innerHTML = '';
+                    suggestions.forEach(item => {
+                        const suggestionDiv = document.createElement('div');
+                        suggestionDiv.textContent = item[0];
+                        suggestionDiv.addEventListener('click', () => {
+                            searchInput.value = item[0];
+                            suggestionsBox.innerHTML = '';
+                        });
+                        suggestionsBox.appendChild(suggestionDiv);
+                    });
+                });
+        } else {
+            suggestionsBox.innerHTML = '';
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!suggestionsBox.contains(e.target) && e.target !== searchInput) {
+            suggestionsBox.innerHTML = '';
+        }
+    });
+</script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+    }
+
+    .search-bar {
+        position: relative;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 18px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #007BFF;
+    }
+
+    #suggestions {
+        position: absolute;
+        width: 100%;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-top: none;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    #suggestions div {
+        padding: 10px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    #suggestions div:hover {
+        background-color: #f0f0f0;
+    }
+
+    .btn-search {
+        width: 100%;
+        padding: 10px;
+        font-size: 18px;
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .btn-search:hover {
+        background-color: #0056b3;
+    }
+</style>
