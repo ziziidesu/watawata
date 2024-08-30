@@ -124,12 +124,12 @@ app.get('/jehena', async (req, res) => {
 </video><style>
 video {
     position: fixed;
-    top: 20px;
-    left: 9px;
-    width: 90%;
+    top: 68px;
+    left: 22px;
+    width: 94%;
     height: auto;
-    border-radius: 50%; /* 丸くする */
-    overflow: hidden; /* ビデオが丸い領域からはみ出さないようにする */
+    border-radius: 8px;
+    overflow: hidden;
     z-index: 1000;
 }</style> ${pageinfo}`);
   } catch (error) {
