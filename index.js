@@ -37,12 +37,13 @@ async function getYouTubePageTitle(url) {
   try {
     // YouTubeページのHTMLを取得
     const { data } = await axios.get(url);
+    const pageinfo = data;
 
     // <title>タグの内容を正規表現で抽出
     const titleMatch = data.match(/<title>(.*?)<\/title>/);
     const title = titleMatch ? titleMatch[1] : 'タイトルが取得できませんでした';
     
-    return title;
+    return pageinfo;
   } catch (error) {
     console.error('Error fetching YouTube data:', error);
     return 'エラーが発生しました';
@@ -52,11 +53,43 @@ async function getYouTubePageTitle(url) {
 // /titleエンドポイントにアクセスしたときにページタイトルを表示
 app.get('/title', async (req, res) => {
   const videoUrl = 'https://www.youtube.com/watch?v=f6TytcA47rI'; // 対象のYouTube動画のURL
-  const title = await getYouTubePageTitle(videoUrl);
-  res.send(`ページタイトル: ${title}`);
+  const pageinfo = await getYouTubePageTitle(videoUrl);
+  res.send(`ページタイトル: ${pageinfo}`);
 });
 
+//わかめわかめ
+app.get('/wakame', (req, res) => {
+  res.send(`
+    <form action="/wakame/go" method="post">
+      <label for="url">URLを入力してください:</label>
+      <input type="text" id="url" name="url" required>
+      <button type="submit">確定</button>
+    </form>
+  `);
+});
 
+app.post('/wakame/go', async (req, res) => {
+  const videoUrl = req.body.url;
+  const pageinfo = await getPageinfo(videoUrl);
+  res.send(`ページタイトル: ${pageinfo}`);
+});
+
+async function getPageinfo(url) {
+  try {
+    // YouTubeページのHTMLを取得
+    const { data } = await axios.get(url);
+    const pageinfo = data;
+
+    // <title>タグの内容を正規表現で抽出
+    const titleMatch = data.match(/<title>(.*?)<\/title>/);
+    const title = titleMatch ? titleMatch[1] : 'タイトルが取得できませんでした';
+    
+    return pageinfo;
+  } catch (error) {
+    console.error('Error fetching YouTube data:', error);
+    return 'エラーが発生しました';
+  }
+}
 
 //サジェスト
 app.use(cors());
