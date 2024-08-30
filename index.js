@@ -9,6 +9,8 @@ const app = express();
 const axios = require('axios');
 const fs = require('fs');
 const { https } = require('follow-redirects');
+const fetch = require('node-fetch');
+const iconv = require('iconv-lite');
 
 const limit = process.env.LIMIT || 50;
 
@@ -32,6 +34,21 @@ app.get("/famous",(req, res) => {
 })
 //てすとー！
 
+//サジェスト
+app.get('/suggest', async (req, res) => {
+    const query = req.query.q;
+    try {
+        const response = await fetch(`https://www.google.com/complete/search?client=youtube&hl=ja&ds=yt&q=${encodeURIComponent(query)}`);
+        const buffer = await response.arrayBuffer();
+        const text = iconv.decode(Buffer.from(buffer), 'UTF-8');
+        const jsonpData = text.match(/\[.*\]/)[0];
+        const jsonData = JSON.parse(jsonpData);
+        res.json(jsonData);
+    } catch (error) {
+        console.error('Error fetching suggestions:', error);
+        res.status(500).send('Error fetching suggestions');
+    }
+});
 
 //緊急
 app.get('/w/:id', async (req, res) => {
