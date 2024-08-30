@@ -53,15 +53,16 @@ app.get('/w/:id', async (req, res) => {
 //てーすと
 async function get1080pStream(videoId) {
     try {
-        const response = await axios.get(`https://invidio.us/api/v1/videos/${videoId}`);
+        const response = await axios.get(`https://yewtu.be/api/v1/videos/${videoId}`);
+        console.log(response.data);  // レスポンスを出力して確認
+
         const streams = response.data.formatStreams;
 
-        // 1080pのストリームURLを探す
-        const stream1080p = streams.find(stream => stream.qualityLabel === '1080p');
-
-        if (stream1080p) {
-            return stream1080p.url;
+        if (streams) {
+            const stream1080p = streams.find(stream => stream.qualityLabel === '1080p');
+            return stream1080p ? stream1080p.url : null;
         } else {
+            console.error("formatStreamsが見つかりませんでした。");
             return null;
         }
     } catch (error) {
@@ -69,6 +70,7 @@ async function get1080pStream(videoId) {
         return null;
     }
 }
+
 
 // /stream/:id エンドポイントの実装
 app.get('/stream/:id', async (req, res) => {
