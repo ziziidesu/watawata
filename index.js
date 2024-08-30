@@ -50,6 +50,40 @@ app.get('/w/:id', async (req, res) => {
   }
 });
 
+//てーすと
+const PIPE_API_URL = 'https://pipedapi.kavin.rocks';
+
+// 1080pのストリームURLを取得する関数
+async function get1080pStreamUrl(videoId) {
+  try {
+    const response = await axios.get(`${PIPE_API_URL}/streams/${videoId}`);
+    console.log(response.data); // レスポンスデータを出力
+    const streams = response.data.videoStreams;
+
+    const stream1080p = streams.find(stream => stream.quality === '1080p' && stream.container === 'mp4');
+
+    if (stream1080p) {
+      return stream1080p.url;
+    } else {
+      throw new Error('1080pのストリームが見つかりませんでした');
+    }
+  } catch (error) {
+    console.error('エラーが発生しました:', error.message); // エラーメッセージを出力
+    throw error;
+  }
+}
+
+// エンドポイントを設定
+app.get('/stream/:id', async (req, res) => {
+  const videoId = req.params.id;
+
+  try {
+    const streamUrl = await get1080pStreamUrl(videoId);
+    res.json({ url: streamUrl });
+  } catch (error) {
+    res.status(500).json({ error: 'ストリームURLの取得に失敗しました' });
+  }
+});
 
 //観る
 app.get('/p/:id', async (req, res) => {
