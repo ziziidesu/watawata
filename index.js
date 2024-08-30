@@ -44,19 +44,19 @@ app.get('/w/:id', async (req, res) => {
     const { stream_url } = response.data;
     
     res.render('kwatch.ejs', { videoId, stream_url});
-  } catch (error) {
-    console.error(error);
+  } catch (error) 
+    console.error(error){
     res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
   }
 });
 
 //てーすと
-const PIPE_API_URL = 'https://pipedapi.kavin.rocks';
+const PIPE_API_URL = 'https://invidio.us';
 
 // 1080pのストリームURLを取得する関数
 async function get1080pStreamUrl(videoId) {
   try {
-    const response = await axios.get(`${PIPE_API_URL}/streams/${videoId}`);
+    const response = await axios.get(`${PIPE_API_URL}/api/v1/videos/${videoId}`);
     console.log(response.data); // レスポンスデータを出力
     const streams = response.data.videoStreams;
 
