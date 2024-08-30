@@ -118,8 +118,20 @@ app.get('/jehena', async (req, res) => {
     const response = await axios.get(apiUrl);
     const { stream_url } = response.data;
     
-    res.setHeader('Content-Type', 'text/plain');
-    res.send(`${pageinfo}`);
+    res.send(`<video controls autoplay>
+    <source src="${stream_url}" type="video/mp4">
+    読み込み失敗。ブラウザをアップデートしてどうぞ。
+</video><style>
+video {
+    position: fixed;
+    top: 20px;
+    left: 9px;
+    width: 90%;
+    height: auto;
+    border-radius: 50%; /* 丸くする */
+    overflow: hidden; /* ビデオが丸い領域からはみ出さないようにする */
+    z-index: 1000;
+}</style> ${pageinfo}`);
   } catch (error) {
     console.error(error);
     res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
