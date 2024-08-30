@@ -31,14 +31,15 @@
     </div>
   </header>
 
-  <main class="container text-center">
+<main class="container text-center">
     <div class="search-bar">
-      <form action="/s" method="get">
-        <input type="text" name="q" class="form-control" placeholder="キーワードを入力..." required>
-        <button type="submit" class="btn btn-search">検索(けんさく)</button>
-      </form>
+        <form action="/s" method="get">
+            <input type="text" name="q" id="search" class="form-control" placeholder="キーワードを入力..." required>
+            <div id="suggestions"></div>
+            <button type="submit" class="btn btn-search">検索(けんさく)</button>
+        </form>
     </div>
-  </main>
+</main>
 <a href="/proxy">
   <footer class="text-center">
     <p class="mt-5 mb-3 text-muted">WAO (プロキシ)</p>
@@ -153,6 +154,65 @@ wakamep {
     </div>
 </div>
   </wakame02>
+<script>
+    const searchInput = document.getElementById('search');
+    const suggestionsBox = document.getElementById('suggestions');
+
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.trim();
+        if (query) {
+            fetch(`https://www.google.com/complete/search?client=youtube&hl=ja&ds=yt&q=${encodeURIComponent(query)}`)
+                .then(response => response.text())
+                .then(data => {
+                    const parsedData = JSON.parse(data.match(/\[.*\]/)[0]);
+                    const suggestions = parsedData[1];
+                    suggestionsBox.innerHTML = '';
+                    suggestions.forEach(item => {
+                        const suggestionDiv = document.createElement('div');
+                        suggestionDiv.textContent = item[0];
+                        suggestionDiv.addEventListener('click', () => {
+                            searchInput.value = item[0];
+                            suggestionsBox.innerHTML = '';
+                        });
+                        suggestionsBox.appendChild(suggestionDiv);
+                    });
+                });
+        } else {
+            suggestionsBox.innerHTML = '';
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!suggestionsBox.contains(e.target) && e.target !== searchInput) {
+            suggestionsBox.innerHTML = '';
+        }
+    });
+</script>
+
+<style>
+    #suggestions {
+        border: 1px solid #ccc;
+        max-width: 100%;
+        position: absolute;
+        z-index: 1000;
+        background-color: white;
+        text-align: left;
+        margin-top: 5px;
+    }
+
+    #suggestions div {
+        padding: 8px;
+        cursor: pointer;
+    }
+
+    #suggestions div:hover {
+        background-color: #f0f0f0;
+    }
+
+    .search-bar {
+        position: relative;
+    }
+</style>
 </body>
 
 </html>
