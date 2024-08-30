@@ -9,6 +9,7 @@ const app = express();
 const axios = require('axios');
 const fs = require('fs');
 const { https } = require('follow-redirects');
+const cors = require('cors');
 
 const limit = process.env.LIMIT || 50;
 
@@ -33,6 +34,8 @@ app.get("/famous",(req, res) => {
 //てすとー！
 
 //サジェスト
+app.use(cors());
+
 app.get('/suggestions', async (req, res) => {
     const query = req.query.q;
     if (!query) {

@@ -33,8 +33,11 @@
             overflow-y: auto;
             position: absolute;
             background: white;
-            width: 100%;
+            width: calc(100% - 88px); /* Adjust width for the button */
             z-index: 1000;
+            margin-top: 8px;
+            left: 0;
+            top: 100%;
         }
         #suggestions div {
             padding: 8px;
@@ -49,30 +52,41 @@
     <main class="container text-center">
         <div class="search-bar">
             <form action="/s" method="get">
-                <input type="text" name="q" id="search" class="form-control" placeholder="キーワードを入力..." required>
+                <input type="text" name="q" id="search" class="form-control" placeholder="キーワードを入力..." required autocomplete="off">
                 <button type="submit" class="btn btn-search btn-primary">検索(けんさく)</button>
             </form>
             <div id="suggestions"></div>
         </div>
     </main>
     <script>
- document.getElementById('search').addEventListener('input', async function() {
-    const query = this.value;
-    if (query.length < 2) {
-        document.getElementById('suggestions').innerHTML = '';
-        return;
-    }
+        document.getElementById('search').addEventListener('input', async function() {
+            const query = this.value;
+            if (query.length < 2) {
+                document.getElementById('suggestions').innerHTML = '';
+                return;
+            }
 
-    try {
-        const response = await fetch(`/suggestions?q=${encodeURIComponent(query)}`);
-        const suggestions = await response.json();
-        console.log('Suggestions:', suggestions); // デバッグ用
-        const suggestionsBox = document.getElementById('suggestions');
-        suggestionsBox.innerHTML = suggestions.map(s => `<div>${s}</div>`).join('');
-    } catch (error) {
-        console.error('Error fetching suggestions:', error); // エラー表示
-    }
-});
+            try {
+                const response = await fetch(`/suggestions?q=${encodeURIComponent(query)}`);
+                if (response.ok) {
+                    const suggestions = await response.json();
+                    const suggestionsBox = document.getElementById('suggestions');
+                    suggestionsBox.innerHTML = suggestions.map(s => `<div>${s}</div>`).join('');
+                } else {
+                    console.error('Error fetching suggestions:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching suggestions:', error);
+            }
+        });
+
+        document.getElementById('suggestions').addEventListener('click', function(event) {
+            if (event.target.tagName === 'DIV') {
+                const selectedSuggestion = event.target.innerText;
+                document.getElementById('search').value = selectedSuggestion;
+                document.querySelector('form').submit(); // Submit the form with the selected suggestion
+            }
+        });
     </script>
 </body>
 </html>
