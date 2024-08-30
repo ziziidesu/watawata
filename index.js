@@ -51,26 +51,35 @@ app.get('/w/:id', async (req, res) => {
 });
 
 //てーすと
+const instances = [
+    'https://yewtu.be',
+    'https://vid.puffyan.us',
+    'https://invidious.flokinet.to',
+    'https://inv.tux.pizza',
+    'https://iv.ggtyler.dev',
+    'https://inv.nadeko.net'
+];
+
 async function get1080pStream(videoId) {
-    try {
-        const response = await axios.get(`https://yewtu.be/api/v1/videos/${videoId}`);
-        console.log(response.data);  // レスポンスを出力して確認
+    for (const instance of instances) {
+        try {
+            const response = await axios.get(`${instance}/api/v1/videos/${videoId}`);
+            console.log(`使用中のインスタンス: ${instance}`);
+            const streams = response.data.formatStreams;
 
-        const streams = response.data.formatStreams;
-
-        if (streams) {
-            const stream1080p = streams.find(stream => stream.qualityLabel === '1080p');
-            return stream1080p ? stream1080p.url : null;
-        } else {
-            console.error("formatStreamsが見つかりませんでした。");
-            return null;
+            if (streams) {
+                const stream1080p = streams.find(stream => stream.qualityLabel === '1080p');
+                return stream1080p ? stream1080p.url : null;
+            } else {
+                console.error("formatStreamsが見つかりませんでした。");
+                return null;
+            }
+        } catch (error) {
+            console.error(`インスタンス ${instance} でエラーが発生しました:`, error);
         }
-    } catch (error) {
-        console.error("APIリクエスト中にエラーが発生しました:", error);
-        return null;
     }
+    return null;
 }
-
 
 // /stream/:id エンドポイントの実装
 app.get('/stream/:id', async (req, res) => {
