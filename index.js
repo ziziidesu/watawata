@@ -67,22 +67,20 @@ app.get('/mimi', async (req, res) => {
 });
 
 //サジェスト
-app.use(cors());
+app.get('/sage', async (req, res) => {
+  const query = req.query.q;
+  const url = `https://www.google.com/complete/search?client=youtube&hl=ja&ds=yt&q=${encodeURIComponent(query)}`;
 
-app.get('/suggestions', async (req, res) => {
-    const query = req.query.q;
-    if (!query) {
-        return res.status(400).json({ error: 'Query parameter "q" is required.' });
-    }
+  try {
+    const response = await axios.get(url);
+    // Check if suggestions is an array before assigning
+    const suggestions = Array.isArray(response.data[1][0]) ? response.data[1][0] : [];
 
-    try {
-        const response = await axios.get(`https://www.google.com/complete/search?client=youtube&hl=ja&ds=yt&q=${encodeURIComponent(query)}`);
-        const suggestions = response.data[1].map(suggestion => suggestion[0]);
-        res.json(suggestions);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'An error occurred while fetching suggestions.' });
-    }
+    res.render('index', { suggestions });
+  } catch (error) {
+    console.error(error);
+    res.render('index', { error: '検索に失敗しました' });
+  }
 });
 
 //緊急
