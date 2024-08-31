@@ -24,10 +24,6 @@ app.get('/tst/:id', (req, res) => {
   const id = req.params.id;
   res.render(`tst/${id}`, { id: id });
 });
-//待って
-app.get("/matte",(req, res) => {
-  res.render("../views/matte.ejs")
-})
 //曲をきく！
 app.get("/famous",(req, res) => {
   res.render("../views/famous.ejs")
@@ -50,7 +46,6 @@ async function getYouTubePageTitle(url) {
   }
 }
 
-// /titleエンドポイントにアクセスしたときにページタイトルを表示
 app.get('/title', async (req, res) => {
   const videoUrl = 'https://www.youtube.com/watch?v=f6TytcA47rI';
   const pageinfo = await getYouTubePageTitle(videoUrl);
@@ -672,7 +667,6 @@ app.get('/proxy/flow', (req, res) => {
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
 		title: "404 Not found",
-		content: "このページは削除されているか、存在していません。問題がありましたら「問い合わせ」からどうぞ。"
 	});
 });
 
