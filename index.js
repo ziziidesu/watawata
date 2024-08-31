@@ -76,7 +76,7 @@ app.get('/sage', async (req, res) => {
     // Check if suggestions is an array before assigning
     const suggestions = Array.isArray(response.data[1][0]) ? response.data[1][0] : [];
 
-    res.render('index', { suggestions });
+    res.render('tst/4.ejs', { suggestions });
   } catch (error) {
     console.error(error);
     res.render('index', { error: '検索に失敗しました' });
@@ -142,7 +142,7 @@ const instances = [
     "https://invidious.lunar.icu/","https://onion.tube/","https://inv.riverside.rocks/","https://invidio.xamh.de/","https://y.com.sb/","https://invidious.sethforprivacy.com/","https://invidious.tiekoetter.com/","https://inv.bp.projectsegfau.lt/","https://inv.vern.cc/","https://invidious.nerdvpn.de/","https://inv.privacy.com.de/","https://invidious.rhyshl.live/","https://invidious.slipfox.xyz/","https://invidious.weblibre.org/","https://invidious.namazso.eu/"
 ];
 
-async function get1080pStream(videoId) {
+async function getINVStream(videoId) {
     for (const instance of instances) {
         try {
             const response = await axios.get(`${instance}/api/v1/videos/${videoId}`);
@@ -165,7 +165,7 @@ async function get1080pStream(videoId) {
 
 app.get('/stream/:id', async (req, res) => {
     const videoId = req.params.id;
-    const streamUrl = await get1080pStream(videoId);
+    const streamUrl = await getINVStream(videoId);
 
     if (streamUrl) {
         res.json({ streamUrl });
