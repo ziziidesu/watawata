@@ -143,36 +143,31 @@ const instances = [
 ];
 
 async function getBestStream(videoId) {
-    const promises = instances.map(async (instance) => {
+    for (const instance of instances) {
         try {
             const response = await axios.get(`${instance}/api/v1/videos/${videoId}`);
             const streams = response.data.formatStreams;
+
             if (streams) {
+                // 画質を降順にソート
                 streams.sort((a, b) => b.qualityLabel.localeCompare(a.qualityLabel));
-                return { instance, stream: streams[0].url };
+                return streams[0].url;
+            } else {
+                console.error(`インスタンス ${instance}: formatStreamsが見つかりません。`);
             }
         } catch (error) {
             console.error(`インスタンス ${instance} でエラーが発生しました: ${error.message}`);
         }
-        return null;
-    });
-
-    const results = await Promise.all(promises);
-    const validResults = results.filter(result => result);
-    if (validResults.length > 0) {
-        // 最も高画質なストリームを持つインスタンスを選択
-        validResults.sort((a, b) => b.stream.qualityLabel.localeCompare(a.stream.qualityLabel));
-        return validResults[0].stream;
     }
     return null;
 }
 
 app.get('/stream/:id', async (req, res) => {
     const videoId = req.params.id;
-    const stream_url = await getBestStream(videoId);
+    const streamUrl = await getBestStream(videoId);
 
-    if (stream_url) {
-        res.render('kwatch.ejs', { videoId, stream_url});
+    if (streamUrl) {
+        res.json({ streamUrl });
     } else {
         res.status(404).json({ error: '利用可能なストリームが見つかりませんでした。' });
     }
