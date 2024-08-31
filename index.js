@@ -142,35 +142,39 @@ const instances = [
     "https://invidious.lunar.icu/","https://onion.tube/","https://inv.riverside.rocks/","https://invidio.xamh.de/","https://y.com.sb/","https://invidious.sethforprivacy.com/","https://invidious.tiekoetter.com/","https://inv.bp.projectsegfau.lt/","https://inv.vern.cc/","https://invidious.nerdvpn.de/","https://inv.privacy.com.de/","https://invidious.rhyshl.live/","https://invidious.slipfox.xyz/","https://invidious.weblibre.org/","https://invidious.namazso.eu/"
 ];
 
-async function getINVStream(videoId) {
-    for (const instance of instances) {
+async function getBestStream(videoId) {
+    const promises = instances.map(async (instance) => {
         try {
             const response = await axios.get(`${instance}/api/v1/videos/${videoId}`);
-            console.log(`使用中のインスタンス: ${instance}`);
             const streams = response.data.formatStreams;
-
             if (streams) {
-                const stream1080p = streams.find(stream => stream.qualityLabel === '1080p');
-                return stream1080p ? stream1080p.url : null;
-            } else {
-                console.error("formatStreamsが見つかりませんでした。");
-                return null;
+                streams.sort((a, b) => b.qualityLabel.localeCompare(a.qualityLabel));
+                return { instance, stream: streams[0].url };
             }
         } catch (error) {
-            console.error(`インスタンス ${instance} でエラーが発生しました:`, error);
+            console.error(`インスタンス ${instance} でエラーが発生しました: ${error.message}`);
         }
+        return null;
+    });
+
+    const results = await Promise.all(promises);
+    const validResults = results.filter(result => result);
+    if (validResults.length > 0) {
+        // 最も高画質なストリームを持つインスタンスを選択
+        validResults.sort((a, b) => b.stream.qualityLabel.localeCompare(a.stream.qualityLabel));
+        return validResults[0].stream;
     }
     return null;
 }
 
 app.get('/stream/:id', async (req, res) => {
     const videoId = req.params.id;
-    const streamUrl = await getINVStream(videoId);
+    const stream_url = await getBestStream(videoId);
 
-    if (streamUrl) {
-        res.json({ streamUrl });
+    if (stream_url) {
+        res.render('kwatch.ejs', { videoId, stream_url});
     } else {
-        res.status(404).json({ error: '1080pのストリームが見つかりませんでした。' });
+        res.status(404).json({ error: '利用可能なストリームが見つかりませんでした。' });
     }
 });
 
