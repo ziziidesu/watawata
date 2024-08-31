@@ -22,7 +22,7 @@ app.use(express.static(__dirname + "/public"));
 //tst
 app.get('/tst/:id', (req, res) => {
   const id = req.params.id;
-  res.render(`tst/${id}`, { id: id }); // views/tst/:id.ejs をレンダリング
+  res.render(`tst/${id}`, { id: id });
 });
 //待って
 app.get("/matte",(req, res) => {
