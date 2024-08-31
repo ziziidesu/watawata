@@ -281,28 +281,6 @@ app.get("/live/:id", async (req, res) => {
     res.status(500).render('index', { error: 'Error fetching video info' });
   }
 })
-//ライブ緊急
-app.get("/rlive/:id", async (req, res) => {
-  let videoId = req.params.id;
-  let url = `https://www.youtube.com/watch?v=${videoId}`;
-
-  if (!ytdl.validateURL(url)) {
-    return res.status(400).render('index', { error: 'Invalid YouTube URL' });
-  }
-
-  try {
-    
-    res.render('kwatch.ejs', {videoUrl: videoFormats[0].url});
-  } catch (error) {
-    console.error(error);
-    res.status(500).render('index', { error: 'Error fetching video info' });
-  }
-})
-
-//twitter
-app.get("/xtwi",(req, res) => {
-  res.render("../views/twitter.ejs")
-})
 
 // ホーム
 app.get("/", (req, res) => {
@@ -310,7 +288,7 @@ app.get("/", (req, res) => {
     const referer = req.get('Referer') || 'No referer information';
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     
-    // コンソールに Referer と IP アドレスを書き込む
+    // IPアドレスを記録
     console.log(`URL: ${referer} から来た, IP: ${ip}`);
 });
 
