@@ -1,4 +1,4 @@
-/* styles.css */
+/* 全体のcss */
 body {
   font-family: 'Nico Moji', sans-serif;
   background-color: #f5f5f5;
@@ -8,6 +8,14 @@ body {
   justify-content: center;
   align-items: center;
   margin: 0;
+}
+
+a {
+    color: #FFB6C1;
+}
+
+a:hover {
+    color: #FFA6C9;
 }
 
 header {
