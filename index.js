@@ -238,25 +238,23 @@ app.get('/pytd/:id', async (req, res) => {
   const URL = `https://www.youtube.com/watch?v=${videoId}`;
 
   try {
-    // APIからストリームURLを取得
+    // ストリームURLを取得
     const response = await axios.get(apiUrl);
     const streamUrl = response.data.stream_url;
     const info = await ytdl.getInfo(URL);
     const title = info.videoDetails.title;
     const sanitizedTitle = title.replace(/[^a-zA-Z0-9一-龯ぁ-ゔァ-ヴーｱ-ﾝﾞﾟー]/g, ' ');
 
-    // ストリームURLから動画をクライアントに送信
     https.get(streamUrl, (streamResponse) => {
       if (streamResponse.statusCode !== 200) {
         res.status(streamResponse.statusCode).send(`Failed to download video. Status code: ${streamResponse.statusCode}`);
         return;
       }
 
-      // クライアントにファイルを送信するためのヘッダーを設定
       res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(sanitizedTitle)}.mp4`);
       res.setHeader('Content-Type', 'video/mp4');
 
-      // ストリームデータをクライアントに送信
+      // ダウンロード
       streamResponse.pipe(res);
     }).on('error', (err) => {
       res.status(500).send(`Request error: ${err.message}`);
@@ -278,6 +276,23 @@ app.get("/live/:id", async (req, res) => {
     let info = await ytdl.getInfo(url);
     const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
     res.render('live.ejs', {videoUrl: videoFormats[0].url, info});
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('index', { error: 'Error fetching video info' });
+  }
+})
+//ライブ緊急
+app.get("/rlive/:id", async (req, res) => {
+  let videoId = req.params.id;
+  let url = `https://www.youtube.com/watch?v=${videoId}`;
+
+  if (!ytdl.validateURL(url)) {
+    return res.status(400).render('index', { error: 'Invalid YouTube URL' });
+  }
+
+  try {
+    
+    res.render('kwatch.ejs', {videoUrl: videoFormats[0].url});
   } catch (error) {
     console.error(error);
     res.status(500).render('index', { error: 'Error fetching video info' });
