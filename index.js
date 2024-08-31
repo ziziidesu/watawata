@@ -170,7 +170,6 @@ async function get1080pStream(videoId) {
     return null;
 }
 
-// /stream/:id エンドポイントの実装
 app.get('/stream/:id', async (req, res) => {
     const videoId = req.params.id;
     const streamUrl = await get1080pStream(videoId);
