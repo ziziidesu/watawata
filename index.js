@@ -10,6 +10,7 @@ const axios = require('axios');
 const fs = require('fs');
 const { https } = require('follow-redirects');
 const cors = require('cors');
+const { exec } = require('child_process');
 
 const limit = process.env.LIMIT || 50;
 
@@ -35,7 +36,7 @@ async function getYouTubePageTitle(url) {
     const { data } = await axios.get(url);
     const pageinfo = data;
 
-    //titleを取ってみよ。
+    //titleを取ってみよー
     const titleMatch = data.match(/<title>(.*?)<\/title>/);
     const title = titleMatch ? titleMatch[1] : 'タイトルが取得できませんでした';
     
