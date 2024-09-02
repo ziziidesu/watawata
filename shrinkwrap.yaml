@@ -6,6 +6,7 @@ dependencies:
   follow-redirects: 1.15.6
   m3u8stream: 0.8.6
   miniget: 4.2.3
+  yt-dlp-wrap: 2.3.12
   ytdl-core: 4.11.5
   ytpl: 2.3.0
   ytsr: 3.8.4
@@ -660,6 +661,10 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
+  /yt-dlp-wrap/2.3.12:
+    dev: false
+    resolution:
+      integrity: sha512-P8fJ+6M1YjukyJENCTviNLiZ8mokxprR54ho3DsSKPWDcac489OjRiStGEARJr6un6ETS6goTn4CWl/b/rM3aA==
   /ytdl-core/4.11.5:
     dependencies:
       m3u8stream: 0.8.6
@@ -699,6 +704,7 @@ specifiers:
   follow-redirects: ^1.14.5
   m3u8stream: latest
   miniget: latest
+  yt-dlp-wrap: ^2.3.12
   ytdl-core: ^4.x
   ytpl: ^2.x
   ytsr: ^3.x

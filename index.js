@@ -10,7 +10,6 @@ const axios = require('axios');
 const fs = require('fs');
 const { https } = require('follow-redirects');
 const cors = require('cors');
-const { exec } = require('child_process');
 
 const limit = process.env.LIMIT || 50;
 
@@ -46,6 +45,37 @@ async function getYouTubePageTitle(url) {
     return 'エラーが発生しました';
   }
 }
+
+//yt-dlpテスト
+const YTDlpWrap = require('yt-dlp-wrap').default;
+const ytDlpWrap = new YTDlpWrap('path/to/yt-dlp/binary');
+
+app.get('/ytdlpp', async (req, res) => {
+let ytDlpEventEmitter = ytDlpWrap
+    .exec([
+        'https://www.youtube.com/watch?v=5XehRIb81k8',
+        '-f',
+        'best',
+        '-o',
+        'output.mp4',
+    ])
+    .on('progress', (progress) =>
+        console.log(
+            progress.percent,
+            progress.totalSize,
+            progress.currentSpeed,
+            progress.eta
+        )
+    )
+    .on('ytDlpEvent', (eventType, eventData) =>
+        console.log(eventType, eventData)
+    )
+    .on('error', (error) => console.error(error))
+    .on('close', () => console.log('all done'));
+
+console.log(ytDlpEventEmitter.ytDlpProcess.pid);
+});
+
 
 app.get('/title', async (req, res) => {
   const videoUrl = 'https://www.youtube.com/watch?v=f6TytcA47rI';
