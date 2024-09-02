@@ -35,7 +35,7 @@ async function getYouTubePageTitle(url) {
     const { data } = await axios.get(url);
     const pageinfo = data;
 
-    //titleを
+    //titleを取ってみよ。
     const titleMatch = data.match(/<title>(.*?)<\/title>/);
     const title = titleMatch ? titleMatch[1] : 'タイトルが取得できませんでした';
     
