@@ -61,7 +61,7 @@ app.get('/login/guest/:id', async (req, res) => {
     res.render('login/guest.ejs', { videoId, stream_url});
   } catch (error) {
     console.error(error);
-    res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
+    res.status(500).render('login/matte.ejs', { videoId, error: '動画を取得できません', details: error.message });
   }
 });
 //ログアウト
