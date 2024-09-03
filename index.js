@@ -30,6 +30,15 @@ app.use((req, res, next) => {
     }
     next();
 });
+//ログイン済み？
+app.get('/login/if', async (req, res) => {
+    if (req.cookies.pass !== 'ok') {
+        res.redirect('/login');
+        res.render({ error: 'ログインしていません。もう一度ログインして下さい' })
+    } else {
+        res.redirect('/');
+    }
+});
 // ログインページ
 app.get('/login', (req, res) => {
     res.render('login', { error: null });
