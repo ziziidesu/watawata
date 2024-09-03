@@ -27,16 +27,13 @@
             question.textContent = '？';
             question.className = 'question';
             document.body.appendChild(question);
-            // ランダムな位置に配置
             question.style.left = `${Math.random() * window.innerWidth}px`;
             question.style.top = `${Math.random() * window.innerHeight}px`;
         }
 
         function addQuestions() {
-            // 初期の「？」を追加
             createQuestion();
 
-            // 「？」を増やす関数
             function increaseQuestions() {
                 const questions = document.querySelectorAll('.question');
                 const numToAdd = questions.length * 2;
