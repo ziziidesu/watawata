@@ -20,6 +20,7 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 
 //ログイン
 // パスワードページ以外のリクエストを検査
@@ -31,13 +32,7 @@ app.use((req, res, next) => {
 });
 // ログインページ
 app.get('/login', (req, res) => {
-    res.send(`
-        <form action="/login" method="post" style="display: flex; flex-direction: column; align-items: center;">
-            <label for="password">パスワードを入力して下さい</label>
-            <input type="password" id="password" name="password" required style="padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc;">
-            <button type="submit" style="padding: 10px 20px; border-radius: 5px; background-color: #4CAF50; color: white; border: none;">送信</button>
-        </form>
-    `);
+    res.render('login', { error: null });
 });
 // パスワード確認処理
 app.post('/login', (req, res) => {
@@ -46,7 +41,7 @@ app.post('/login', (req, res) => {
         res.cookie('pass', 'ok', { maxAge: 5 * 24 * 60 * 60 * 1000, httpOnly: true });
         return res.redirect('/');
     } else {
-        res.send('<p>パスワードが間違っています。</p><a href="/login">戻る</a>');
+        res.render('login', { error: 'パスワードが間違っています。もう一度お試しください。' });
     }
 });
 
