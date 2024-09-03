@@ -49,7 +49,7 @@ app.get('/login/forgot', (req, res) => {
   res.render(`login/forgot.ejs`);
 });
 //共有用
-app.get('/login/gest/:id', async (req, res) => {
+app.get('/login/guest/:id', async (req, res) => {
   let videoId = req.params.id;
   let url = `https://www.youtube.com/watch?v=${videoId}`;
   const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
@@ -58,7 +58,7 @@ app.get('/login/gest/:id', async (req, res) => {
     const response = await axios.get(apiUrl);
     const { stream_url } = response.data;
     
-    res.render('kwatch.ejs', { videoId, stream_url});
+    res.render('login/guest.ejs', { videoId, stream_url});
   } catch (error) {
     console.error(error);
     res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
