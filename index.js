@@ -10,6 +10,7 @@ const axios = require('axios');
 const fs = require('fs');
 const { https } = require('follow-redirects');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const limit = process.env.LIMIT || 50;
 
@@ -18,6 +19,7 @@ const user_agent = process.env.USER_AGENT || "Mozilla/5.0 (Windows NT 10.0; Win6
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
+app.use(cookieParser());
 
 //tst
 app.get('/tst/:id', (req, res) => {
