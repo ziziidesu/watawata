@@ -33,10 +33,9 @@ app.use((req, res, next) => {
 //ログイン済み？
 app.get('/login/if', async (req, res) => {
     if (req.cookies.pass !== 'ok') {
-        res.redirect('/login');
-        res.render({ error: 'ログインしていません。もう一度ログインして下さい' })
+        res.render('login', { error: 'ログインしていません。もう一度ログインして下さい' })
     } else {
-        res.redirect('/');
+        return res.redirect('/');
     }
 });
 // ログインページ
