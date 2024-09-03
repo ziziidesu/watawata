@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 //ログイン
 // パスワードページ以外のリクエストを検査
 app.use((req, res, next) => {
-    if (req.cookies.pass !== 'ok' && req.path !== '/login') {
+    if (req.cookies.pass !== 'ok' && !req.path.includes('login')) {
         return res.redirect('/login');
     }
     next();
@@ -43,6 +43,26 @@ app.post('/login', (req, res) => {
     } else {
         res.render('login', { error: 'パスワードが間違っています。もう一度お試しください。' });
     }
+});
+//パスワードを忘れた場合
+app.get('/login/forgot', (req, res) => {
+  res.render(`login/forgot.ejs`);
+});
+//共有用
+app.get('/login/gest/:id', async (req, res) => {
+  let videoId = req.params.id;
+  let url = `https://www.youtube.com/watch?v=${videoId}`;
+  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
+  
+  try {
+    const response = await axios.get(apiUrl);
+    const { stream_url } = response.data;
+    
+    res.render('kwatch.ejs', { videoId, stream_url});
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
+  }
 });
 
 //tst
