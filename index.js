@@ -64,17 +64,12 @@ app.get('/login/guest/:id', async (req, res) => {
     res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
   }
 });
-
 //ログアウト
 app.post('/logout', (req, res) => {
-    const password = req.body.password;
-    if (password === 'massiro') {
-        res.cookie('pass', 'false', { maxAge: 5 * 24 * 60 * 60 * 1000, httpOnly: true });
-        return res.redirect('/login');
-    } else {
-        res.render('login', { error: 'パスワードが間違っています。もう一度お試しください。' });
-    }
+    res.cookie('pass', 'false', { maxAge: 1, httpOnly: true });
+    return res.redirect('/login');
 });
+
 //tst
 app.get('/tst/:id', (req, res) => {
   const id = req.params.id;
