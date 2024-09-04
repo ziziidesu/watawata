@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 //ログイン
-// パスワードページ以外のリクエストを検査
+// ログインちぇっく
 app.use((req, res, next) => {
     if (req.cookies.pass !== 'ok' && !req.path.includes('login')) {
         return res.redirect('/login');
@@ -42,7 +42,7 @@ app.get('/login/if', async (req, res) => {
 app.get('/login', (req, res) => {
     res.render('login', { error: null });
 });
-// パスワード確認処理
+// パスワード確認
 app.post('/login', (req, res) => {
     const password = req.body.password;
     if (password === 'massiro') {
