@@ -90,7 +90,7 @@ app.get("/famous",(req, res) => {
 //てすとー！
 async function getYouTubePageTitle(url) {
   try {
-    // YouTubeページのHTMLを取得
+    // YouTubeページのHTMLを強奪
     const { data } = await axios.get(url);
     const pageinfo = data;
 
@@ -330,7 +330,7 @@ app.get("/live/:id", async (req, res) => {
     res.render('live.ejs', {videoUrl: videoFormats[0].url, info});
   } catch (error) {
     console.error(error);
-    res.status(500).render('index', { error: 'Error fetching video info' });
+    res.status(500).render('index.html', { error: 'Error fetching video info' });
   }
 })
 
@@ -448,7 +448,7 @@ app.get('/listen/:id', async (req, res) => {
   let url = `https://www.youtube.com/watch?v=${videoId}`;
 
   if (!ytdl.validateURL(url)) {
-    return res.status(400).render('index', { error: 'Invalid YouTube URL' });
+    return res.status(400).render('index.html', { error: 'Invalid YouTube URL' });
   }
 
   try {
@@ -460,7 +460,7 @@ app.get('/listen/:id', async (req, res) => {
     res.render('listen', { audioUrl: audioFormats[0].url, info });
   } catch (error) {
     console.error(error);
-    res.status(500).render('index', { error: 'Error fetching audio info' });
+    res.status(500).render('index.html', { error: 'Error fetching audio info' });
   }
 });
 
@@ -662,7 +662,7 @@ app.get("/proxy/",(req, res) => {
   res.render("../read/proxy.ejs")
 })
 
-//setting
+//設定
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -685,7 +685,7 @@ function parseCookies(request) {
 app.get('/setting', (req, res) => {
     const cookies = parseCookies(req);
     const wakames = cookies.wakames === 'true';
-    res.render('setting', { wakames });
+    res.render('setting.ejs', { wakames });
 });
 
 app.post('/setting', (req, res) => {
