@@ -150,8 +150,9 @@ app.get('/w/:id', async (req, res) => {
     const videoViews = viewsMatch ? viewsMatch[1] : '再生回数を取得できませんでした';
     const channelImage = channelImageMatch ? channelImageMatch[1] : '取得できませんでした';
     const channelName = channelNameMatch ? channelNameMatch[1] : '取得できませんでした';
+    const channelId = channnelIdMatch ? channnelIdMatch[1] : '取得できませんでした';
 
-    res.render('infowatch.ejs', { videoId, stream_url, videoTitle, videoDes, videoViews, channelImage, channelName});
+    res.render('infowatch.ejs', { videoId, stream_url, videoTitle, videoDes, videoViews, channelImage, channelName, channelId});
   } catch (error) {
     console.error(error);
     res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
