@@ -116,33 +116,6 @@ app.get('/des/:id', async (req, res) => {
     }
 });
 
-//動画の情報を取得
-app.post('/getinfo/:id', async (req, res) => {
-    const videoId = req.params.id;
-    const url = `https://www.youtube.com/watch?v=${videoId}`;
-
-    try {
-        // HTMLを取得
-        const response = await axios.get(url);
-        const html = response.data;
-
-        // 正規表現で検索
-        const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
-        const descriptionMatch = html.match(/"content":"(.*?)"/);
-        const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
-
-        // タイトルと概要を抽出
-        const videoTitle = titleMatch ? titleMatch[1] : '取得できませんでした';
-        const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '取得できませんでした';
-        const videoViews = viewsMatch ? viewsMatch[1] : '取得できませんでした';
-
-        res.render({ videoTitle, videoDes, videoViews});
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error scraping YouTube data');
-    }
-});
 //取得して再生
 app.get('/pa/:id', async (req, res) => {
   let videoId = req.params.id;
@@ -153,7 +126,16 @@ app.get('/pa/:id', async (req, res) => {
     const response = await axios.get(apiUrl);
     const { stream_url } = response.data;
     
-    res.render('kwatch.ejs', { videoId, stream_url});
+    const inforesponse = await axios.get(url);
+    const html = inforesponse.data;
+    const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
+    const descriptionMatch = html.match(/"content":"(.*?)"/);
+    const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
+    const videoTitle = titleMatch ? titleMatch[1] : '取得できませんでした';
+    const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '取得できませんでした';
+    const videoViews = viewsMatch ? viewsMatch[1] : '取得できませんでした';
+
+    res.render('infowatch.ejs', { videoId, stream_url, videoTitle, videoDes, videoViews});
   } catch (error) {
     console.error(error);
     res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
