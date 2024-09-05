@@ -90,16 +90,16 @@ app.get('/des/:id', async (req, res) => {
     const url = `https://www.youtube.com/watch?v=${videoId}`;
 
     try {
-        // HTMLを取得
+        // スクレイピング
         const response = await axios.get(url);
         const html = response.data;
 
-        // 正規表現で検索
+        // 目当てのものを検索
         const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
         const descriptionMatch = html.match(/"content":"(.*?)"/);
         const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
 
-        // タイトルと概要を抽出
+        // 抽出
         const videoTitle = titleMatch ? titleMatch[1] : '取得できませんでした';
         const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '取得できませんでした';
         const videoViews = viewsMatch ? viewsMatch[1] : '取得できませんでした';
