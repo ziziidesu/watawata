@@ -100,6 +100,7 @@ app.get('/des/:id', async (req, res) => {
         const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
         const channnelIdMatch = html.match(/"browseEndpoint":\{.*?"browseId":"(.*?)"/);
         const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
+        const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
 
         // 抽出
         const videoTitle = titleMatch ? titleMatch[1] : '取得できませんでした';
@@ -107,12 +108,15 @@ app.get('/des/:id', async (req, res) => {
         const videoViews = viewsMatch ? viewsMatch[1] : '再生回数を取得できませんでした';
         const channelId = channnelIdMatch ? channnelIdMatch[1] : '取得できませんでした';
         const channelImage = channelImageMatch ? channelImageMatch[1] : '取得できませんでした';
+        const channelName = channelNameMatch ? channelNameMatch[1] : '取得できませんでした';
 
         res.json({
             "video-title": videoTitle,
             "video-des": videoDes,
             "video-views": videoViews,
-            "video-des": videoDes,
+            "channel-id": channelId,
+            "channel-image": channelImage,
+            "channel-name": channelName
         });
 
     } catch (error) {
