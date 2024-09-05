@@ -83,6 +83,35 @@ app.get('/tst/:id', (req, res) => {
   const id = req.params.id;
   res.render(`tst/${id}`, { id: id });
 });
+//概要、タイトル取得
+app.get('/des/:id', async (req, res) => {
+    const videoId = req.params.id;
+    const url = `https://www.youtube.com/watch?v=${videoId}`;
+
+    try {
+        // YouTubeページのHTMLを取得
+        const response = await axios.get(url);
+        const html = response.data;
+
+        // HTML内の必要なデータ部分を正規表現で検索
+        const titleMatch = html.match(/"text":"(.*?)"/);
+        const descriptionMatch = html.match(/"content":"(.*?)"/);
+
+        // タイトルと概要を抽出
+        const videoTitle = titleMatch ? titleMatch[1] : 'Title not found';
+        const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : 'Description not found';
+
+        // 結果を返す
+        res.json({
+            "video-title": videoTitle,
+            "video-des": videoDes
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error scraping YouTube data');
+    }
+});
 //曲をきく！
 app.get("/famous",(req, res) => {
   res.render("../views/famous.ejs")
