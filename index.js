@@ -132,9 +132,9 @@ app.get('/w/:id', async (req, res) => {
     const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
     const descriptionMatch = html.match(/"content":"(.*?)"/);
     const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
-    const videoTitle = titleMatch ? titleMatch[1] : '取得できませんでした';
-    const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '取得できませんでした';
-    const videoViews = viewsMatch ? viewsMatch[1] : '取得できませんでした';
+    const videoTitle = titleMatch ? titleMatch[1] : 'タイトルを取得できませんでした';
+    const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '概要を取得できませんでした';
+    const videoViews = viewsMatch ? viewsMatch[1] : '再生回数を取得できませんでした';
 
     res.render('infowatch.ejs', { videoId, stream_url, videoTitle, videoDes, videoViews});
   } catch (error) {
@@ -665,9 +665,10 @@ app.get("/blog",(req, res) => {
   res.render("../views/blog.ejs")
 })
 
-app.get("/blog/up",(req, res) => {
-  res.render("../views/blog/update.ejs")
-})
+app.get('/blog/:id', (req, res) => {
+  const id = req.params.id;
+  res.render(`blog/${id}`, { id: id });
+});
 
 //お問い合わせ
 app.get("/send",(req, res) => {
