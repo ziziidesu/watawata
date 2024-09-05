@@ -117,7 +117,8 @@ app.get('/des/:id', async (req, res) => {
 });
 
 //取得して再生
-app.get('/pa/:id', async (req, res) => {
+//動画情報を取得しつつ再生
+app.get('/w/:id', async (req, res) => {
   let videoId = req.params.id;
   let url = `https://www.youtube.com/watch?v=${videoId}`;
   const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
@@ -201,8 +202,8 @@ app.get('/sage', async (req, res) => {
   }
 });
 
-//緊急
-app.get('/w/:id', async (req, res) => {
+//緊急(情報取得なし)
+app.get('/kwatch/:id', async (req, res) => {
   let videoId = req.params.id;
   let url = `https://www.youtube.com/watch?v=${videoId}`;
   const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
