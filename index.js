@@ -141,11 +141,16 @@ app.get('/w/:id', async (req, res) => {
     const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
     const descriptionMatch = html.match(/"content":"(.*?)"/);
     const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
+    const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
+    const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
+
     const videoTitle = titleMatch ? titleMatch[1] : 'タイトルを取得できませんでした';
     const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '概要を取得できませんでした';
     const videoViews = viewsMatch ? viewsMatch[1] : '再生回数を取得できませんでした';
+    const channelImage = channelImageMatch ? channelImageMatch[1] : '取得できませんでした';
+    const channelName = channelNameMatch ? channelNameMatch[1] : '取得できませんでした';
 
-    res.render('infowatch.ejs', { videoId, stream_url, videoTitle, videoDes, videoViews});
+    res.render('infowatch.ejs', { videoId, stream_url, videoTitle, videoDes, videoViews, channelImage, channelName});
   } catch (error) {
     console.error(error);
     res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
