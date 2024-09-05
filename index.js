@@ -83,28 +83,31 @@ app.get('/tst/:id', (req, res) => {
   const id = req.params.id;
   res.render(`tst/${id}`, { id: id });
 });
+
 //概要、タイトル取得
 app.get('/des/:id', async (req, res) => {
     const videoId = req.params.id;
     const url = `https://www.youtube.com/watch?v=${videoId}`;
 
     try {
-        // YouTubeページのHTMLを取得
+        // HTMLを取得
         const response = await axios.get(url);
         const html = response.data;
 
-        // HTML内の必要なデータ部分を正規表現で検索
-        const titleMatch = html.match(/"text":"(.*?)"/);
+        // 正規表現で検索
+        const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
         const descriptionMatch = html.match(/"content":"(.*?)"/);
+        const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
 
         // タイトルと概要を抽出
-        const videoTitle = titleMatch ? titleMatch[1] : 'Title not found';
-        const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : 'Description not found';
+        const videoTitle = titleMatch ? titleMatch[1] : '取得できませんでした';
+        const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '取得できませんでした';
+        const videoViews = viewsMatch ? viewsMatch[1] : '取得できませんでした';
 
-        // 結果を返す
         res.json({
             "video-title": videoTitle,
-            "video-des": videoDes
+            "video-des": videoDes,
+            "video-views": videoViews
         });
 
     } catch (error) {
@@ -112,6 +115,10 @@ app.get('/des/:id', async (req, res) => {
         res.status(500).send('Error scraping YouTube data');
     }
 });
+
+//動画の情報を取得
+
+
 //曲をきく！
 app.get("/famous",(req, res) => {
   res.render("../views/famous.ejs")
