@@ -41,7 +41,7 @@
     <small class="text-muted">共有用URL: https://wakame02q.glitch.me/login/guest/<%= videoId %></small>
   </div>
   <div class="card-channel">
-    <div class="channelicon"></div>
+    <div class="channelicon"></div><%= channelName %>
   </div>
   <div class="toolcard-header">
     <small class="text-muted"></small>
@@ -103,7 +103,8 @@
 }
 video {
   width: 100%;
-  height:
+  height:auto
+  }
 .toolcard-header {
   background-color: #FFF5F7;
   padding: 10px 10px;
@@ -114,12 +115,12 @@ video {
   height: 30px;
 }
         .channelicon {
-            width: 50px;
-            height: 25px;
+            width: 35px;
+            height: 35px;
             background-image: url('<%= channelImage %>');
             background-size: cover;
-            margin-right: 15px;
             cursor: pointer;
+            margin-left: 15px;
         }
   </style>
   </body>
