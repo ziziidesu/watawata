@@ -184,7 +184,7 @@ async function getYouTubePageTitle(url) {
 }
 
 app.get('/title', async (req, res) => {
-  const videoUrl = 'https://www.youtube.com/watch?v=8pGRdRhjX3o';
+  const videoUrl = 'https://www.youtube.com/watch?v=rjBsXzQ4I04';
   const pageinfo = await getYouTubePageTitle(videoUrl);
   res.setHeader('Content-Type', 'text/plain');
   res.send(`${pageinfo}`);
