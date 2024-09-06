@@ -148,7 +148,7 @@ app.get('/w/:id', async (req, res) => {
     const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
     const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
     const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
-    const channnelIdMatch = html.match(/"browseEndpoint":\{.*?"browseId":"(.*?)"/);
+    const channnelIdMatch = html.match(/"subscribeEndpoint":\{.*?"channelIds":"(.*?)"/);
 
     const videoTitle = titleMatch ? titleMatch[1] : 'タイトルを取得できませんでした';
     const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '概要を取得できませんでした';
@@ -188,7 +188,7 @@ async function getYouTubePageTitle(url) {
 }
 
 app.get('/title', async (req, res) => {
-  const videoUrl = 'https://www.youtube.com/watch?v=rjBsXzQ4I04';
+  const videoUrl = 'https://www.youtube.com/watch?v=od4QcDPpNVk';
   const pageinfo = await getYouTubePageTitle(videoUrl);
   res.setHeader('Content-Type', 'text/plain');
   res.send(`${pageinfo}`);
