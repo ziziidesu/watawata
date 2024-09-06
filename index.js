@@ -1,5 +1,5 @@
 const m3u8stream = require('m3u8stream');
-const ytdl = require("@distube/ytdl-core");
+const ytdl = require("ytdl-core");
 const ytsr = require("ytsr");
 const ytpl = require("ytpl");
 const miniget = require("miniget");
