@@ -31,7 +31,7 @@ app.use((req, res, next) => {
     next();
 });
 //ログイン済み？
-app.get('/login/if', async (req, res) => {
+app.get('/login/if', async (req, res) => が
     if (req.cookies.pass !== 'ok') {
         res.render('login', { error: 'ログインしていません。もう一度ログインして下さい' })
     } else {
@@ -71,7 +71,7 @@ app.get('/login/guest/:id', async (req, res) => {
     const { stream_url } = response.data;
     
     res.render('login/guest.ejs', { videoId, stream_url});
-  } catch (error) {
+  } catch (error) { 
     console.error(error);
     res.status(500).render('login/matte.ejs', { videoId, error: '動画を取得できません', details: error.message });
   }
