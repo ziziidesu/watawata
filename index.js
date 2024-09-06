@@ -31,7 +31,7 @@ app.use((req, res, next) => {
     next();
 });
 //ログイン済み？
-app.get('/login/if', async (req, res) => が
+app.get('/login/if', async (req, res) => {
     if (req.cookies.pass !== 'ok') {
         res.render('login', { error: 'ログインしていません。もう一度ログインして下さい' })
     } else {
