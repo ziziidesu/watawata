@@ -148,7 +148,7 @@ app.get('/w/:id', async (req, res) => {
     const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
     const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
     const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
-    const channnelIdMatch = html.match(/"subscribeEndpoint":\{.*?"channelIds":"(.*?)"/);
+    const channnelIdMatch = html.match(/"subscribeEndpoint":\{.*?"channelIds":["(.*?)"]/);
 
     const videoTitle = titleMatch ? titleMatch[1] : 'タイトルを取得できませんでした';
     const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '概要を取得できませんでした';
@@ -517,9 +517,10 @@ app.get("/c/:id", async (req, res) => {
 		});
 	} catch (error) {
 		console.error(error);
-		res.status(500).render("error.ejs", {
+		res.status(500).render("error.ejs",{
 			title: "ytpl Error",
-			content: error
+			content: error,
+      error: 'チャンネルIDが正しくありません'
 		});
 	}
 });
