@@ -699,42 +699,10 @@ app.get("/app",(req, res) => {
 })
 
 //game
-app.get("/game/stickman",(req, res) => {
-  res.render("../game/stickman.ejs")
-})
-app.get("/game/ctr",(req, res) => {
-  res.render("../game/ctr.ejs")
-})
-app.get("/game/taiko",(req, res) => {
-  res.render("../game/taiko.ejs")
-})
-app.get("/game/2048",(req, res) => {
-  res.render("../game/2048.ejs")
-})
-app.get("/game/snow",(req, res) => {
-  res.render("../game/snow.ejs")
-})
-app.get("/game/topwar",(req, res) => {
-  res.render("../game/topwar.ejs")
-})
-app.get("/game/interland",(req, res) => {
-  res.render("../game/interland.ejs")
-})
-app.get("/game/driftboss",(req, res) => {
-  res.render("../game/driftboss.ejs")
-})
-app.get("/game/paper",(req, res) => {
-  res.render("../game/paper.ejs")
-})
-app.get("/game/drive",(req, res) => {
-  res.render("../game/drive.ejs")
-})
-app.get("/game/aiothello",(req, res) => {
-  res.render("../game/aiothello.ejs")
-})
-app.get("/game/stellar",(req, res) => {
-  res.render("../game/stellar.ejs")
-})
+app.get('/game/:id', (req, res) => {
+  const id = req.params.id;
+  res.render(`game/${id}`, { id: id });
+});
 
 //proxy
 app.get("/proxy/",(req, res) => {
