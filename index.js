@@ -701,7 +701,7 @@ app.get("/app",(req, res) => {
 //game
 app.get('/game/:id', (req, res) => {
   const id = req.params.id;
-  res.render(`game/${id}`, { id: id });
+  res.render(`../game/${id}.ejs`, { id: id });
 });
 
 //proxy
