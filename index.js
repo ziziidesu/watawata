@@ -49,7 +49,12 @@ app.post('/login', (req, res) => {
         res.cookie('pass', 'ok', { maxAge: 5 * 24 * 60 * 60 * 1000, httpOnly: true });
         return res.redirect('/');
     } else {
-        res.render('login', { error: 'パスワードが間違っています。もう一度お試しください。' });
+         if (password === 'お花') {
+               res.cookie('pass', 'ok', { maxAge: 5 * 24 * 60 * 60 * 1000, httpOnly: true });
+               return res.redirect('/ohana');
+         } else {
+               res.render('login', { error: 'パスワードが間違っています。もう一度お試しください。' });
+    }
     }
 });
 //パスワードを忘れた場合
