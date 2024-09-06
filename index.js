@@ -138,8 +138,9 @@ app.get('/w/:id', async (req, res) => {
     
     const inforesponse = await axios.get(url);
     const html = inforesponse.data;
+
     const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
-    const descriptionMatch = html.match(/"content":"(.*?)"/);
+    const descriptionMatch = html.match(/"attributedDescriptionBodyText":\{.*?"content":"(.*?)"/);
     const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
     const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
     const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
@@ -182,7 +183,7 @@ async function getYouTubePageTitle(url) {
 }
 
 app.get('/title', async (req, res) => {
-  const videoUrl = 'https://www.youtube.com/watch?v=f6TytcA47rI';
+  const videoUrl = 'https://www.youtube.com/watch?v=8pGRdRhjX3o';
   const pageinfo = await getYouTubePageTitle(videoUrl);
   res.setHeader('Content-Type', 'text/plain');
   res.send(`${pageinfo}`);
