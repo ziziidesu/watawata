@@ -197,7 +197,6 @@ app.get('/title', async (req, res) => {
 app.get('/title2', async (req, res) => {
   const videoUrl = 'https://sp.nicovideo.jp/watch/sm39201019';
   const pageinfo = await getYouTubePageTitle(videoUrl);
-  res.setHeader('Content-Type', 'text/plain');
   res.send(`${pageinfo}`);
 });
 
