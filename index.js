@@ -140,7 +140,7 @@ app.get('/w/:id', async (req, res) => {
     const html = inforesponse.data;
 
     const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
-    const descriptionMatch = html.match(/"attributedDescriptionBodyText":\{.*?"content":"(.*?)"/);
+    const descriptionMatch = html.match(/"attributedDescriptionBodyText":\{.*?"content":"(.*?)","commandRuns/);
     const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
     const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
     const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
@@ -164,6 +164,7 @@ app.get('/w/:id', async (req, res) => {
 app.get("/famous",(req, res) => {
   res.render("../views/famous.ejs")
 })
+
 //てすとー！
 async function getYouTubePageTitle(url) {
   try {
