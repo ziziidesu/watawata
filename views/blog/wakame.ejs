@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APIの使い方解説</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>APIの使い方解説</h1>
+      <p>動画情報を取得するための簡単なガイドです。</p>
+    </div>
+  </header>
+
+  <nav>
+    <div class="container">
+      <ul>
+        <li><a href="#endpoint">エンドポイント</a></li>
+        <li><a href="#request">リクエスト方法</a></li>
+        <li><a href="#code-sample">サンプルコード</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+      <section id="endpoint">
+        <h2>1. APIのエンドポイント</h2>
+        <p>APIにリクエストを送る際のエンドポイントURLは次の通りです：</p>
+        <div class="code-block">
+          <code>https://example.com/api</code>
+        </div>
+      </section>
+
+      <section id="request">
+        <h2>2. リクエスト方法</h2>
+        <p>リクエストは <code>POST</code> メソッドで行います。必要な情報をJSON形式で送信します。</p>
+      </section>
+
+      <section id="code-sample">
+        <h2>3. サンプルコード</h2>
+        <p>以下のコードを使って、Node.jsでAPIにリクエストを送信できます。コピペして使ってください：</p>
+        <div class="code-block">
+          <pre><code>
+// 必要なパッケージをインストール
+const axios = require('axios');
+
+axios.post('https://example.com/api', {
+  key: 'value'  // 実際のリクエストに合わせて変更
+})
+  .then(response => {
+    console.log(response.data);  // 取得したデータを処理
+  })
+  .catch(error => {
+    console.error('エラーが発生しました:', error);
+  });
+          </code></pre>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>このAPIを使って、動画情報を簡単に取得し、あなたのプロジェクトに活用してください！</p>
+    </div>
+  </footer>
+</body>
+</html>
