@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>わかめ一覧</title>
+  <style>
+    /* 全体のスタイル */
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+
+    header p {
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+
+    nav {
+      background-color: #333;
+      padding: 10px 0;
+    }
+
+    nav ul {
+      list-style: none;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+    }
+
+    nav ul li {
+      display: inline;
+      margin: 0 20px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.1em;
+    }
+
+    nav ul li a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+
+    h2 {
+      color: #333;
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 5px;
+      margin-bottom: 20px;
+    }
+
+    /* ブログカードのスタイル */
+    .blog-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .blog-card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      width: 30%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .blog-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .blog-card-content {
+      padding: 20px;
+    }
+
+    .blog-card-title {
+      font-size: 1.5em;
+      margin: 0;
+      color: #333;
+    }
+
+    .blog-card-excerpt {
+      font-size: 1em;
+      color: #666;
+      margin: 10px 0;
+    }
+
+    .blog-card a {
+      display: inline-block;
+      margin-top: 10px;
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .blog-card a:hover {
+      text-decoration: underline;
+    }
+
+  wakame02 {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1em 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+wakamep {
+    font-size: 1em;
+    margin: 0;
+    color: #666;
+}
+.hover-target {
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-card {
+            display: none;
+            left: 50%;
+            border-radius: 10px;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .hover-target:hover .profile-card {
+            display: block;
+        }
+
+        .profile-card img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+        }
+
+        .profile-card .name {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        .profile-card .description {
+            font-size: 1em;
+            color: #666;
+}
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ブログ一覧</h1>
+    <p>わかめtubeの運営によるブログ</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="/">ホーム</a></li>
+      <li><a href="/blog">お知らせ</a></li>
+      <li><a href="/blog/up">アップデートログ</a></li>
+      <li><a href="/send">お問い合わせ</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h2>最新の記事</h2>
+
+    <div class="blog-list">
+      <div class="blog-card">
+        <img src="https://via.placeholder.com/400x200" alt="ブログ画像1">
+        <div class="blog-card-content">
+          <h3 class="blog-card-title">わかめAPIの使い方</h3>
+          <p class="blog-card-excerpt">わかめtubeのAPIを使って動画情報を取得してみましょう:)<br>とても簡単です。</p>
+          <a href="#">続きを読む</a>
+        </div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <wakame02>
+  <div class="hover-target">
+    <wakamep>&copy; 2024 わかめ02</wakamep>
+    <div class="profile-card">
+        <img src="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/IMG_1281.png?v=1718682861752" alt="アイコン">
+        <div class="name">わかめ02</div>
+        <div class="description">わーい</div>
+    </div>
+</div>
+  </wakame02>
+
+</body>
+</html>
