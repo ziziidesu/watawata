@@ -148,7 +148,7 @@ app.get('/w/:id', async (req, res) => {
     const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
     const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
     const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
-    const channnelIdMatch = html.match(/"browseEndpoint":\{.*?"browseId":["(.*?)"]/);
+    const channnelIdMatch = html.match(/"subscribeEndpoint":\{.*?"channelIds":"(.*?)"/);
 
     const videoTitle = titleMatch ? titleMatch[1] : 'タイトルを取得できませんでした';
     const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '概要を取得できませんでした';
