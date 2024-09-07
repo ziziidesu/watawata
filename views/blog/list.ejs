@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>わかめ一覧</title>
+  <title>ブログ一覧</title>
   <style>
     /* 全体のスタイル */
     body {
@@ -17,8 +17,8 @@
 
     header {
       background-color: #4CAF50;
-      color: #fff;
-      padding: 20px 0;
+      color: white;
+      padding: 20px;
       text-align: center;
     }
 
@@ -27,208 +27,89 @@
       font-size: 2.5em;
     }
 
-    header p {
-      font-size: 1.2em;
-      margin-top: 10px;
-    }
-
-    nav {
-      background-color: #333;
-      padding: 10px 0;
-    }
-
-    nav ul {
-      list-style: none;
-      text-align: center;
-      padding: 0;
-      margin: 0;
-    }
-
-    nav ul li {
-      display: inline;
-      margin: 0 20px;
-    }
-
-    nav ul li a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 1.1em;
-    }
-
-    nav ul li a:hover {
-      text-decoration: underline;
-    }
-
-    .container {
-      width: 80%;
-      margin: 0 auto;
-      padding: 20px 0;
-    }
-
-    h2 {
-      color: #333;
-      border-bottom: 2px solid #4CAF50;
-      padding-bottom: 5px;
-      margin-bottom: 20px;
-    }
-
-    /* ブログカードのスタイル */
+    /* ブログ一覧表示のスタイル */
     .blog-list {
       display: flex;
+      justify-content: center;
       flex-wrap: wrap;
-      gap: 20px;
+      margin-top: 30px;
     }
 
-    .blog-card {
+    .blog-item {
       background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
       width: 200px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      transition: transform 0.3s ease;
+      margin: 15px;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.2s;
     }
 
-    .blog-card:hover {
+    .blog-item:hover {
       transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
-    .blog-card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-
-    .blog-card-content {
-      padding: 20px;
-    }
-
-    .blog-card-title {
-      font-size: 1.5em;
-      margin: 0;
-      color: #333;
-    }
-
-    .blog-card-excerpt {
-      font-size: 1em;
-      color: #666;
-      margin: 10px 0;
-    }
-
-    .blog-card a {
-      display: inline-block;
-      margin-top: 10px;
+    .blog-item h2 {
+      font-size: 1.3em;
+      margin-bottom: 10px;
       color: #4CAF50;
+    }
+
+    .blog-item p {
+      font-size: 0.9em;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .blog-item a {
+      display: inline-block;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
       text-decoration: none;
-      font-weight: bold;
     }
 
-    .blog-card a:hover {
-      text-decoration: underline;
+    .blog-item a:hover {
+      background-color: #45a049;
     }
 
-  wakame02 {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 1em 0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-wakamep {
-    font-size: 1em;
-    margin: 0;
-    color: #666;
-}
-.hover-target {
-            display: inline-block;
-            position: relative;
-            cursor: pointer;
-        }
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
 
-        .profile-card {
-            display: none;
-            left: 50%;
-            border-radius: 10px;
-            max-width: 300px;
-            text-align: center;
-        }
-
-        .hover-target:hover .profile-card {
-            display: block;
-        }
-
-        .profile-card img {
-            border-radius: 50%;
-            width: 100px;
-            height: 100px;
-        }
-
-        .profile-card .name {
-            font-size: 1.5em;
-            margin: 10px 0;
-        }
-
-        .profile-card .description {
-            font-size: 1em;
-            color: #666;
-}
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>ブログ一覧</h1>
-    <p>わかめtubeの運営によるブログ</p>
-  </header>
+<header>
+  <h1>ブログ一覧</h1>
+</header>
 
-  <nav>
-    <ul>
-      <li><a href="/">ホーム</a></li>
-      <li><a href="/blog">お知らせ</a></li>
-      <li><a href="/blog/up">アップデートログ</a></li>
-      <li><a href="/send">お問い合わせ</a></li>
-    </ul>
-  </nav>
-
-  <div class="container">
-    <h2>最新の記事</h2>
-
-    <div class="blog-list">
-      <div class="blog-card">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/CSIRO_ScienceImage_904_Undaria_pinnatifida_Japanese_kelp.jpg/500px-CSIRO_ScienceImage_904_Undaria_pinnatifida_Japanese_kelp.jpg" alt="ブログ画像1">
-        <div class="blog-card-content">
-          <h3 class="blog-card-title">わかめAPIの使い方</h3>
-          <p class="blog-card-excerpt">わかめtubeのAPIを使って動画情報を取得してみましょう:)<br>とても簡単です。</p>
-          <a href="/blog/wakame">続きを読む</a>
-        </div>
-      </div>
-      
-    <div class="blog-list">
-      <div class="blog-card">
-        <img src="" alt="ブログ画像">
-        <div class="blog-card-content">
-          <h3 class="blog-card-title">タイトル</h3>
-          <p class="blog-card-excerpt">ブログの数がかさ増しされます。</p>
-          <a href="/blog/ddcfg">続きを読む</a>
-        </div>
-      </div>
-
-      
-    </div>
+<div class="blog-list">
+  <div class="blog-item">
+    <h2>わかめAPI</h2>
+    <p>わかめAPIで、YouTube動画の情報を簡単に取得できます！</p>
+    <a href="/blog/wakame">記事を読む</a>
   </div>
 
-  <wakame02>
-  <div class="hover-target">
-    <wakamep>&copy; 2024 わかめ02</wakamep>
-    <div class="profile-card">
-        <img src="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/IMG_1281.png?v=1718682861752" alt="アイコン">
-        <div class="name">わかめ02</div>
-        <div class="description">わーい</div>
-    </div>
+  <div class="blog-item">
+    <h2>タイトル</h2>
+    <p>ブログの数をかさ増ししています。</p>
+    <a href="/blog/ddcfg">記事を読む</a>
+  </div>
+
 </div>
-  </wakame02>
+
+<footer>
+  <p>&copy; 2024 わかめ02. All rights reserved.</p>
+</footer>
 
 </body>
 </html>
