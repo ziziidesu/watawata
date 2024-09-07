@@ -169,6 +169,48 @@ app.get("/famous",(req, res) => {
   res.render("../views/famous.ejs")
 })
 
+//わかめAPI
+app.get('/api/:id', async (req, res) => {
+  let videoId = req.params.id;
+  let url = `https://www.youtube.com/watch?v=${videoId}`;
+  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
+  
+  try {
+    const response = await axios.get(apiUrl);
+    const { stream_url } = response.data;
+    
+    const inforesponse = await axios.get(url);
+    const html = inforesponse.data;
+
+    const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
+    const descriptionMatch = html.match(/"attributedDescriptionBodyText":\{.*?"content":"(.*?)","commandRuns/);
+    const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
+    const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
+    const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
+    const channnelIdMatch = html.match(/"browseEndpoint":\{.*?"browseId":"(.*?)"/);
+
+    const videoTitle = titleMatch ? titleMatch[1] : 'タイトルを取得できませんでした';
+    const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '概要を取得できませんでした';
+    const videoViews = viewsMatch ? viewsMatch[1] : '再生回数を取得できませんでした';
+    const channelImage = channelImageMatch ? channelImageMatch[1] : '取得できませんでした';
+    const channelName = channelNameMatch ? channelNameMatch[1] : '取得できませんでした';
+    const channelId = channnelIdMatch ? channnelIdMatch[1] : '取得できませんでした';
+
+        res.json({
+            "video-title": videoTitle,
+            "video-des": videoDes,
+            "video-views": videoViews,
+            "channel-id": channelId,
+            "channel-image": channelImage,
+            "channel-name": channelName,
+            "stream-url": stream_url
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error');
+    }
+});
+
 //てすとー！
 async function getYouTubePageTitle(url) {
   try {

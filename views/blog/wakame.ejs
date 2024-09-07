@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APIの使い方解説</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/css/wakameblog.css">
 </head>
 <body>
   <header>
     <div class="container">
-      <h1>APIの使い方解説</h1>
+      <h1>わかめから情報を取得してみよう</h1>
       <p>動画情報を取得するための簡単なガイドです。</p>
     </div>
   </header>
@@ -30,7 +30,7 @@
         <h2>1. APIのエンドポイント</h2>
         <p>APIにリクエストを送る際のエンドポイントURLは次の通りです：</p>
         <div class="code-block">
-          <code>https://example.com/api</code>
+          <code>https://wakame02q.glitch.me/api</code>
         </div>
       </section>
 
@@ -46,12 +46,11 @@
           <pre><code>
 // 必要なパッケージをインストール
 const axios = require('axios');
+const url = `https://wakame02q.glitch.me/api/${videoId}`;
 
-axios.post('https://example.com/api', {
-  key: 'value'  // 実際のリクエストに合わせて変更
-})
+await axios.post(url)
   .then(response => {
-    console.log(response.data);  // 取得したデータを処理
+    console.log(response.data);  // 取得したデータをログに書き込む
   })
   .catch(error => {
     console.error('エラーが発生しました:', error);
