@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>APIの使い方解説</title>
+  <title>わかめ</title>
   <link rel="stylesheet" href="/css/wakameblog.css">
 </head>
 <body>
@@ -17,6 +17,7 @@
   <nav>
     <div class="container">
       <ul>
+        <li><a href="/">ホーム</a></li>
         <li><a href="#endpoint">エンドポイント</a></li>
         <li><a href="#request">リクエスト方法</a></li>
         <li><a href="#code-sample">サンプルコード</a></li>
@@ -30,15 +31,16 @@
       <p>
         お久しぶりです。「和布」です。わかめの漢字って、むちゃくちゃ良くないですか！？かっこいい感じもあるし、かわいい感じもある
         素晴らしい名前だと思ってます。<br>
-        と、言うことで。今回は「簡単にYouTube動画を取得してみよう」のコーナー。<br>
+        と、言うことで。今回は「YouTube動画の情報を取得してみよう」のコーナー。<br>
         具体的には、ストリームURL、タイトル、概要、再生回数、チャンネルの画像、チャンネルの名前などが取得できます。
-        このストリーム
+        このストリームURLをvideoタグにぶち込むことで、みんな大好きなYouTubeを見ることもできます😎<br>
+        あまり遅延はしないとは思いますが、やり過ぎるとストリームURLの取得で遅延が発生する場合があります。
       </p>
       <section id="endpoint">
         <h2>1. APIのエンドポイント</h2>
-        <p>APIにリクエストを送る際のエンドポイントURLは次の通りです：</p>
+        <p>APIにリクエストを送る際のURLはこれです：</p>
         <div class="code-block">
-          <code>https://wakame02q.glitch.me/api</code>
+          <code>https://wakame02q.glitch.me/api/login</code>
         </div>
       </section>
 
@@ -48,14 +50,14 @@
       </section>
 
       <section id="code-sample">
-        <h2>3. サンプルコード</h2>
-        <p>以下のコードを使って、Node.jsでリクエストを送信できます。：</p>
+        <h2>3. サンプルコード(Node.js)</h2>
+        <p>axiosを使って、Node.jsでリクエストを送信できます。python信者の方は勝手にやって下さい：</p>
         <div class="code-block">
           <pre><code>
 const axios = require('axios');
 
 async function wakame(videoId) {
-  const url = `https://wakame02q.glitch.me/api/${videoId}`;
+  const url = `https://wakame02q.glitch.me/api/login/${videoId}`;
 
   try {
     const response = await axios.post(url);
