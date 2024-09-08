@@ -38,7 +38,7 @@
       </p>
       <section id="endpoint">
         <h2>1. APIのエンドポイント</h2>
-        <p>APIにリクエストを送る際のURLはこれです：</p>
+        <p>リクエストを送る際のURLはこれです。loginの後ろに動画IDを付けてください：</p>
         <div class="code-block">
           <code>https://wakame02q.glitch.me/api/login</code>
         </div>
@@ -46,7 +46,7 @@
 
       <section id="request">
         <h2>2. 方法</h2>
-        <p>リクエストは <code>POST</code> メソッドで行います。必要な情報をJSON形式で送信します。</p>
+        <p>リクエストは <code>POST</code> メソッドで行います。動画の情報をJSON形式で返します。</p>
       </section>
 
       <section id="code-sample">
@@ -71,13 +71,25 @@ const videoId = 'f6TytcA47rI';  // 動画のIDをここで指定
 wakame(videoId);
           </code></pre>
         </div>
+        <p>videoIdに、YouTube動画のIDを入れて実行して下さい。axiosでpostを送り、引っ張って来たデータをログに書き殴ります。個々のデータを使いたい場合、下のように変数にデータを入れてあげて下さい</p>
+        <div class="code-block">
+          <pre><code>
+const videoTitle = response.data['video-title'];
+          </code></pre>
+        </div>
       </section>
+  <h2>
+    まとめ
+      </h2>
+    <p>
+      上のURLにaxiosかなんかでpost送ったら動画の情報が返ってきます。以上です
+      </p>
     </div>
   </main>
 
   <footer>
     <div class="container">
-      <p>わかめ02</p>
+      <p>&copy; わかめ02</p>
     </div>
   </footer>
 </body>
