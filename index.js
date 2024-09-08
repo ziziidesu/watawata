@@ -236,13 +236,6 @@ app.get('/title', async (req, res) => {
   res.send(`${pageinfo}`);
 });
 
-app.get('/title2', async (req, res) => {
-  const videoUrl = 'https://www.youtube.com/embed/f6TytcA47rI';
-  const pageinfo = await getYouTubePageTitle(videoUrl);
-  res.setHeader('Content-Type', 'text/plain');
-  res.send(`${pageinfo}`);
-});
-
 app.get('/holo', async (req, res) => {
   const videoUrl = 'https://schedule.hololive.tv/';
   const pageinfo = await getYouTubePageTitle(videoUrl);
