@@ -8,6 +8,14 @@ body {
   line-height: 1.6;
 }
 
+a {
+    color: #ff69b4;
+}
+
+a:hover {
+    color: #FFA6C9;
+}
+
 header {
   background-color: #4CAF50;
   color: #fff;
