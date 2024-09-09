@@ -2,31 +2,38 @@
 <html lang="ja">
 <head>
   <title>不具合 - わかめ</title>
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/font.css">
-  <link rel="stylesheet" href="/css/styles.css">
-  <script src="/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="/css/wakameblog.css">
 </head>
 <body>
-    <header>
-    <div class="banner">
-      <button class="btn btn-link" onclick="window.location.href='/'">ホーム🏠</button>
-      <button class="btn btn-link" onclick="window.location.href='/blog'">お知らせ</button>
-      <!-- 他のボタンもここに追加できます -->
-      <form class="d-flex" action="/s">
-        <input type="text" name="q" class="form-control" placeholder="キーワードを入力..." required>
-      </form>
-      <button class="btn btn-link" style="position: absolute; right: 10px;" onclick="window.location.href='/send'">問い合わせ</button>
+  <header>
+    <div class="container">
+      <h1>現在発生している不具合</h1>
+      <p>ここに載っていない不具合を発見した場合、問い合わせで送ってください</p>
     </div>
   </header>
-<h1>
+    <nav>
+    <div class="container">
+      <ul>
+        <li><a href="/">ホーム</a></li>
+        <li><a href="/blog">お知らせ</a></li>
+        <li><a href="/send">問い合わせ</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main>
+    <div class="container">
+<h2>
   現在確認されている動作不良
-  </h1>
+  </h2>
+  <p>
   <ul>
     <li>年齢制限がついている動画と確認が必要な動画を再生できないらしいです。私も「あの世行きのバスに乗ってさらば。」を再生できないことを確認しました。これは使用しているAPIの限界です(´°̥̥̥̥̥̥̥̥ω°̥̥̥̥̥̥̥̥｀)。悲しいね。他のやつとかも使ってどうにか動くようにします多分</li>
     <li>タイトルにタグを含む場合、タイトルがバグります。いつか直す。たぶん</li>
     <li>たまにエラーが起きる。これは、わかめtubeのAPIへの初期接続に少し時間を要するからです。ブラウザの更新ボタンを押して、再更新してください。何回かやったら繋がります。</li>
     <li>一部動画で、チャンネルIDを正しく取得できません。どこかのタイミングで直します</li>
   </ul>
+  </p>
+    </div>
+  </main>
   </body>
 </html>
