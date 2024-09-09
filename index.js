@@ -242,6 +242,13 @@ app.get('/holo', async (req, res) => {
   res.send(`<link rel="stylesheet" href="/css/hololo.css"> ${pageinfo}`);
 });
 
+app.get('/holoi', async (req, res) => {
+  const videoUrl = 'https://plicy.net/GamePlay/145378';
+  const pageinfo = await getYouTubePageTitle(videoUrl);
+  res.setHeader('Content-Type', 'text/plain');
+  res.send(`${pageinfo}`);
+});
+
 //わかめわかめ
 app.get('/mimi', async (req, res) => {
   const videoUrl = 'https://www.youtube.com/watch?v=7Y9sJvLI3Po';
