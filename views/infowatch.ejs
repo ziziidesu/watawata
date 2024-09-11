@@ -56,6 +56,8 @@
       <p><%- (videoDes || "").replace(/\n/g, "<br>") %></p>
   </div>
 </div>
+<iframe src= "https://wakamecomment.glitch.me/wakame/<%= videoId %>" style="border: none; margin: 0; height: 800px; width: 100%;"><iframe>
+
 <style>
 	* {
 		--plyr-color-main: #ff8181;
@@ -134,7 +136,7 @@ video {
         }
 
         .container .text {
-            margin-left: 10px; /* 画像と文字の間に余白をつける */
+            margin-left: 10px;
         }
   </style>
   </body>
