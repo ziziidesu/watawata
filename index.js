@@ -366,7 +366,7 @@ app.get('/stream/:id', async (req, res) => {
 });
 
 //観る
-app.get('/p/:id', async (req, res) => {
+app.get('/ppsd/:id', async (req, res) => {
   let videoId = req.params.id;
   let url = `https://www.youtube.com/watch?v=${videoId}`;
   const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
