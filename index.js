@@ -11,7 +11,7 @@ const fs = require('fs');
 const { https } = require('follow-redirects');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const youtubedl = require('youtube-dl-exec');
+
 
 const limit = process.env.LIMIT || 50;
 
@@ -22,47 +22,6 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-
-//jjjj
-app.get('/ee/:id', async (req, res) => {
-  const videoId = req.params.id;
-  try {
-    // youtube-dl-execを使ってストリームURLを取得
-    const output = await youtubedl(`https://www.youtube.com/watch?v=${videoId}`, {
-      dumpSingleJson: true,
-      noWarnings: true,
-      noCheckCertificate: true,
-      preferFreeFormats: true,
-      youtubeSkipDashManifest: true
-    });
-
-    // ストリーム可能な動画URLを抽出
-    const streamUrl = output.url || output.formats[0].url;
-
-    // 動画プレーヤーを表示するHTMLを返す
-    res.send(`
-      <!DOCTYPE html>
-      <html lang="ja">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Video Player</title>
-      </head>
-      <body>
-        <h1>動画再生</h1>
-        <video width="640" height="360" controls autoplay>
-          <source src="${streamUrl}" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </body>
-      </html>
-    `);
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).send('動画の取得に失敗しました。');
-  }
-});
-
 
 //ログイン
 // ログインちぇっく
