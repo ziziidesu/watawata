@@ -12,8 +12,6 @@ const fs = require('fs');
 const { https } = require('follow-redirects');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const cluster = require("cluster");
-const os = require("os");
 
 
 const limit = process.env.LIMIT || 50;
