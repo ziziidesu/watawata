@@ -397,6 +397,11 @@ app.get('/pytdf/:id', async (req, res) => {
   try {
     const response = await axios.get(apiUrl);
     const streamUrl = response.data.stream_url;
+    const inforesponse = await axios.get(URL);
+    const html = inforesponse.data;
+    
+    const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
+    const videoTitle = titleMatch ? titleMatch[1] : 'wakame';
     
     https.get(streamUrl, (streamResponse) => {
       if (streamResponse.statusCode !== 200) {
