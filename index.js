@@ -409,7 +409,7 @@ app.get('/pytdf/:id', async (req, res) => {
         return;
       }
 
-      res.setHeader('Content-Disposition', 'attachment; filename="wakame.mp4"');
+      res.setHeader('Content-Disposition', `attachment; filename=${videoTitle}.mp4`);
       res.setHeader('Content-Type', 'video/mp4');
 
       streamResponse.pipe(res);
