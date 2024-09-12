@@ -828,7 +828,7 @@ app.get('/songs/rainbow', async (req, res) => {
   let url = "https://www.youtube.com/watch?v=RMZNjFkJK7E";
   
   try {
-    const stream_url = "https://cdn.glitch.global/07c1f87a-06fc-4159-8a78-1d6bf0407b94/video%207.mp4?v=1721698248743";
+    const stream_url = "https://cdn.glitch.me/e7208106-7973-47a2-8d4b-9fdc27b708a0/rainbow.mp4?v=1726103047477";
     
     const inforesponse = await axios.get(url);
     const html = inforesponse.data;
