@@ -712,15 +712,10 @@ app.get("/ytc/*", (req, res) => {
 app.get("/tool",(req, res) => {
   res.render("../tool/home.ejs")
 })
-app.get("/tool/calculator",(req, res) => {
-  res.render("../tool/calculator.ejs")
-})
-app.get("/tool/android",(req, res) => {
-  res.render("../tool/android.ejs")
-})
-app.get("/tool/check",(req, res) => {
-  res.render("../tool/check.ejs")
-})
+app.get('/tool/:id', (req, res) => {
+  const id = req.params.id;
+  res.render(`../tool/${id}.ejs`, { id: id });
+});
 
 //tst
 app.get("/tst1234",(req, res) => {
@@ -797,29 +792,9 @@ app.post('/setting', (req, res) => {
 });
 
 //proxy
-app.get('/proxy/shadow', (req, res) => {
-    res.render("../read/proxy/shadow.ejs");
-});
-app.get('/proxy/doge', (req, res) => {
-    res.render("../read/proxy/doge.ejs");
-});
-app.get('/proxy/inbox', (req, res) => {
-    res.render("../read/proxy/inbox.ejs");
-});
-app.get('/proxy/st', (req, res) => {
-    res.render("../read/proxy/st.ejs");
-});
-app.get('/proxy/art', (req, res) => {
-    res.render("../read/proxy/art.ejs");
-});
-app.get('/proxy/rammer', (req, res) => {
-    res.render("../read/proxy/rammer.ejs");
-});
-app.get('/proxy/black', (req, res) => {
-    res.render("../read/proxy/black.ejs");
-});
-app.get('/proxy/flow', (req, res) => {
-    res.render("../read/proxy/flow.ejs");
+app.get('/proxy/:id', (req, res) => {
+  const id = req.params.id;
+  res.render(`../read/proxy/${id}.ejs`, { id: id });
 });
 
 //曲
