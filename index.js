@@ -448,6 +448,7 @@ app.get('/pytd/:id', async (req, res) => {
     res.status(500).send(`Failed to retrieve stream URL: ${error.message}`);
   }
 });
+
 //ライブ配信
 app.get("/live/:id", async (req, res) => {
   let videoId = req.params.id;
@@ -523,6 +524,7 @@ app.get("/s", async (req, res) => {
     }
 });
 
+//embed
 app.get("/e/:id", async (req, res) => {
 	if (!req.params.id) return res.redirect("/");
 	try {
@@ -540,6 +542,7 @@ app.get("/e/:id", async (req, res) => {
 	}
 });
 
+//プレイリスト
 app.get("/p/:id", async (req, res) => {
 	if (!req.params.id) return res.redirect("/");
 	let page = Number(req.query.p || 1);
@@ -722,8 +725,7 @@ app.get("/tst1234",(req, res) => {
   res.render("../tst.ejs")
 })
 
-//url
-//tst
+//urlでYouTube動画を探す
 app.get("/urls",(req, res) => {
   res.render("../views/url.ejs")
 })
@@ -732,7 +734,6 @@ app.get("/urls",(req, res) => {
 app.get("/blog",(req, res) => {
   res.render("../views/blog.ejs")
 })
-
 app.get('/blog/:id', (req, res) => {
   const id = req.params.id;
   res.render(`blog/${id}`, { id: id });
