@@ -822,6 +822,38 @@ app.get('/proxy/flow', (req, res) => {
     res.render("../read/proxy/flow.ejs");
 });
 
+//曲
+app.get('/songs/rainbow', async (req, res) => {
+  let videoId = "RMZNjFkJK7E";
+  let url = "https://www.youtube.com/watch?v=RMZNjFkJK7E";
+  
+  try {
+    const stream_url = "https://cdn.glitch.global/07c1f87a-06fc-4159-8a78-1d6bf0407b94/video%207.mp4?v=1721698248743";
+    
+    const inforesponse = await axios.get(url);
+    const html = inforesponse.data;
+
+    const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
+    const descriptionMatch = html.match(/"attributedDescriptionBodyText":\{.*?"content":"(.*?)","commandRuns/);
+    const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
+    const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
+    const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
+    const channnelIdMatch = html.match(/"browseEndpoint":\{.*?"browseId":"(.*?)"/);
+
+    const videoTitle = titleMatch ? titleMatch[1] : 'タイトルを取得できませんでした';
+    const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '概要を取得できませんでした';
+    const videoViews = viewsMatch ? viewsMatch[1] : '再生回数を取得できませんでした';
+    const channelImage = channelImageMatch ? channelImageMatch[1] : '取得できませんでした';
+    const channelName = channelNameMatch ? channelNameMatch[1] : '取得できませんでした';
+    const channelId = channnelIdMatch ? channnelIdMatch[1] : '取得できませんでした';
+
+    res.render('infowatch.ejs', { videoId, stream_url, videoTitle, videoDes, videoViews, channelImage, channelName, channelId});
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
+  }
+});
+
 // エラー
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
