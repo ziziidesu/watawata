@@ -669,6 +669,21 @@ app.get('/play/:id', async (req, res) => {
   }
 });
 
+//HTMlを取得する
+app.get('/gethtml', async (req, res) => {
+  var Url = prompt("URLを入力して下さい");
+  const pageinfo = await getYouTubePageTitle(Url);
+  res.setHeader('Content-Type', 'text/plain');
+  res.send(`${pageinfo}`);
+});
+
+app.post('/gethtml', async (req, res) => {
+  const { url } = req.body;
+  // getYouTubePageTitle 関数でページ情報を取得する仮の処理
+  const pageinfo = `取得したページのタイトル: ${url}`;
+  res.send(pageinfo);
+});
+
 //ダウンロード(軽量化)
 app.get("/dd/:id", async (req, res) => {
   try {

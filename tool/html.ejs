@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>URL入力</title>
+</head>
+<body>
+  <form id="urlForm">
+    <input type="text" id="url" placeholder="URLを入力して下さい">
+    <button type="submit">送信</button>
+  </form>
+  <pre id="result"></pre>
+
+  <script>
+    document.getElementById('urlForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const url = document.getElementById('url').value;
+      const response = await fetch('/gethtml', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      });
+      const result = await response.text();
+      document.getElementById('result').textContent = result;
+    });
+  </script>
+</body>
+</html>
