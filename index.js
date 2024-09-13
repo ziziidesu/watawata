@@ -718,7 +718,7 @@ app.get("/ytc/*", (req, res) => {
 
 //tool
 app.get("/tool",(req, res) => {
-  res.render("../tool/home.ejs")
+  res.render("../tool/n/home.ejs")
 })
 app.get('/tool/:id', (req, res) => {
   const id = req.params.id;
