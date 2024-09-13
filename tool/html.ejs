@@ -5,35 +5,27 @@
   <title>URL入力</title>
 </head>
 <body>
-  <h1>URLのHTMLを取得</h1>
-  <form id="urlForm">
-    <input type="text" id="url" placeholder="URLを入力して下さい" required>
-    <button type="submit">送信</button>
-  </form>
-  
-  <h2>取得結果</h2>
-  <pre id="result"></pre>
+  <h1>URLをリプレイスしてリダイレクト</h1>
+  <button id="redirectButton">URLを入力してリダイレクト</button>
 
   <script>
-document.getElementById('urlForm').addEventListener('submit', async (event) => {
-  event.preventDefault(); // フォームのデフォルト動作を防ぐ
-  const url = document.getElementById('url').value;
+    document.getElementById('redirectButton').addEventListener('click', () => {
+      const url = prompt('URLを入力して下さい');
 
-  try {
-    const response = await fetch('/gethtml', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url }) // URLをJSON形式で送信
+      if (!url) {
+        alert('URLが提供されていません');
+        return;
+      }
+
+      // URL内の「.」を「.h.」にリプレイス
+      const replacedUrl = url.replace(/\./g, '.h.');
+
+      // リダイレクト先のURLを作成
+      const redirectUrl = `/gethtml/${encodeURIComponent(replacedUrl)}`;
+
+      // リダイレクト
+      window.location.href = redirectUrl;
     });
-    
-    const html = await response.text(); // サーバーから返されるHTMLを取得
-    document.getElementById('result').textContent = html;
-  } catch (error) {
-    document.getElementById('result').textContent = 'エラーが発生しました';
-    console.error('Error:', error);
-  }
-});
-
   </script>
 </body>
 </html>

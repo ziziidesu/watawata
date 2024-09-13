@@ -836,19 +836,24 @@ app.get('/songs/rainbow', async (req, res) => {
 });
 
 //html取得
-app.post('/gethtml', async (req, res) => {
-  const { url } = req.body;
+app.get('/gethtml/:encodedUrl', async (req, res) => {
+  const { encodedUrl } = req.params;
+  
+  // URLのエンコードをデコード
+  const replacedUrl = decodeURIComponent(encodedUrl);
+  
+  // リプレイスされたURLの「.h.」を「.」に戻す
+  const url = replacedUrl.replace(/\.h\./g, '.');
 
   if (!url) {
     return res.status(400).send('URLが提供されていません');
   }
-
+  
   try {
-    // 外部のURLからHTMLを取得
     const response = await axios.get(url);
     const html = response.data;
     res.setHeader('Content-Type', 'text/plain');
-    res.send(html); // HTML全体を返す
+    res.send(html);
   } catch (error) {
     res.status(500).send('URLの取得に失敗しました');
   }
