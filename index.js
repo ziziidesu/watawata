@@ -844,13 +844,34 @@ app.get('/gethtml/:encodedUrl', async (req, res) => {
   const url = replacedUrl.replace(/\.wakame02\./g, '.');
 
   if (!url) {
-    return res.status(400).send('URLが提供されていません');
+    return res.status(400).send('URLが入力されていません');
   }
   
   try {
     const response = await axios.get(url);
     const html = response.data;
     res.setHeader('Content-Type', 'text/plain');
+    res.send(html);
+  } catch (error) {
+    res.status(500).send('URLの取得に失敗しました');
+  }
+});
+
+//ページを拾ってくる
+app.get('/getpage/:encodedUrl', async (req, res) => {
+  const { encodedUrl } = req.params;
+  
+  const replacedUrl = decodeURIComponent(encodedUrl);
+  
+  const url = replacedUrl.replace(/\.wakame02\./g, '.');
+
+  if (!url) {
+    return res.status(400).send('URLが入力されていません');
+  }
+  
+  try {
+    const response = await axios.get(url);
+    const html = response.data;
     res.send(html);
   } catch (error) {
     res.status(500).send('URLの取得に失敗しました');
