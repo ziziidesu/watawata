@@ -5,24 +5,35 @@
   <title>URL入力</title>
 </head>
 <body>
+  <h1>URLのHTMLを取得</h1>
   <form id="urlForm">
-    <input type="text" id="url" placeholder="URLを入力して下さい">
+    <input type="text" id="url" placeholder="URLを入力して下さい" required>
     <button type="submit">送信</button>
   </form>
+  
+  <h2>取得結果</h2>
   <pre id="result"></pre>
 
   <script>
-    document.getElementById('urlForm').addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const url = document.getElementById('url').value;
-      const response = await fetch('/gethtml', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url })
-      });
-      const result = await response.text();
-      document.getElementById('result').textContent = result;
+document.getElementById('urlForm').addEventListener('submit', async (event) => {
+  event.preventDefault(); // フォームのデフォルト動作を防ぐ
+  const url = document.getElementById('url').value;
+
+  try {
+    const response = await fetch('/gethtml', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url }) // URLをJSON形式で送信
     });
+    
+    const html = await response.text(); // サーバーから返されるHTMLを取得
+    document.getElementById('result').textContent = html;
+  } catch (error) {
+    document.getElementById('result').textContent = 'エラーが発生しました';
+    console.error('Error:', error);
+  }
+});
+
   </script>
 </body>
 </html>

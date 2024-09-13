@@ -669,21 +669,6 @@ app.get('/play/:id', async (req, res) => {
   }
 });
 
-//HTMlを取得する
-app.get('/gethtml', async (req, res) => {
-  var Url = prompt("URLを入力して下さい");
-  const pageinfo = await getYouTubePageTitle(Url);
-  res.setHeader('Content-Type', 'text/plain');
-  res.send(`${pageinfo}`);
-});
-
-app.post('/gethtml', async (req, res) => {
-  const { url } = req.body;
-  // getYouTubePageTitle 関数でページ情報を取得する仮の処理
-  const pageinfo = `取得したページのタイトル: ${url}`;
-  res.send(pageinfo);
-});
-
 //ダウンロード(軽量化)
 app.get("/dd/:id", async (req, res) => {
   try {
@@ -847,6 +832,25 @@ app.get('/songs/rainbow', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
+  }
+});
+
+//html取得
+app.post('/gethtml', async (req, res) => {
+  const { url } = req.body;
+
+  if (!url) {
+    return res.status(400).send('URLが提供されていません');
+  }
+
+  try {
+    // 外部のURLからHTMLを取得
+    const response = await axios.get(url);
+    const html = response.data;
+    res.setHeader('Content-Type', 'text/plain');
+    res.send(html); // HTML全体を返す
+  } catch (error) {
+    res.status(500).send('URLの取得に失敗しました');
   }
 });
 
