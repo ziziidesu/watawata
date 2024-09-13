@@ -839,11 +839,9 @@ app.get('/songs/rainbow', async (req, res) => {
 app.get('/gethtml/:encodedUrl', async (req, res) => {
   const { encodedUrl } = req.params;
   
-  // URLのエンコードをデコード
   const replacedUrl = decodeURIComponent(encodedUrl);
   
-  // リプレイスされたURLの「.h.」を「.」に戻す
-  const url = replacedUrl.replace(/\.h\./g, '.');
+  const url = replacedUrl.replace(/\.wakame02\./g, '.');
 
   if (!url) {
     return res.status(400).send('URLが提供されていません');

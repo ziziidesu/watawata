@@ -3,11 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <title>URL入力</title>
+<style>
+/* 全体の設定 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  background-color: #f7f8fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* コンテナ設定 */
+.container {
+  text-align: center;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
+/* タイトル設定 */
+h1 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* ボタンのスタイル */
+button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+/* ボタンホバー時のスタイル */
+button:hover {
+  background-color: #0056b3;
+}
+
+/* 説明文のスタイル */
+p {
+  font-size: 14px;
+  color: #666;
+  margin-top: 15px;
+  line-height: 1.6;
+}
+
+</style>
 </head>
 <body>
-  <h1>URLをリプレイスしてリダイレクト</h1>
-  <button id="redirectButton">URLを入力してリダイレクト</button>
-
+  <h1>HTMLを表示</h1><br><br><br>
+  <button id="redirectButton">URLを入力！</button>
+<br>
+  <p>
+    URLをコピーできたら、上のボタンを押して下さい。
+  </p>
   <script>
     document.getElementById('redirectButton').addEventListener('click', () => {
       const url = prompt('URLを入力して下さい');
@@ -17,13 +84,10 @@
         return;
       }
 
-      // URL内の「.」を「.h.」にリプレイス
-      const replacedUrl = url.replace(/\./g, '.h.');
+      const replacedUrl = url.replace(/\./g, '.wakame02.');
 
-      // リダイレクト先のURLを作成
       const redirectUrl = `/gethtml/${encodeURIComponent(replacedUrl)}`;
 
-      // リダイレクト
       window.location.href = redirectUrl;
     });
   </script>
