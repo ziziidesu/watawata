@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 });
 //ログイン済み？
 app.get('/login/if', async (req, res) => {
-    if (req.cookies.pass !== 'ok') {
+    if (req.cookies.massiropass !== 'ok') {
         res.render('login', { error: 'ログインしていません。もう一度ログインして下さい' })
     } else {
         return res.redirect('/');
@@ -47,8 +47,8 @@ app.get('/login', (req, res) => {
 // パスワード確認
 app.post('/login', (req, res) => {
     const password = req.body.password;
-    if (password === 'massiro') {
-        res.cookie('pass', 'ok', { maxAge: 5 * 24 * 60 * 60 * 1000, httpOnly: true });
+    if (password === 'harusame' || password === '114514Kiju') {
+        res.cookie('massiropass', 'ok', { maxAge: 5 * 24 * 60 * 60 * 1000, httpOnly: true });
         return res.redirect('/');
     } else {
          if (password === 'ohana') {
