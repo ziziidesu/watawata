@@ -162,6 +162,7 @@ app.get('/w/:id', async (req, res) => {
     res.render('infowatch.ejs', { videoId, stream_url, videoTitle, videoDes, videoViews, channelImage, channelName, channelId});
   } catch (error) {
     console.error(error);
+    const response = axios.get("https://yukimath-eiko.onrender.com");
     res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
   }
 });
