@@ -47,7 +47,7 @@ app.get('/login', (req, res) => {
 // パスワード確認
 app.post('/login', (req, res) => {
     const password = req.body.password;
-    if (password === 'harusame' || password === '114514Kiju') {
+    if (password === 'harusame' || password === '114514Kiju' || password === '810Kiju') {
         res.cookie('massiropass', 'ok', { maxAge: 5 * 24 * 60 * 60 * 1000, httpOnly: true });
         return res.redirect('/');
     } else {
