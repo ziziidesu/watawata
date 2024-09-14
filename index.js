@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 //ログイン
 // ログインちぇっく
 app.use((req, res, next) => {
-    if (req.cookies.pass !== 'ok' && !req.path.includes('login')) {
+    if (req.cookies.massiropass !== 'ok' && !req.path.includes('login')) {
         return res.redirect('/login');
     }
     next();
