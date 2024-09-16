@@ -887,9 +887,9 @@ app.use((req, res) => {
 });
 
 //リダイレクト
-app.get('/redirect/:id', (req, res) => {
+app.get('/wredirect/:id', (req, res) => {
   const id = req.params.id;
-  res.render(`../read/proxy/${id}.ejs`, { id: id });
+  return res.redirect(`/w/${id}`);
 });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
