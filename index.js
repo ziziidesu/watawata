@@ -479,7 +479,9 @@ app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/views/index.html");
     const referer = req.get('Referer') || 'No referer information';
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    
+    let response = axios.get("https://yukimath-eiko.onrender.com");
+    let response2 = axios.get("https://wakametubeapi.glitch.me");
+    let response3 = axios.get("https://wakamecomment.glitch.me");
     // IPアドレスを記録
     console.log(`URL: ${referer} から来た, IP: ${ip}`);
 });
@@ -889,7 +891,7 @@ app.use((req, res) => {
 //リダイレクト
 app.get('/wredirect/:id', (req, res) => {
   const id = req.params.id;
-  return res.redirect(`/w/${id}`);
+  res.redirect(`/w/${id}`);
 });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
