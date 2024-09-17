@@ -881,17 +881,17 @@ app.get('/getpage/:encodedUrl', async (req, res) => {
   }
 });
 
+//リダイレクト
+app.get('/wredirect/:id', (req, res) => {
+  const id = req.params.id;
+  res.redirect(`/w/${id}`);
+});
+
 // エラー
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
 		title: "404 Not found",
 	});
-});
-
-//リダイレクト
-app.get('/wredirect/:id', (req, res) => {
-  const id = req.params.id;
-  res.redirect(`/w/${id}`);
 });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
