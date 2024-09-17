@@ -40,7 +40,7 @@
         <h2>1. APIのエンドポイント</h2>
         <p>リクエストを送る際のURLはこれです。loginの後ろに動画IDを付けてください：</p>
         <div class="code-block">
-          <code>https://wakame02q.glitch.me/api/login</code>
+          <code>https://wakame02m.glitch.me/api/login</code>
         </div>
       </section>
 
@@ -57,7 +57,7 @@
 const axios = require('axios');
 
 async function wakame(videoId) {
-  const url = `https://wakame02q.glitch.me/api/login/${videoId}`;
+  const url = `https://wakame02m.glitch.me/api/login/${videoId}`;
 
   try {
     const response = await axios.post(url);
