@@ -12,6 +12,7 @@ const fs = require('fs');
 const { https } = require('follow-redirects');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const { getVideo } = require('invidjs');
 
 
 const limit = process.env.LIMIT || 50;
@@ -23,6 +24,27 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+
+
+app.get('/ttt/:id', async (req, res) => {
+    const videoId = req.params.id;
+
+    try {
+        const video = await getVideo(videoId);
+        const videoUrl = video.url;
+
+        res.send(`
+            <html>
+                <body>
+                    <h1>${video.title}</h1>
+                    <iframe width="560" height="315" src="${videoUrl}" frameborder="0" allowfullscreen></iframe>
+                </body>
+            </html>
+        `);
+    } catch (error) {
+        res.status(500).send('動画を取得できませんでした。');
+    }
+});
 
 //ログイン
 // ログインちぇっく
