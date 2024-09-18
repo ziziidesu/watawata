@@ -16,7 +16,7 @@
     "cors": "^2.8.5",
     "cookie-parser": "^1.4.6",
     "youtubei.js": "latest",
-    "invidjs": "^1.0.0"
+    "@invidjs/invid-js": "^1.0.0"
   },
   "description": "YouTube代替サイト",
   "engines": { "node": "16.x" },

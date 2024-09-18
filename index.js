@@ -12,7 +12,7 @@ const fs = require('fs');
 const { https } = require('follow-redirects');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const { getVideo } = require('invidjs');
+const InvidJS = require('@invidjs/invid-js');
 
 
 const limit = process.env.LIMIT || 50;
@@ -26,11 +26,13 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 
+const instance = ["https://iv.datura.network/","https://invidious.private.coffee/","https://invidious.protokolla.fi/","https://invidious.perennialte.ch/","https://yt.cdaut.de/","https://invidious.materialio.us/","https://yewtu.be/","https://invidious.fdn.fr/","https://inv.tux.pizza/","https://invidious.privacyredirect.com/","https://invidious.drgns.space/","https://vid.puffyan.us","https://invidious.jing.rocks/","https://youtube.076.ne.jp/","https://vid.puffyan.us/","https://inv.riverside.rocks/","https://invidio.xamh.de/","https://y.com.sb/","https://invidious.sethforprivacy.com/","https://invidious.tiekoetter.com/","https://inv.bp.projectsegfau.lt/","https://inv.vern.cc/","https://invidious.nerdvpn.de/","https://inv.privacy.com.de/","https://invidious.rhyshl.live/","https://invidious.slipfox.xyz/","https://invidious.weblibre.org/","https://invidious.namazso.eu/","https://invidious.jing.rocks"]
+
 app.get('/ttt/:id', async (req, res) => {
     const videoId = req.params.id;
 
     try {
-        const video = await getVideo(videoId);
+        const video = await InvidJS.fetchVideo(instance, "id");
         const videoUrl = video.url;
 
         res.send(`
