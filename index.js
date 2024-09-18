@@ -135,36 +135,77 @@ app.get('/des/:id', async (req, res) => {
 //取得して再生
 //動画情報を取得しつつ再生
 app.get('/w/:id', async (req, res) => {
-  let videoId = req.params.id;
-  let url = `https://www.youtube.com/watch?v=${videoId}`;
+  const videoId = req.params.id;
+  const url = `https://www.youtube.com/watch?v=${videoId}`;
   const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
-  
+
   try {
-    const response = await axios.get(apiUrl);
-    const { stream_url } = response.data;
-    
-    const inforesponse = await axios.get(url);
-    const html = inforesponse.data;
+    let stream_url;
+    try {
+      const response = await axios.get(apiUrl);
+      stream_url = response.data.stream_url;
+      console.log('ストリームURL取得成功');
+    } catch (apiError) {
+      console.error('APIからストリームURLの取得に失敗:', apiError.message);
+      throw new Error('ストリームURLの取得に失敗しました');
+    }
 
-    const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
-    const descriptionMatch = html.match(/"attributedDescriptionBodyText":\{.*?"content":"(.*?)","commandRuns/);
-    const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
-    const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
-    const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
-    const channnelIdMatch = html.match(/"browseEndpoint":\{.*?"browseId":"(.*?)"/);
+    let html;
+    try {
+      const inforesponse = await axios.get(url);
+      html = inforesponse.data;
+      console.log('YouTubeページのHTML取得成功');
+    } catch (infoError) {
+      console.error('YouTubeページの取得に失敗:', infoError.message);
+      throw new Error('YouTubeページの取得に失敗しました');
+    }
 
-    const videoTitle = titleMatch ? titleMatch[1] : 'タイトルを取得できませんでした';
-    const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '概要を取得できませんでした';
-    const videoViews = viewsMatch ? viewsMatch[1] : '再生回数を取得できませんでした';
-    const channelImage = channelImageMatch ? channelImageMatch[1] : '取得できませんでした';
-    const channelName = channelNameMatch ? channelNameMatch[1] : '取得できませんでした';
-    const channelId = channnelIdMatch ? channnelIdMatch[1] : '取得できませんでした';
+    let videoTitle, videoDes, videoViews, channelImage, channelName, channelId;
 
-    res.render('infowatch.ejs', { videoId, stream_url, videoTitle, videoDes, videoViews, channelImage, channelName, channelId});
+    try {
+      const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
+      const descriptionMatch = html.match(/"attributedDescriptionBodyText":\{.*?"content":"(.*?)","commandRuns/);
+      const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
+      const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
+      const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
+      const channnelIdMatch = html.match(/"browseEndpoint":\{.*?"browseId":"(.*?)"/);
+
+      videoTitle = titleMatch ? titleMatch[1] : 'タイトルを取得できませんでした';
+      videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '概要を取得できませんでした';
+      videoViews = viewsMatch ? viewsMatch[1] : '再生回数を取得できませんでした';
+      channelImage = channelImageMatch ? channelImageMatch[1] : '取得できませんでした';
+      channelName = channelNameMatch ? channelNameMatch[1] : '取得できませんでした';
+      channelId = channnelIdMatch ? channnelIdMatch[1] : '取得できませんでした';
+
+      console.log('動画情報の強奪成功');
+    } catch (parseError) {
+      console.error('HTMLの解析中にエラーが発生:', parseError.message);
+      throw new Error('動画情報の解析に失敗しました');
+    }
+
+    res.render('infowatch.ejs', { 
+      videoId, 
+      stream_url, 
+      videoTitle, 
+      videoDes, 
+      videoViews, 
+      channelImage, 
+      channelName, 
+      channelId 
+    });
   } catch (error) {
-    console.error(error);
-    const response = axios.get("https://yukimath-eiko.onrender.com");
-    res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
+    console.error('全体のエラーハンドリング:', error.message);
+    try {
+      await axios.get("https://yukimath-eiko.onrender.com");
+      console.log('リダイレクト先へのリクエスト成功');
+    } catch (redirectError) {
+      console.error('リダイレクト先へのリクエストに失敗:', redirectError.message);
+    }
+    res.status(500).render('matte', { 
+      videoId, 
+      error: '動画を取得できません', 
+      details: error.message 
+    });
   }
 });
 
@@ -894,16 +935,14 @@ app.get('/ttt/:id', async (req, res) => {
     const videoId = req.params.id;
 
     try {
-        // インスタンスURLの取得
         const instanceurl = await InvidJS.fetchInstances();
-        console.log('取得したインスタンス:', instanceurl); // 追加: インスタンスをログに表示
-        const instanceUrlv = instances[0];  // 一つ目のインスタンスを使用
+        console.log('取得したインスタンス:', instanceurl); 
+        const instanceUrlv = instances[0]; 
 
         if (!instanceUrlv) {
             throw new Error('インスタンスURLが見つかりませんでした。');
         }
 
-        // 動画情報の取得
         const video = await InvidJS.fetchVideo(instanceUrlv, videoId);
         const videoUrl = video.url;
 
@@ -911,7 +950,6 @@ app.get('/ttt/:id', async (req, res) => {
             throw new Error('動画URLが取得できませんでした。');
         }
 
-        // HTMLで動画を表示
         res.send(`
             <html>
                 <body>
