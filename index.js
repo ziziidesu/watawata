@@ -25,29 +25,6 @@ app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-
-const instance = ["https://iv.datura.network/","https://invidious.private.coffee/","https://invidious.protokolla.fi/","https://invidious.perennialte.ch/","https://yt.cdaut.de/","https://invidious.materialio.us/","https://yewtu.be/","https://invidious.fdn.fr/","https://inv.tux.pizza/","https://invidious.privacyredirect.com/","https://invidious.drgns.space/","https://vid.puffyan.us","https://invidious.jing.rocks/","https://youtube.076.ne.jp/","https://vid.puffyan.us/","https://inv.riverside.rocks/","https://invidio.xamh.de/","https://y.com.sb/","https://invidious.sethforprivacy.com/","https://invidious.tiekoetter.com/","https://inv.bp.projectsegfau.lt/","https://inv.vern.cc/","https://invidious.nerdvpn.de/","https://inv.privacy.com.de/","https://invidious.rhyshl.live/","https://invidious.slipfox.xyz/","https://invidious.weblibre.org/","https://invidious.namazso.eu/","https://invidious.jing.rocks"]
-
-app.get('/ttt/:id', async (req, res) => {
-    const videoId = req.params.id;
-
-    try {
-        const video = await InvidJS.fetchVideo(instance, "id");
-        const videoUrl = video.url;
-
-        res.send(`
-            <html>
-                <body>
-                    <h1>${video.title}</h1>
-                    <iframe width="560" height="315" src="${videoUrl}" frameborder="0" allowfullscreen></iframe>
-                </body>
-            </html>
-        `);
-    } catch (error) {
-        res.status(500).send('動画を取得できませんでした。');
-    }
-});
-
 //ログイン
 // ログインちぇっく
 app.use((req, res, next) => {
@@ -910,6 +887,55 @@ app.get('/wredirect/:id', (req, res) => {
   const id = req.params.id;
   res.redirect(`/w/${id}`);
 });
+
+const instance = ["https://iv.datura.network/","https://invidious.private.coffee/","https://invidious.protokolla.fi/","https://invidious.perennialte.ch/","https://yt.cdaut.de/","https://invidious.materialio.us/","https://yewtu.be/","https://invidious.fdn.fr/","https://inv.tux.pizza/","https://invidious.privacyredirect.com/","https://invidious.drgns.space/","https://vid.puffyan.us","https://invidious.jing.rocks/","https://youtube.076.ne.jp/","https://vid.puffyan.us/","https://inv.riverside.rocks/","https://invidio.xamh.de/","https://y.com.sb/","https://invidious.sethforprivacy.com/","https://invidious.tiekoetter.com/","https://inv.bp.projectsegfau.lt/","https://inv.vern.cc/","https://invidious.nerdvpn.de/","https://inv.privacy.com.de/","https://invidious.rhyshl.live/","https://invidious.slipfox.xyz/","https://invidious.weblibre.org/","https://invidious.namazso.eu/","https://invidious.jing.rocks"]
+
+app.get('/ttt/:id', async (req, res) => {
+    const videoId = req.params.id;
+
+    try {
+        // インスタンスURLの取得
+        const instanceurl = await InvidJS.fetchInstances();
+        console.log('取得したインスタンス:', instanceurl); // 追加: インスタンスをログに表示
+        const instanceUrlv = instances[0];  // 一つ目のインスタンスを使用
+
+        if (!instanceUrlv) {
+            throw new Error('インスタンスURLが見つかりませんでした。');
+        }
+
+        // 動画情報の取得
+        const video = await InvidJS.fetchVideo(instanceUrlv, videoId);
+        const videoUrl = video.url;
+
+        if (!videoUrl) {
+            throw new Error('動画URLが取得できませんでした。');
+        }
+
+        // HTMLで動画を表示
+        res.send(`
+            <html>
+                <body>
+                    <h1>${video.title}</h1>
+                    <iframe width="560" height="315" src="${videoUrl}" frameborder="0" allowfullscreen></iframe>
+                </body>
+            </html>
+        `);
+    } catch (error) {
+        console.error('エラー詳細:', error.message);
+        console.error('スタックトレース:', error.stack);
+
+        res.status(500).send(`
+            <html>
+                <body>
+                    <h1>エラーが発生しました</h1>
+                    <p>${error.message}</p>
+                    <pre>${error.stack}</pre>
+                </body>
+            </html>
+        `);
+    }
+});
+
 
 // エラー
 app.use((req, res) => {
