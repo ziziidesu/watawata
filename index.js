@@ -259,27 +259,23 @@ app.get('/api/login/:id', async (req, res) => {
 //直接狙った！
 // Invidiousインスタンスのリスト
 const invidiousInstances = [
-"https://inv.nadeko.net","https://invidious.ethibox.fr","https://iv.datura.network/","https://invidious.private.coffee/","https://invidious.protokolla.fi/","https://invidious.perennialte.ch/","https://yt.cdaut.de/","https://invidious.materialio.us/","https://yewtu.be/","https://invidious.fdn.fr/","https://inv.tux.pizza/","https://invidious.privacyredirect.com/","https://invidious.drgns.space/","https://vid.puffyan.us","https://invidious.jing.rocks/","https://vid.puffyan.us/","https://inv.riverside.rocks/","https://invidio.xamh.de/","https://y.com.sb/","https://invidious.sethforprivacy.com/","https://invidious.tiekoetter.com/","https://inv.bp.projectsegfau.lt/","https://inv.vern.cc/","https://invidious.nerdvpn.de/","https://inv.privacy.com.de/","https://invidious.jing.rocks"
+  "https://inv.nadeko.net","https://invidious.ethibox.fr","https://iv.datura.network/",
+  "https://invidious.private.coffee/","https://invidious.protokolla.fi/","https://invidious.perennialte.ch/",
+  "https://yt.cdaut.de/","https://invidious.materialio.us/","https://yewtu.be/","https://invidious.fdn.fr/",
+  "https://inv.tux.pizza/","https://invidious.privacyredirect.com/","https://invidious.drgns.space/",
+  "https://vid.puffyan.us","https://invidious.jing.rocks/","https://vid.puffyan.us/","https://inv.riverside.rocks/",
+  "https://invidio.xamh.de/","https://y.com.sb/","https://invidious.sethforprivacy.com/",
+  "https://invidious.tiekoetter.com/","https://inv.bp.projectsegfau.lt/","https://inv.vern.cc/",
+  "https://invidious.nerdvpn.de/","https://inv.privacy.com.de/","https://invidious.jing.rocks"
 ];
 
-// YouTube動画の情報を取得する関数（並列処理版）
+// YouTube動画の情報を取得する関数
 async function fetchVideoInfoParallel(videoId) {
   const requests = invidiousInstances.map(instance =>
-    axios.get(`${instance}/api/v1/videos/${videoId}`).then(
-      response => ({ success: true, data: response.data }),
-      error => ({ success: false, error, instance })
-    )
+    axios.get(`${instance}/api/v1/videos/${videoId}`).then(response => response.data)
   );
-
-  const results = await Promise.all(requests);
-
-  for (const result of results) {
-    if (result.success) {
-      return result.data;
-    }
-  }
-
-  throw new Error('全てのInvidiousインスタンスでリクエストが失敗しました。');
+  
+  return Promise.any(requests); // 最初に成功したリクエストを取得
 }
 
 // /w/:id でアクセス時の処理
@@ -289,37 +285,26 @@ app.get('/rew/:id', async (req, res) => {
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
 
-    // formatStreams からストリームURLを取得
+    // formatStreams を逆順にし、最初の2つを取得
     const formatStreams = videoInfo.formatStreams || [];
+    const streamUrls = formatStreams.reverse().map(stream => stream.url).slice(0, 2);
 
-    let streamUrl = null;
-
-    // formatStreams から最初のフォーマットのURLを取得
-    if (formatStreams.length > 0) {
-      streamUrl = formatStreams[0].url; // 最初のフォーマットのURLを使用
-    }
-
-    // formatStreams にストリームが見つからない場合はエラーを返す
-    if (!streamUrl) {
+    if (streamUrls.length === 0) {
       return res.status(500).send('ストリームURLが見つかりませんでした。');
     }
 
-    // 動画の再生ページを返す（簡易HTML）
+    // 動画の再生ページを返す（簡素化されたHTML）
     res.send(`
-      <!DOCTYPE html>
-      <html lang="ja">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>動画再生</title>
-      </head>
-      <body>
-        <h1>動画再生</h1>
-        <video width="720" controls autoplay>
-          <source src="${streamUrl}" type="video/mp4">
-          お使いのブラウザは動画再生に対応していません。
-        </video>
-      </body>
+      <html>
+        <head><title>${videoInfo.title}</title></head>
+        <body>
+          <h1>${videoInfo.title}</h1>
+          <p>${videoInfo.author}</p>
+          <video width="720" controls autoplay>
+            <source src="${streamUrls[0]}" type="video/mp4">
+            お使いのブラウザは動画再生に対応していません。
+          </video>
+        </body>
       </html>
     `);
   } catch (error) {
