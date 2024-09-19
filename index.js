@@ -273,7 +273,7 @@ const invidiousInstances = [
 //invidiousから引っ張ってくる
 async function fetchVideoInfoParallel(videoId) {
   const requests = invidiousInstances.map(instance =>
-    axios.get(${instance}/api/v1/videos/${videoId}).then(response => response.data)
+    axios.get(`${instance}/api/v1/videos/${videoId}`).then(response => response.data)
   );
   
   return Promise.any(requests);
@@ -295,6 +295,9 @@ app.get('/w/:id', async (req, res) => {
       videoId, 
       error: 'ストリームURLが見つかりません',
     });
+    }
+    if (!videoInfo.authorId) {
+      return res.redirect(`/wredirect/${videoId}`);
     }
 
     const templateData = {
