@@ -257,38 +257,69 @@ app.get('/api/login/:id', async (req, res) => {
 });
 
 //直接狙った！
-app.get('/rew/:id', async (req, res) => {
-  let videoId = req.params.id;
-  const url = `https://www.youtube.com/watch?v=${videoId}`;
-  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
-  
-  try {
-    const response = await axios.get(apiUrl);
-    const { stream_url } = response.data;
-    
-    const inforesponse = await axios.get(url);
-    const html = inforesponse.data;
+// Invidiousインスタンスのリスト
+const invidiousInstances = [
+  'https://invidious.ethibox.fr',
+  'https://invidious.jing.rocks',
+];
 
-    const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
-    const descriptionMatch = html.match(/"attributedDescriptionBodyText":\{.*?"content":"(.*?)","commandRuns/);
-    const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
-    const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
-    const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
-    const channnelIdMatch = html.match(/"browseEndpoint":\{.*?"browseId":"(.*?)"/);
+// YouTube動画の情報を取得する関数（並列処理版）
+async function fetchVideoInfoParallel(videoId) {
+  const requests = invidiousInstances.map(instance =>
+    axios.get(`${instance}/api/v1/videos/${videoId}`).then(
+      response => ({ success: true, data: response.data }),
+      error => ({ success: false, error, instance })
+    )
+  );
 
-    const videoTitle = titleMatch ? titleMatch[1] : 'タイトルを取得できませんでした';
-    const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '概要を取得できませんでした';
-    const videoViews = viewsMatch ? viewsMatch[1] : '再生回数を取得できませんでした';
-    const channelImage = channelImageMatch ? channelImageMatch[1] : '取得できませんでした';
-    const channelName = channelNameMatch ? channelNameMatch[1] : '取得できませんでした';
-    const channelId = channnelIdMatch ? channnelIdMatch[1] : '取得できませんでした';
+  const results = await Promise.all(requests);
 
-    res.render('infowatch.ejs', { videoId, stream_url, videoTitle, videoDes, videoViews, channelImage, channelName, channelId});
-  } catch (error) {
-    console.error(error);
-    const response = axios.get("https://yukimath-eiko.onrender.com");
-    res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
+  for (const result of results) {
+    if (result.success) {
+      return result.data;
+    }
   }
+
+  throw new Error('全てのInvidiousインスタンスでリクエストが失敗しました。');
+}
+
+// /w/:id でアクセス時の処理
+app.get('/rew/:id', async (req, res) => {
+  const videoId = req.params.id;
+
+  try {
+    const videoInfo = await fetchVideoInfoParallel(videoId);
+
+    // adaptiveFormats から最初の利用可能なフォーマットのURLを取得
+    const adaptiveFormats = videoInfo.adaptiveFormats;
+    if (!adaptiveFormats || adaptiveFormats.length === 0) {
+      return res.status(500).send('ストリームURLが見つかりませんでした。');
+    }
+
+    const streamUrl = adaptiveFormats[0].url; // 最初のフォーマットのURLを使用
+
+    // 動画の再生ページを返す（簡易HTML）
+    res.send(`
+      <!DOCTYPE html>
+      <html lang="ja">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>動画再生</title>
+      </head>
+      <body>
+        <h1>動画再生</h1>
+        <video width="720" controls autoplay>
+          <source src="${streamUrl}" type="video/mp4">
+          お使いのブラウザは動画再生に対応していません。
+        </video>
+      </body>
+      </html>
+    `);
+  } catch (error) {
+    res.status(500).send('動画の取得に失敗しました: ' + error.message);
+  }
+});
 
 //てすとー！
 async function getYouTubePageTitle(url) {
