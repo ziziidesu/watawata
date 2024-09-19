@@ -259,8 +259,7 @@ app.get('/api/login/:id', async (req, res) => {
 //直接狙った！
 // Invidiousインスタンスのリスト
 const invidiousInstances = [
-  'https://invidious.ethibox.fr',
-  'https://invidious.jing.rocks',
+"https://inv.nadeko.net","https://invidious.ethibox.fr","https://iv.datura.network/","https://invidious.private.coffee/","https://invidious.protokolla.fi/","https://invidious.perennialte.ch/","https://yt.cdaut.de/","https://invidious.materialio.us/","https://yewtu.be/","https://invidious.fdn.fr/","https://inv.tux.pizza/","https://invidious.privacyredirect.com/","https://invidious.drgns.space/","https://vid.puffyan.us","https://invidious.jing.rocks/","https://vid.puffyan.us/","https://inv.riverside.rocks/","https://invidio.xamh.de/","https://y.com.sb/","https://invidious.sethforprivacy.com/","https://invidious.tiekoetter.com/","https://inv.bp.projectsegfau.lt/","https://inv.vern.cc/","https://invidious.nerdvpn.de/","https://inv.privacy.com.de/","https://invidious.jing.rocks"
 ];
 
 // YouTube動画の情報を取得する関数（並列処理版）
@@ -290,13 +289,20 @@ app.get('/rew/:id', async (req, res) => {
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
 
-    // adaptiveFormats から最初の利用可能なフォーマットのURLを取得
-    const adaptiveFormats = videoInfo.adaptiveFormats;
-    if (!adaptiveFormats || adaptiveFormats.length === 0) {
-      return res.status(500).send('ストリームURLが見つかりませんでした。');
+    // formatStreams からストリームURLを取得
+    const formatStreams = videoInfo.formatStreams || [];
+
+    let streamUrl = null;
+
+    // formatStreams から最初のフォーマットのURLを取得
+    if (formatStreams.length > 0) {
+      streamUrl = formatStreams[0].url; // 最初のフォーマットのURLを使用
     }
 
-    const streamUrl = adaptiveFormats[0].url; // 最初のフォーマットのURLを使用
+    // formatStreams にストリームが見つからない場合はエラーを返す
+    if (!streamUrl) {
+      return res.status(500).send('ストリームURLが見つかりませんでした。');
+    }
 
     // 動画の再生ページを返す（簡易HTML）
     res.send(`
