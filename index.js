@@ -134,7 +134,8 @@ app.get('/des/:id', async (req, res) => {
 
 //取得して再生
 //動画情報を取得しつつ再生
-app.get('/w/:id', async (req, res) => {
+//不安定になったため、使用停止
+app.get('/rew/:id', async (req, res) => {
   const videoId = req.params.id;
   const url = `https://www.youtube.com/watch?v=${videoId}`;
   const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
@@ -269,46 +270,50 @@ const invidiousInstances = [
   "https://invidious.nerdvpn.de/","https://inv.privacy.com.de/","https://invidious.jing.rocks"
 ];
 
-// YouTube動画の情報を取得する関数
+//invidiousから引っ張ってくる
 async function fetchVideoInfoParallel(videoId) {
   const requests = invidiousInstances.map(instance =>
     axios.get(`${instance}/api/v1/videos/${videoId}`).then(response => response.data)
   );
   
-  return Promise.any(requests); // 最初に成功したリクエストを取得
+  return Promise.any(requests);
 }
 
-// /w/:id でアクセス時の処理
-app.get('/rew/:id', async (req, res) => {
+//レギュラー
+app.get('/w/:id', async (req, res) => {
   const videoId = req.params.id;
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
 
-    // formatStreams を逆順にし、最初の2つを取得
     const formatStreams = videoInfo.formatStreams || [];
-    const streamUrls = formatStreams.reverse().map(stream => stream.url).slice(0, 2);
+    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
 
-    if (streamUrls.length === 0) {
-      return res.status(500).send('ストリームURLが見つかりませんでした。');
+    if (!streamUrl) {
+          res.status(500).render('matte', { 
+      videoId, 
+      error: 'ストリートURLが見つかりません',
+    });
     }
 
-    // 動画の再生ページを返す（簡素化されたHTML）
-    res.send(`
-      <html>
-        <head><title>${videoInfo.title}</title></head>
-        <body>
-          <h1>${videoInfo.title}</h1>
-          <p>${videoInfo.author}</p>
-          <video width="720" controls autoplay>
-            <source src="${streamUrls[0]}" type="video/mp4">
-            お使いのブラウザは動画再生に対応していません。
-          </video>
-        </body>
-      </html>
-    `);
+    const templateData = {
+      stream_url: streamUrl,
+      videoId: videoId,
+      channelId: videoInfo.authorId,
+      channelName: videoInfo.author,
+      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
+      videoTitle: videoInfo.title,
+      videoDes: videoInfo.descriptionHtml,
+      videoViews: videoInfo.viewCountText
+    };
+
+    res.render('infowatch', templateData);
   } catch (error) {
-    res.status(500).send('動画の取得に失敗しました: ' + error.message);
+        res.status(500).render('matte', { 
+      videoId, 
+      error: '動画を取得できません', 
+      details: error.message 
+    });
   }
 });
 
