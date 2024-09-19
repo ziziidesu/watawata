@@ -272,10 +272,9 @@ const invidiousInstances = [
 
 //invidiousから引っ張ってくる
 async function fetchVideoInfoParallel(videoId) {
-  const requests = invidiousInstances.map(instance =>
-    axios.get(`${instance}/api/v1/videos/${videoId}`).then(response => response.data)
+  axios.get(`${instance}/api/v1/videos/${videoId}`, { headers: { 'Cache-Control': 'no-cache' } })
+    .then(response => response.data
   );
-  
   return Promise.any(requests);
 }
 
