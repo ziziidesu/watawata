@@ -292,7 +292,7 @@ app.get('/w/:id', async (req, res) => {
     if (!streamUrl) {
           res.status(500).render('matte', { 
       videoId, 
-      error: 'ストリートURLが見つかりません',
+      error: 'ストリームURLが見つかりません',
     });
     }
 
@@ -495,11 +495,19 @@ app.get('/ppsd/:id', async (req, res) => {
 //ダウンロード緊急
 app.get('/pytdf/:id', async (req, res) => {
   const videoId = req.params.id;
-  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
 
   try {
-    const response = await axios.get(apiUrl);
-    const streamUrl = response.data.stream_url;
+    const videoInfo = await fetchVideoInfoParallel(videoId);
+
+    const formatStreams = videoInfo.formatStreams || [];
+    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
+
+    if (!streamUrl) {
+          res.status(500).render('matte', { 
+      videoId, 
+      error: 'ストリームURLが見つかりません',
+    });
+    }
     
     https.get(streamUrl, (streamResponse) => {
       if (streamResponse.statusCode !== 200) {
