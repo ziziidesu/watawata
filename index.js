@@ -435,16 +435,10 @@ app.get('/ppsd/:id', async (req, res) => {
 app.get('/pytdf/:id', async (req, res) => {
   const videoId = req.params.id;
   const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
-  const URL = `https://www.youtube.com/watch?v=${videoId}`;
 
   try {
     const response = await axios.get(apiUrl);
     const streamUrl = response.data.stream_url;
-    const inforesponse = await axios.get(URL);
-    const html = inforesponse.data;
-    
-    const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
-    const videoTitle = titleMatch ? titleMatch[1] : 'wakame';
     
     https.get(streamUrl, (streamResponse) => {
       if (streamResponse.statusCode !== 200) {
@@ -452,7 +446,7 @@ app.get('/pytdf/:id', async (req, res) => {
         return;
       }
 
-      res.setHeader('Content-Disposition', `attachment; filename=${videoTitle}.mp4`);
+      res.setHeader('Content-Disposition', `attachment; filename=wakame.mp4`);
       res.setHeader('Content-Type', 'video/mp4');
 
       streamResponse.pipe(res);
