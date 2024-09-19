@@ -262,7 +262,7 @@ app.get('/api/login/:id', async (req, res) => {
 const invidiousInstances = [
   "https://inv.nadeko.net","https://invidious.ethibox.fr","https://iv.datura.network/",
   "https://invidious.private.coffee/","https://invidious.protokolla.fi/","https://invidious.perennialte.ch/",
-  "https://yt.cdaut.de/","https://invidious.materialio.us/","https://yewtu.be/","https://invidious.fdn.fr/",
+  "https://invidious.materialio.us/","https://yewtu.be/","https://invidious.fdn.fr/",
   "https://inv.tux.pizza/","https://invidious.privacyredirect.com/","https://invidious.drgns.space/",
   "https://vid.puffyan.us","https://invidious.jing.rocks/","https://vid.puffyan.us/","https://inv.riverside.rocks/",
   "https://invidio.xamh.de/","https://y.com.sb/","https://invidious.sethforprivacy.com/",
