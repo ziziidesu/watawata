@@ -328,22 +328,23 @@ app.get('/www/:id', async (req, res) => {
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
+    
+    const filteredData = videoInfo.filter(item => item.itag === "137");
+    console.log(filteredData);
 
-    const formatStreams = videoInfo.formatStreams || [];
-    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
-
-    if (!streamUrl) {
-          res.status(500).render('matte', { 
-      videoId, 
-      error: 'ストリームURLが見つかりません',
-    });
+    if (filteredData.length === 0) {
+      return res.status(500).render('matte', { 
+        videoId, 
+        error: 'ストリームURLが見つかりません',
+      });
     }
+
     if (!videoInfo.authorId) {
       return res.redirect(`/wredirect/${videoId}`);
     }
 
     const templateData = {
-      stream_url: streamUrl,
+      stream_url: filteredData[0].url,
       videoId: videoId,
       channelId: videoInfo.authorId,
       channelName: videoInfo.author,
@@ -355,13 +356,14 @@ app.get('/www/:id', async (req, res) => {
 
     res.render('infowatch', templateData);
   } catch (error) {
-        res.status(500).render('matte', { 
+    res.status(500).render('matte', { 
       videoId, 
       error: '動画を取得できません', 
       details: error.message 
     });
   }
 });
+
 
 
 
