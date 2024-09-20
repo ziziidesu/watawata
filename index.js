@@ -321,18 +321,15 @@ app.get('/w/:id', async (req, res) => {
   }
 });
 
-const get1080pUrls = (data) => {
-    return data
-        .filter(item => item.resolution === '1080p')
-        .map(item => item.url);
-};
 
 app.get('/www/:id', async (req, res) => {
   const videoId = req.params.id;
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
-    const videoUrl = get1080pUrls(videoInfo);
+    const videoUrl = videoInfo.streams.find(stream => stream.itag === '299')?.url;
+    
+
     if (!videoUrl.authorId) {
       return res.redirect(`/wredirect/${videoId}`);
     }
