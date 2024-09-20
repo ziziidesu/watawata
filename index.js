@@ -327,17 +327,20 @@ app.get('/www/:id', async (req, res) => {
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
-    const regex = /\{"init":"[^"]*","index":"[^"]*","bitrate":"[^"]*","url":"([^"]+)","itag":"[^"]*","type":"video\/mp4;[^"]*","clen":"[^"]*","lmt":"[^"]*","projectionType":"[^"]*","fps":\s*[^,]*,"size":"1920x1080","resolution":"1080p","qualityLabel":"[^"]*","container":"mp4","encoding":"[^"]*"\}/g;
-
-    let matches = [];
+    const regex = /"url":"([^"]+)"/g;
+    const stream = [];
     let match;
 
     while ((match = regex.exec(videoInfo)) !== null) {
-        matches.push(match[0]);
+        stream.push(match[1]);
     }
-    console.log(matches);
+
+    console.log("取得した全てのURL:", stream);
+
+    const secondLastUrl = stream.length >= 2 ? stream[stream.length - 2] : null; // 下から2番目のURLを取得
+
     const formatStreams = videoInfo.formatStreams || [];
-    const streamUrl = matches;
+    const streamUrl = secondLastUrl;
 
     if (!streamUrl) {
           res.status(500).render('matte', { 
