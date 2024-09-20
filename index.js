@@ -330,8 +330,7 @@ app.get('/www/:id', async (req, res) => {
 
     const formatStreams = videoInfo.formatStreams || [];
     const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
-    const channelImageMatch = formatStreams.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
-
+    
     if (!streamUrl) {
           res.status(500).render('matte', { 
       videoId, 
