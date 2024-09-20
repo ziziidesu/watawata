@@ -290,6 +290,13 @@ app.get('/w/:id', async (req, res) => {
     const formatStreams = videoInfo.formatStreams || [];
     const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
 
+    const stream1080p = videoInfo.formatStreams.find(stream => {
+      return (
+        stream.qualityLabel === '1080p' ||
+        stream.resolution === '1920x1080'
+      );
+    });
+
     if (!streamUrl) {
           res.status(500).render('matte', { 
       videoId, 
