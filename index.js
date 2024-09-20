@@ -13,6 +13,7 @@ const { https } = require('follow-redirects');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const InvidJS = require('@invidjs/invid-js');
+const jp = require('jsonpath');
 
 
 const limit = process.env.LIMIT || 50;
@@ -321,25 +322,13 @@ app.get('/w/:id', async (req, res) => {
   }
 });
 
-function get1080pMp4StreamUrl(jsonData) {
-  const data = JSON.parse(jsonData);
-
-  const targetFormats = data.formats.filter(format => {
-    return format.qualityLabel === '1080p' && format.container === 'mp4';
-  });
-
-  const streamUrl = targetFormats[0]?.url;
-
-  return streamUrl;
-}
 
 app.get('/www/:id', async (req, res) => {
   const videoId = req.params.id;
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
-
-    const streamUrl = get1080pMp4StreamUrl(videoInfo);
+    const streamUrl = jp.query(videoInfo, "$[?(@.resolution=='1080p' && @.type=='video/mp4; codecs=\\'avc1.640028\\')].url");
 
     if (!streamUrl) {
           res.status(500).render('matte', { 
