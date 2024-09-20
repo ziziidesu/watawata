@@ -14,7 +14,6 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const InvidJS = require('@invidjs/invid-js');
 const jp = require('jsonpath');
-const fetch = require('node-fetch');
 
 
 const limit = process.env.LIMIT || 50;
