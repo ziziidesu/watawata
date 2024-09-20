@@ -327,10 +327,17 @@ app.get('/www/:id', async (req, res) => {
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
-    const obj = JSON.parse(videoInfo);
-    console.log(obj);
+    const regex = /\{"init":"[^"]*","index":"[^"]*","bitrate":"[^"]*","url":"([^"]+)","itag":"[^"]*","type":"video\/mp4;[^"]*","clen":"[^"]*","lmt":"[^"]*","projectionType":"[^"]*","fps":\s*[^,]*,"size":"1920x1080","resolution":"1080p","qualityLabel":"[^"]*","container":"mp4","encoding":"[^"]*"\}/g;
+
+    let matches = [];
+    let match;
+
+    while ((match = regex.exec(videoInfo)) !== null) {
+        matches.push(match[0]);
+    }
+    console.log(matches);
     const formatStreams = videoInfo.formatStreams || [];
-    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
+    const streamUrl = matches;
 
     if (!streamUrl) {
           res.status(500).render('matte', { 
