@@ -322,7 +322,7 @@ app.get('/w/:id', async (req, res) => {
 });
 
 
-app.get('/w/:id', async (req, res) => {
+app.get('/www/:id', async (req, res) => {
   const videoId = req.params.id;
 
   try {
