@@ -328,16 +328,9 @@ app.get('/www/:id', async (req, res) => {
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
+    console.log(videoInfo);
     
-    const filteredData = videoInfo.filter(item => item.itag === "137");
-    console.log(filteredData);
-
-    if (filteredData.length === 0) {
-      return res.status(500).render('matte', { 
-        videoId, 
-        error: 'ストリームURLが見つかりません',
-      });
-    }
+    const filteredData = videoInfo.filter(item => item.resolution === "1080p");
 
     if (!videoInfo.authorId) {
       return res.redirect(`/wredirect/${videoId}`);
@@ -356,6 +349,7 @@ app.get('/www/:id', async (req, res) => {
 
     res.render('infowatch', templateData);
   } catch (error) {
+    console.error('Error fetching YouTube data:', error);
     res.status(500).render('matte', { 
       videoId, 
       error: '動画を取得できません', 
