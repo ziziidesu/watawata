@@ -328,7 +328,9 @@ app.get('/www/:id', async (req, res) => {
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
-    const streamUrl = jp.query(videoInfo, "$[?(@.resolution=='1080p' && @.type=='video/mp4; codecs=\\'avc1.640028\\')].url");
+
+    const formatStreams = videoInfo.formatStreams || [];
+    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
 
     if (!streamUrl) {
           res.status(500).render('matte', { 
@@ -1035,51 +1037,6 @@ app.get('/getpage/:encodedUrl', async (req, res) => {
 app.get('/wredirect/:id', (req, res) => {
   const id = req.params.id;
   res.redirect(`/w/${id}`);
-});
-
-const instance = ["https://iv.datura.network/","https://invidious.private.coffee/","https://invidious.protokolla.fi/","https://invidious.perennialte.ch/","https://yt.cdaut.de/","https://invidious.materialio.us/","https://yewtu.be/","https://invidious.fdn.fr/","https://inv.tux.pizza/","https://invidious.privacyredirect.com/","https://invidious.drgns.space/","https://vid.puffyan.us","https://invidious.jing.rocks/","https://youtube.076.ne.jp/","https://vid.puffyan.us/","https://inv.riverside.rocks/","https://invidio.xamh.de/","https://y.com.sb/","https://invidious.sethforprivacy.com/","https://invidious.tiekoetter.com/","https://inv.bp.projectsegfau.lt/","https://inv.vern.cc/","https://invidious.nerdvpn.de/","https://inv.privacy.com.de/","https://invidious.rhyshl.live/","https://invidious.slipfox.xyz/","https://invidious.weblibre.org/","https://invidious.namazso.eu/","https://invidious.jing.rocks"]
-
-app.get('/ttt/:id', async (req, res) => {
-    const videoId = req.params.id;
-
-    try {
-        const instanceurl = await InvidJS.fetchInstances();
-        console.log('取得したインスタンス:', instanceurl); 
-        const instanceUrlv = instances[0]; 
-
-        if (!instanceUrlv) {
-            throw new Error('インスタンスURLが見つかりませんでした。');
-        }
-
-        const video = await InvidJS.fetchVideo(instanceUrlv, videoId);
-        const videoUrl = video.url;
-
-        if (!videoUrl) {
-            throw new Error('動画URLが取得できませんでした。');
-        }
-
-        res.send(`
-            <html>
-                <body>
-                    <h1>${video.title}</h1>
-                    <iframe width="560" height="315" src="${videoUrl}" frameborder="0" allowfullscreen></iframe>
-                </body>
-            </html>
-        `);
-    } catch (error) {
-        console.error('エラー詳細:', error.message);
-        console.error('スタックトレース:', error.stack);
-
-        res.status(500).send(`
-            <html>
-                <body>
-                    <h1>エラーが発生しました</h1>
-                    <p>${error.message}</p>
-                    <pre>${error.stack}</pre>
-                </body>
-            </html>
-        `);
-    }
 });
 
 
