@@ -327,15 +327,22 @@ app.get('/www/:id', async (req, res) => {
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
-    const videoUrl = videoInfo.streams.find(stream => stream.itag === '299')?.url;
-    
 
-    if (!videoUrl.authorId) {
+    const formatStreams = videoInfo.formatStreams || [];
+    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
+
+    if (!streamUrl) {
+          res.status(500).render('matte', { 
+      videoId, 
+      error: 'ストリームURLが見つかりません',
+    });
+    }
+    if (!videoInfo.authorId) {
       return res.redirect(`/wredirect/${videoId}`);
     }
 
     const templateData = {
-      stream_url: videoUrl,
+      stream_url: streamUrl,
       videoId: videoId,
       channelId: videoInfo.authorId,
       channelName: videoInfo.author,
@@ -347,8 +354,7 @@ app.get('/www/:id', async (req, res) => {
 
     res.render('infowatch', templateData);
   } catch (error) {
-    console.error('Error fetching YouTube data:', error);
-    res.status(500).render('matte', { 
+        res.status(500).render('matte', { 
       videoId, 
       error: '動画を取得できません', 
       details: error.message 
