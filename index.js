@@ -14,6 +14,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const InvidJS = require('@invidjs/invid-js');
 const jp = require('jsonpath');
+const fetch = require('node-fetch');
 
 
 const limit = process.env.LIMIT || 50;
@@ -323,45 +324,7 @@ app.get('/w/:id', async (req, res) => {
 });
 
 
-app.get('/www/:id', async (req, res) => {
-  const videoId = req.params.id;
 
-  try {
-    const videoInfo = await fetchVideoInfoParallel(videoId);
-
-    const formatStreams = videoInfo.formatStreams || [];
-    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
-
-    if (!streamUrl) {
-          res.status(500).render('matte', { 
-      videoId, 
-      error: 'ストリームURLが見つかりません',
-    });
-    }
-    if (!videoInfo.authorId) {
-      return res.redirect(`/wredirect/${videoId}`);
-    }
-
-    const templateData = {
-      stream_url: streamUrl,
-      videoId: videoId,
-      channelId: videoInfo.authorId,
-      channelName: videoInfo.author,
-      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
-      videoTitle: videoInfo.title,
-      videoDes: videoInfo.descriptionHtml,
-      videoViews: videoInfo.viewCount
-    };
-
-    res.render('infowatch', templateData);
-  } catch (error) {
-        res.status(500).render('matte', { 
-      videoId, 
-      error: '動画を取得できません', 
-      details: error.message 
-    });
-  }
-});
 
 
 //てすとー！
