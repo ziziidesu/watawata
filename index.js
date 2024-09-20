@@ -260,7 +260,7 @@ app.get('/api/login/:id', async (req, res) => {
 //直接狙った！
 // Invidiousのリスト
 const invidiousInstances = [
-  "https://inv.nadeko.net","https://invidious.ethibox.fr","https://iv.datura.network",
+  "https://invidious.ethibox.fr","https://inv.nadeko.net","https://iv.datura.network",
   "https://invidious.jing.rocks","https://invidious.reallyaweso.me","https://inv.phene.dev","https://invidious.protokolla.fi","https://invidious.perennialte.ch",
   "https://invidious.materialio.us","https://yewtu.be","https://invidious.fdn.fr",
   "https://inv.tux.pizza","https://invidious.privacyredirect.com","https://invidious.drgns.space",
@@ -289,13 +289,6 @@ app.get('/w/:id', async (req, res) => {
 
     const formatStreams = videoInfo.formatStreams || [];
     const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
-
-    const stream1080p = videoInfo.formatStreams.find(stream => {
-      return (
-        stream.qualityLabel === '1080p' ||
-        stream.resolution === '1920x1080'
-      );
-    });
 
     if (!streamUrl) {
           res.status(500).render('matte', { 
@@ -327,6 +320,57 @@ app.get('/w/:id', async (req, res) => {
     });
   }
 });
+
+app.get('/www/:id', async (req, res) => {
+  const videoId = req.params.id;
+
+  try {
+    const videoInfo = await fetchVideoInfoParallel(videoId);
+
+    console.log(videoInfo); // 動画情報を確認
+
+    // 1080pのストリームをフィルタリング
+    const streams1080p = videoInfo.formatStreams.filter(stream => {
+      return (
+        (stream.qualityLabel === '1080p' || stream.resolution === '1920x1080') &&
+        stream.duration > 1 // 再生時間が1秒以上
+      );
+    });
+
+    // 最初の1080pストリームを選択
+    const stream1080p = streams1080p[0];
+
+    if (!stream1080p) {
+      return res.status(500).render('matte', { 
+        videoId, 
+        error: '再生時間が1秒以上の1080pのストリームURLが見つかりません',
+      });
+    }
+
+    const templateData = {
+      stream_url: stream1080p.url,
+      videoId: videoId,
+      channelId: videoInfo.authorId,
+      channelName: videoInfo.author,
+      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
+      videoTitle: videoInfo.title,
+      videoDes: videoInfo.descriptionHtml,
+      videoViews: videoInfo.viewCountText
+    };
+
+    res.render('infowatch', templateData);
+  } catch (error) {
+    console.error(error); // エラーをログに出力
+    res.status(500).render('matte', { 
+      videoId, 
+      error: '動画を取得できません', 
+      details: error.message 
+    });
+  }
+});
+
+
+
 
 //てすとー！
 async function getYouTubePageTitle(url) {
