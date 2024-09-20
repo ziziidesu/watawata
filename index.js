@@ -321,34 +321,28 @@ app.get('/w/:id', async (req, res) => {
   }
 });
 
-app.get('/www/:id', async (req, res) => {
+
+app.get('/w/:id', async (req, res) => {
   const videoId = req.params.id;
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
 
-    console.log(videoInfo); // 動画情報を確認
+    const formatStreams = videoInfo.formatStreams || [];
+    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
 
-    // 1080pのストリームをフィルタリング
-    const streams1080p = videoInfo.formatStreams.filter(stream => {
-      return (
-        (stream.qualityLabel === '1080p' || stream.resolution === '1920x1080') &&
-        stream.duration > 1 // 再生時間が1秒以上
-      );
+    if (!streamUrl) {
+          res.status(500).render('matte', { 
+      videoId, 
+      error: 'ストリームURLが見つかりません',
     });
-
-    // 最初の1080pストリームを選択
-    const stream1080p = streams1080p[0];
-
-    if (!stream1080p) {
-      return res.status(500).render('matte', { 
-        videoId, 
-        error: '再生時間が1秒以上の1080pのストリームURLが見つかりません',
-      });
+    }
+    if (!videoInfo.authorId) {
+      return res.redirect(`/wredirect/${videoId}`);
     }
 
     const templateData = {
-      stream_url: stream1080p.url,
+      stream_url: streamUrl,
       videoId: videoId,
       channelId: videoInfo.authorId,
       channelName: videoInfo.author,
@@ -360,16 +354,13 @@ app.get('/www/:id', async (req, res) => {
 
     res.render('infowatch', templateData);
   } catch (error) {
-    console.error(error); // エラーをログに出力
-    res.status(500).render('matte', { 
+        res.status(500).render('matte', { 
       videoId, 
       error: '動画を取得できません', 
       details: error.message 
     });
   }
 });
-
-
 
 
 //てすとー！
