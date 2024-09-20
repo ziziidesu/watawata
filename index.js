@@ -328,9 +328,10 @@ app.get('/www/:id', async (req, res) => {
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
-    console.log(videoInfo);
-    
-    const filteredData = videoInfo.filter(item => item.resolution === "1080p");
+    const videoInfoArray = Object.values(videoInfo);
+
+    const filteredData = videoInfo.filter(item => item !== null && item.resolution === "1080p");
+    console.log(filteredData);
 
     if (!videoInfo.authorId) {
       return res.redirect(`/wredirect/${videoId}`);
