@@ -321,19 +321,24 @@ app.get('/w/:id', async (req, res) => {
   }
 });
 
+const get1080pUrls = (data) => {
+    return data
+        .filter(item => item.resolution === '1080p')
+        .map(item => item.url);
+};
+
 app.get('/www/:id', async (req, res) => {
   const videoId = req.params.id;
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
-    console.log(urls);
-
-    if (!videoInfo.authorId) {
+    const videoUrl = get1080pUrls(videoInfo);
+    if (!videoUrl.authorId) {
       return res.redirect(`/wredirect/${videoId}`);
     }
 
     const templateData = {
-      stream_url: urls[0].url,
+      stream_url: videoUrl,
       videoId: videoId,
       channelId: videoInfo.authorId,
       channelName: videoInfo.author,
@@ -353,9 +358,6 @@ app.get('/www/:id', async (req, res) => {
     });
   }
 });
-
-
-
 
 
 //てすとー！
