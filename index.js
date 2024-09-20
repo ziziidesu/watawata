@@ -322,29 +322,24 @@ app.get('/w/:id', async (req, res) => {
 });
 
 
+
 app.get('/www/:id', async (req, res) => {
   const videoId = req.params.id;
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
 
-    const collectUrls = (obj, urls = []) => {
-      for (const key in obj) {
-        if (typeof obj[key] === 'object') {
-          collectUrls(obj[key], urls); // 再帰的にオブジェクトを探す
-        } else if (key === 'url') {
-          urls.push(obj[key]); // urlフィールドを見つけたらリストに追加
-        }
-      }
-      return urls;
-    };
-
-    const allUrls = collectUrls(videoInfo);
-
-    const streamUrl = allUrls[39] || null; // 配列のインデックスは0から始まるので39番目が40個目
+    const formatStreams = videoInfo.formatStreams || [];
+    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
 
     if (!streamUrl) {
-      return res.status(500).send('40個目のURLが見つかりませんでした。');
+          res.status(500).render('matte', { 
+      videoId, 
+      error: 'ストリームURLが見つかりません',
+    });
+    }
+    if (!videoInfo.authorId) {
+      return res.redirect(`/wredirect/${videoId}`);
     }
 
     const templateData = {
@@ -355,7 +350,7 @@ app.get('/www/:id', async (req, res) => {
       channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
       videoTitle: videoInfo.title,
       videoDes: videoInfo.descriptionHtml,
-      videoViews: videoInfo.viewCountText
+      videoViews: videoInfo.viewCount
     };
 
     res.render('infowatch', templateData);
@@ -367,6 +362,8 @@ app.get('/www/:id', async (req, res) => {
     });
   }
 });
+
+
 
 
 //てすとー！
