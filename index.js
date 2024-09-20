@@ -329,7 +329,7 @@ app.get('/www/:id', async (req, res) => {
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
     const videoInfoArray = Object.values(videoInfo);
-    const filteredData = videoInfoArray.filter(item => item !== null && item.resolution === "1080p");
+    const filteredData = videoInfoArray.filter(item => item.url && item.resolution === "1080p");
     console.log(filteredData);
 
     if (!videoInfo.authorId) {
