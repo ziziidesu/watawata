@@ -321,23 +321,19 @@ app.get('/w/:id', async (req, res) => {
   }
 });
 
-
-
 app.get('/www/:id', async (req, res) => {
   const videoId = req.params.id;
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
-    const videoInfoArray = Object.values(videoInfo);
-    const filteredData = videoInfoArray.filter(item => item.url && item.resolution === "1080p");
-    console.log(filteredData);
+    console.log(urls);
 
     if (!videoInfo.authorId) {
       return res.redirect(`/wredirect/${videoId}`);
     }
 
     const templateData = {
-      stream_url: filteredData[0].url,
+      stream_url: urls[0].url,
       videoId: videoId,
       channelId: videoInfo.authorId,
       channelName: videoInfo.author,
