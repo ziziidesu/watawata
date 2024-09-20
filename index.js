@@ -285,6 +285,7 @@ app.get('/w/:id', async (req, res) => {
   const videoId = req.params.id;
 
   try {
+    const videoInfo = await fetchVideoInfoParallel(videoId);
     
     const formatStreams = videoInfo.formatStreams || [];
     const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
