@@ -328,17 +328,23 @@ app.get('/www/:id', async (req, res) => {
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
 
-    const formatStreams = videoInfo.formatStreams || [];
-    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
-    
+    const collectUrls = (obj, urls = []) => {
+      for (const key in obj) {
+        if (typeof obj[key] === 'object') {
+          collectUrls(obj[key], urls); // 再帰的にオブジェクトを探す
+        } else if (key === 'url') {
+          urls.push(obj[key]); // urlフィールドを見つけたらリストに追加
+        }
+      }
+      return urls;
+    };
+
+    const allUrls = collectUrls(videoInfo);
+
+    const streamUrl = allUrls[39] || null; // 配列のインデックスは0から始まるので39番目が40個目
+
     if (!streamUrl) {
-          res.status(500).render('matte', { 
-      videoId, 
-      error: 'ストリームURLが見つかりません',
-    });
-    }
-    if (!videoInfo.authorId) {
-      return res.redirect(`/wredirect/${videoId}`);
+      return res.status(500).send('40個目のURLが見つかりませんでした。');
     }
 
     const templateData = {
