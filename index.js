@@ -321,6 +321,17 @@ app.get('/w/:id', async (req, res) => {
   }
 });
 
+function get1080pMp4StreamUrl(jsonData) {
+  const data = JSON.parse(jsonData);
+
+  const targetFormats = data.formats.filter(format => {
+    return format.qualityLabel === '1080p' && format.container === 'mp4';
+  });
+
+  const streamUrl = targetFormats[0]?.url;
+
+  return streamUrl;
+}
 
 app.get('/www/:id', async (req, res) => {
   const videoId = req.params.id;
@@ -328,8 +339,7 @@ app.get('/www/:id', async (req, res) => {
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
 
-    const formatStreams = videoInfo.formatStreams || [];
-    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
+    const streamUrl = get1080pMp4StreamUrl(videoInfo);
 
     if (!streamUrl) {
           res.status(500).render('matte', { 
