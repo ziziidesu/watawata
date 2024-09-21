@@ -329,8 +329,9 @@ app.get('/www/:id', async (req, res) => {
     const videoInfo = await fetchVideoInfoParallel(videoId);
     
     const audioStreams = videoInfo.adaptiveFormats || [];
-    const streamUrl = audioStreams.reverse().map(stream => stream.urlstream.quality === '1080p')[0];
-    console.log(audioStreams);
+    const streamUrl = audioStreams
+      .filter(stream => stream.container === 'mp4' && stream.resolution === '1080p')
+      .map(stream => stream.url)[0];
     
 
     const templateData = {
@@ -363,8 +364,6 @@ app.get('/ll/:id', async (req, res) => {
     
     const audioStreams = videoInfo.formatStreams || [];
     const streamUrl = audioStreams.map(audio => audio.url)[0];
-    console.log(audioStreams);
-    console.log(streamUrl);
 
     if (!streamUrl) {
           res.status(500).render('matte', { 
