@@ -327,27 +327,11 @@ app.get('/www/:id', async (req, res) => {
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
-    const regex = /"url":"([^"]+)"/g;
-    const stream = [];
-    let match;
+    const stream = videoInfo.url;
 
-    while ((match = regex.exec(videoInfo)) !== null) {
-        stream.push(match[1]);
-    }
+    console.log("URL:", stream);
+    const streamUrl = stream;
 
-    console.log("取得した全てのURL:", stream);
-
-    const secondLastUrl = stream.length >= 2 ? stream[stream.length - 2] : null; // 下から2番目のURLを取得
-
-    const formatStreams = videoInfo.formatStreams || [];
-    const streamUrl = secondLastUrl;
-
-    if (!streamUrl) {
-          res.status(500).render('matte', { 
-      videoId, 
-      error: 'ストリームURLが見つかりません',
-    });
-    }
     if (!videoInfo.authorId) {
       return res.redirect(`/wredirect/${videoId}`);
     }
