@@ -327,19 +327,21 @@ app.get('/www/:id', async (req, res) => {
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
-    const lag = videoInfo;
-    const formatStreams = videoInfo.formatStreams || [];
-    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
+    
+    const audioStreams = videoInfo.adaptiveFormats || [];
+    const streamUrl = audioStreams.reverse().map(stream => stream.urlstream.quality === '1080p')[0];
+    console.log(audioStreams);
+    
 
     const templateData = {
       stream_url: streamUrl,
       videoId: videoId,
       channelId: videoInfo.authorId,
-      channelName: lag,
+      channelName: videoInfo.author,
       channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
       videoTitle: videoInfo.title,
-      videoDes: videoInfo.description,
-      videoViews: videoInfo.adaptiveFormats
+      videoDes: videoInfo.descriptionHtml,
+      videoViews: videoInfo.viewCount
     };
 
     res.render('infowatch', templateData);
@@ -360,10 +362,8 @@ app.get('/ll/:id', async (req, res) => {
     const videoInfo = await fetchVideoInfoParallel(videoId);
     
     const audioStreams = videoInfo.formatStreams || [];
-    const streamUrl = audioStreams.reverse().map(audio => audio.url)[0];
-    const formatStreams2 = videoInfo.formatStreams || [];
-    const streamUrl2 = formatStreams2.reverse().map(stream => stream.url)[0];
-    console.log(streamUrl2);
+    const streamUrl = audioStreams.map(audio => audio.url)[0];
+    console.log(audioStreams);
     console.log(streamUrl);
 
     if (!streamUrl) {
