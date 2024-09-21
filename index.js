@@ -360,6 +360,48 @@ app.get('/www/:id', async (req, res) => {
 });
 
 
+const { spawn } = require('child_process');
+app.get('/highquo/:id', async (req, res) => {
+  const videoId = req.params.id;
+
+  try {
+    const videoInfo = await fetchVideoInfoParallel(videoId);
+    
+    const audioStreams = videoInfo.adaptiveFormats || [];
+    const streamUrl = audioStreams
+      .filter(stream => stream.container === 'mp4' && stream.resolution === '1080p')
+      .map(stream => stream.url)[0];
+    
+    const audioUrl = audioStreams
+      .filter(stream => stream.container === 'm4a' && stream.audioQuality === 'AUDIO_QUALITY_MEDIUM')
+      .map(stream => stream.url)[0];
+
+    res.setHeader('Content-Type', 'video/mp4');
+
+    const ffmpeg = spawn('ffmpeg', [
+      '-i', streamUrl,
+      '-i', audioUrl,
+      '-c:v', 'copy',
+      '-c:a', 'aac',
+      '-f', 'mp4',
+      'pipe:1'
+    ]);
+
+    ffmpeg.stdout.pipe(res);
+    ffmpeg.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`);
+    });
+
+    ffmpeg.on('close', (code) => {
+      console.log(`ffmpeg exited with code ${code}`);
+    });
+  } catch (error) {
+    console.error(`API error: ${error.message}`);
+    res.status(500).send('Error fetching video data');
+  }
+});
+
+
 app.get('/ll/:id', async (req, res) => {
   const videoId = req.params.id;
 
