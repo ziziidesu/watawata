@@ -322,16 +322,22 @@ app.get('/w/:id', async (req, res) => {
   }
 });
 
-
+//高画質再生！！
 app.get('/www/:id', async (req, res) => {
   const videoId = req.params.id;
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
     
     const audioStreams = videoInfo.adaptiveFormats || [];
-    const streamUrl = audioStreams
+    let streamUrl = audioStreams
       .filter(stream => stream.container === 'mp4' && stream.resolution === '1080p')
       .map(stream => stream.url)[0];
+    
+    if (!streamUrl) {
+    let streamUrl = audioStreams
+      .filter(stream => stream.container === 'mp4' && stream.resolution === '720p')
+      .map(stream => stream.url)[0];
+    }
     
     const audioUrl = audioStreams
       .filter(stream => stream.container === 'm4a' && stream.audioQuality === 'AUDIO_QUALITY_MEDIUM')
