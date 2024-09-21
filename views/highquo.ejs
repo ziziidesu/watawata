@@ -29,7 +29,7 @@
  </div>
 </header>
 <div class="card">
-  <video controls id="video" poster="https://i3.ytimg.com/vi/<%= videoId %>/maxresdefault.jpg">
+  <video controls preload="auto" id="video" poster="https://i3.ytimg.com/vi/<%= videoId %>/maxresdefault.jpg">
     <source src="<%= stream_url %>" type="video/mp4">
     読み込み失敗。ブラウザをアップデートしてどうぞ。
   </video>
@@ -188,32 +188,40 @@ video {
       padding: 20px;
       text-align: left;
       box-sizing: border-box;
-    }
-    </style>
-<script>
+</style>
+    <script>
         const video = document.getElementById('video');
-        const audio = document.getElementById('audio');
+        const audioVideo = document.getElementById('audioVideo');
 
-        // 動画が再生されたときにオーディオを再生
+        // 動画が再生されたときにオーディオも再生
         video.addEventListener('play', () => {
-            audio.currentTime = video.currentTime; // 動画の現在の時間をオーディオに設定
-            audio.play(); // オーディオ再生
+            audioVideo.currentTime = video.currentTime; // 現在の時間を同期
+            audioVideo.play(); // オーディオ再生
         });
 
-        // 動画の再生位置が変更されたときにオーディオの再生位置も変更
-        video.addEventListener('timeupdate', () => {
-            audio.currentTime = video.currentTime;
-        });
-
-        // 動画が停止したときにオーディオも停止
+        // 動画が一時停止されたときにオーディオも一時停止
         video.addEventListener('pause', () => {
-            audio.pause(); // オーディオ停止
+            audioVideo.pause();
         });
 
         // 動画が終了したときにオーディオも停止
         video.addEventListener('ended', () => {
-            audio.pause(); // オーディオ停止
-            audio.currentTime = 0; // オーディオの時間をリセット
+            audioVideo.pause();
+            audioVideo.currentTime = 0; // オーディオの時間をリセット
+        });
+
+        // 動画の再生位置が変更されたときにオーディオの再生位置も変更
+        video.addEventListener('timeupdate', () => {
+            audioVideo.currentTime = video.currentTime;
+        });
+
+        // オーディオのコントロールを動画のコントロールにリンク
+        audioVideo.addEventListener('play', () => {
+            video.play(); // オーディオ再生時に動画も再生
+        });
+
+        audioVideo.addEventListener('pause', () => {
+            video.pause(); // オーディオ一時停止時に動画も一時停止
         });
     </script>
   </body>
