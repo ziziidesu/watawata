@@ -29,7 +29,7 @@
  </div>
 </header>
 <div class="card">
-  <video controls preload="auto" id="video" poster="https://i3.ytimg.com/vi/<%= videoId %>/maxresdefault.jpg">
+  <video controls autoplay preload="auto" id="video" poster="https://i3.ytimg.com/vi/<%= videoId %>/maxresdefault.jpg">
     <source src="<%= stream_url %>" type="video/mp4">
     読み込み失敗。ブラウザをアップデートしてどうぞ。
   </video>
@@ -37,6 +37,7 @@
      <audio id="audio" controls>
         <source src="<%= audioUrl %>">
     </audio>
+    <button id="syncButton">オーディオの位置を動画に合わせる</button>
   </div>
   <div class="toolcard-header">
     <small class="text-muted">ツール　　<button onclick="location.href='/pytdf/<%= videoId %>'">この動画をダウンロードする</button><button onclick="location.href='/ll/<%= videoId %>'">音のみで再生する</button></small>
@@ -191,29 +192,40 @@ video {
       text-align: left;
       box-sizing: border-box;
 </style>
-     <script>
+    <script>
         const video = document.getElementById('video');
         const audio = document.getElementById('audio');
+        const syncButton = document.getElementById('syncButton');
 
-        // 動画が再生されたときにオーディオも再生
+        video.addEventListener('loadedmetadata', () => {
+            video.play().catch(error => {
+                console.error("動画の再生エラー:", error);
+            });
+        });
+
         video.addEventListener('play', () => {
-            audio.currentTime = video.currentTime; // 時間を同期
             audio.play().catch(error => {
                 console.error("オーディオの再生エラー:", error);
             });
         });
 
-        // 動画が一時停止されたときにオーディオも一時停止
         video.addEventListener('pause', () => {
             audio.pause();
         });
 
-        // 動画が終了したときにオーディオも停止
         video.addEventListener('ended', () => {
             audio.pause();
-            audio.currentTime = 0; // オーディオの時間をリセット
+            audio.currentTime = 0; 
         });
 
+        syncButton.addEventListener('click', () => {
+            audio.currentTime = video.currentTime;
+            if (audio.paused) {
+                audio.play().catch(error => {
+                    console.error("オーディオの再生エラー:", error);
+                });
+            }
+        });
     </script>
   </body>
 </html>
