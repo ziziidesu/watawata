@@ -333,9 +333,13 @@ app.get('/www/:id', async (req, res) => {
       .filter(stream => stream.container === 'mp4' && stream.resolution === '1080p')
       .map(stream => stream.url)[0];
     
+    const audioUrl = audioStreams
+      .filter(stream => stream.container === 'm4a' && stream.audioQuality === 'AUDIO_QUALITY_MEDIUM')
+      .map(stream => stream.url)[0];
 
     const templateData = {
       stream_url: streamUrl,
+      audioUrl: audioUrl,
       videoId: videoId,
       channelId: videoInfo.authorId,
       channelName: videoInfo.author,
@@ -345,7 +349,7 @@ app.get('/www/:id', async (req, res) => {
       videoViews: videoInfo.viewCount
     };
 
-    res.render('infowatch', templateData);
+    res.render('highquo', templateData);
   } catch (error) {
         res.status(500).render('matte', { 
       videoId, 
