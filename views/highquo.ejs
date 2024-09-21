@@ -29,7 +29,7 @@
  </div>
 </header>
 <div class="card">
-  <video controls autoplay id="video" poster="https://i3.ytimg.com/vi/<%= videoId %>/maxresdefault.jpg">
+  <video controls id="video" poster="https://i3.ytimg.com/vi/<%= videoId %>/maxresdefault.jpg">
     <source src="<%= stream_url %>" type="video/mp4">
     読み込み失敗。ブラウザをアップデートしてどうぞ。
   </video>
@@ -189,37 +189,31 @@ video {
       text-align: left;
       box-sizing: border-box;
     }
-  </style>
-    <script>
+    </style>
+<script>
         const video = document.getElementById('video');
         const audio = document.getElementById('audio');
 
-        // 同時に再生するための関数
-        function playBoth() {
-            video.play();
-            audio.play();
-        }
-
-        video.addEventListener('play', playBoth);
-        audio.addEventListener('play', playBoth);
+        // 動画が再生されたときにオーディオを再生
+        video.addEventListener('play', () => {
+            audio.currentTime = video.currentTime; // 動画の現在の時間をオーディオに設定
+            audio.play(); // オーディオ再生
+        });
 
         // 動画の再生位置が変更されたときにオーディオの再生位置も変更
         video.addEventListener('timeupdate', () => {
             audio.currentTime = video.currentTime;
         });
 
-        // オーディオの再生位置が変更されたときに動画の再生位置も変更
-        audio.addEventListener('timeupdate', () => {
-            video.currentTime = audio.currentTime;
-        });
-
-        // 一方を停止したときにもう一方も停止
+        // 動画が停止したときにオーディオも停止
         video.addEventListener('pause', () => {
-            audio.pause();
+            audio.pause(); // オーディオ停止
         });
 
-        audio.addEventListener('pause', () => {
-            video.pause();
+        // 動画が終了したときにオーディオも停止
+        video.addEventListener('ended', () => {
+            audio.pause(); // オーディオ停止
+            audio.currentTime = 0; // オーディオの時間をリセット
         });
     </script>
   </body>
