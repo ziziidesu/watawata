@@ -15,29 +15,6 @@
   <link rel="stylesheet" href="/css/plyr.css">
   <link rel="stylesheet" href="/css/styles.css">
   <script src="/js/bootstrap.min.js"></script>
-   <script>
-        const video = document.getElementById('video');
-        const audio = document.getElementById('audio');
-
-        video.addEventListener('play', () => {
-            audio.play();
-        });
-
-        video.addEventListener('pause', () => {
-            audio.pause();
-        });
-
-        video.addEventListener('seeked', () => {
-            audio.currentTime = video.currentTime;
-        });
-        audio.addEventListener('seeked', () => {
-            video.currentTime = audio.currentTime;
-        });
-
-        video.addEventListener('timeupdate', () => {
-            audio.currentTime = video.currentTime;
-        });
-    </script>
 </head>
 
 <body>
@@ -53,7 +30,7 @@
 </header>
 <div class="card">
   <video controls autoplay id="video" poster="https://i3.ytimg.com/vi/<%= videoId %>/maxresdefault.jpg">
-    <source src="/hiqhquo/<%= videoId %>" type="video/mp4">
+    <source src="<%= stream_url %>" type="video/mp4">
     読み込み失敗。ブラウザをアップデートしてどうぞ。
   </video>
   <div class="toolcard-header">
@@ -213,5 +190,37 @@ video {
       box-sizing: border-box;
     }
   </style>
+    <script>
+        const video = document.getElementById('video');
+        const audio = document.getElementById('audio');
+
+        // 同時に再生するための関数
+        function playBoth() {
+            video.play();
+            audio.play();
+        }
+
+        video.addEventListener('play', playBoth);
+        audio.addEventListener('play', playBoth);
+
+        // 動画の再生位置が変更されたときにオーディオの再生位置も変更
+        video.addEventListener('timeupdate', () => {
+            audio.currentTime = video.currentTime;
+        });
+
+        // オーディオの再生位置が変更されたときに動画の再生位置も変更
+        audio.addEventListener('timeupdate', () => {
+            video.currentTime = audio.currentTime;
+        });
+
+        // 一方を停止したときにもう一方も停止
+        video.addEventListener('pause', () => {
+            audio.pause();
+        });
+
+        audio.addEventListener('pause', () => {
+            video.pause();
+        });
+    </script>
   </body>
 </html>
