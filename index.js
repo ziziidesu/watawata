@@ -338,8 +338,8 @@ app.get('/www/:id', async (req, res) => {
       channelName: lag,
       channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
       videoTitle: videoInfo.title,
-      videoDes: videoInfo.descriptionHtml,
-      videoViews: videoInfo
+      videoDes: videoInfo.description,
+      videoViews: videoInfo.adaptiveFormats
     };
 
     res.render('infowatch', templateData);
@@ -353,6 +353,49 @@ app.get('/www/:id', async (req, res) => {
 });
 
 
+app.get('/ll/:id', async (req, res) => {
+  const videoId = req.params.id;
+
+  try {
+    const videoInfo = await fetchVideoInfoParallel(videoId);
+    
+    const audioStreams = videoInfo.formatStreams || [];
+    const streamUrl = audioStreams.reverse().map(audio => audio.url)[0];
+    const formatStreams2 = videoInfo.formatStreams || [];
+    const streamUrl2 = formatStreams2.reverse().map(stream => stream.url)[0];
+    console.log(streamUrl2);
+    console.log(streamUrl);
+
+    if (!streamUrl) {
+          res.status(500).render('matte', { 
+      videoId, 
+      error: 'ストリームURLが見つかりません',
+    });
+    }
+    if (!videoInfo.authorId) {
+      return res.redirect(`/wredirect/${videoId}`);
+    }
+
+    const templateData = {
+      audioUrl: streamUrl,
+      videoId: videoId,
+      channelId: videoInfo.authorId,
+      channelName: videoInfo.author,
+      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
+      videoTitle: videoInfo.title,
+      videoDes: videoInfo.descriptionHtml,
+      videoViews: videoInfo.viewCount
+    };
+
+    res.render('listen', templateData);
+  } catch (error) {
+        res.status(500).render('matte', { 
+      videoId, 
+      error: '動画を取得できません', 
+      details: error.message 
+    });
+  }
+});
 
 //てすとー！
 async function getYouTubePageTitle(url) {
