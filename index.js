@@ -358,6 +358,48 @@ app.get('/www/:id', async (req, res) => {
 });
 
 
+//とりま音を取ってみよう
+app.get('/ll/:id', async (req, res) => {
+  const videoId = req.params.id;
+
+  try {
+    const videoInfo = await fetchVideoInfoParallel(videoId);
+    
+    const adaptiveFormats = videoInfo.adaptiveFormats || [];
+    const streamUrl = adaptiveFormats.reverse().map(stream => stream.url)[0];
+
+    if (!streamUrl) {
+          res.status(500).render('matte', { 
+      videoId, 
+      error: 'ストリームURLが見つかりません',
+    });
+    }
+    if (!videoInfo.authorId) {
+      return res.redirect(`/wredirect/${videoId}`);
+    }
+
+    const templateData = {
+      audioUrl: streamUrl,
+      videoId: videoId,
+      channelId: videoInfo.authorId,
+      channelName: videoInfo.author,
+      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
+      videoTitle: videoInfo.title,
+      videoDes: videoInfo.descriptionHtml,
+      videoViews: videoInfo.viewCount
+    };
+
+    res.render('listen', templateData);
+  } catch (error) {
+        res.status(500).render('matte', { 
+      videoId, 
+      error: '音を取得できません', 
+      details: error.message 
+    });
+  }
+});
+
+
 //てすとー！
 async function getYouTubePageTitle(url) {
   try {
@@ -365,7 +407,6 @@ async function getYouTubePageTitle(url) {
     const { data } = await axios.get(url);
     const pageinfo = data;
 
-    //titleを取ってみよー
     const titleMatch = data.match(/<title>(.*?)<\/title>/);
     const title = titleMatch ? titleMatch[1] : 'タイトルが取得できませんでした';
     
