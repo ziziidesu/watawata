@@ -1091,13 +1091,13 @@ app.get('/watch', (req, res) => {
 });
 
 //リダイレクト
-app.get('/watch', (req, res) => {
+app.get('/redirect', (req, res) => {
   const subp = req.query.p;
   const id= req.query.id;
   if (id) {
     res.redirect(`/${subp}/${id}`);
   } else {
-    res.status(400).send('Video ID is required');
+    res.redirect(`/${subp}`);
   }
 });
 
