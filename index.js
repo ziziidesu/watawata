@@ -1080,6 +1080,16 @@ app.get('/wredirect/:id', (req, res) => {
   res.redirect(`/w/${id}`);
 });
 
+//概要欄用リダイレクト
+app.get('/watch', (req, res) => {
+  const videoId = req.query.v;
+  if (videoId) {
+    res.redirect(`/w/${videoId.split('=')[1].split('&')[0]}`);
+  } else {
+    res.status(400).send('Video ID is required');
+  }
+});
+
 
 // エラー
 app.use((req, res) => {
