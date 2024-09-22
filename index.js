@@ -1074,7 +1074,7 @@ app.get('/getpage/:encodedUrl', async (req, res) => {
   }
 });
 
-//リダイレクト
+//動画再生用リダイレクト
 app.get('/wredirect/:id', (req, res) => {
   const id = req.params.id;
   res.redirect(`/w/${id}`);
@@ -1084,12 +1084,22 @@ app.get('/wredirect/:id', (req, res) => {
 app.get('/watch', (req, res) => {
   const videoId = req.query.v;
   if (videoId) {
-    res.redirect(`/w/${videoId.split('=')[1].split('&')[0]}`);
+    res.redirect(`/w/${videoId}`);
   } else {
     res.status(400).send('Video ID is required');
   }
 });
 
+//リダイレクト
+app.get('/watch', (req, res) => {
+  const subp = req.query.p;
+  const id= req.query.id;
+  if (id) {
+    res.redirect(`/${subp}/${id}`);
+  } else {
+    res.status(400).send('Video ID is required');
+  }
+});
 
 // エラー
 app.use((req, res) => {
