@@ -305,7 +305,7 @@ app.get('/w/:id', async (req, res) => {
     });
     }
     if (!videoInfo.authorId) {
-      return res.redirect(`/wredirect/${videoId}`);
+      return res.redirect(`/redirect?p=w&id=${videoId}`);
     }
 
     const templateData = {
@@ -389,7 +389,7 @@ app.get('/ll/:id', async (req, res) => {
     });
     }
     if (!videoInfo.authorId) {
-      return res.redirect(`/redirect?p=w&id=${videoId}`);
+      return res.redirect(`/redirect?p=ll&id=${videoId}`);
     }
 
     const templateData = {
@@ -1053,6 +1053,10 @@ app.get('/watch', (req, res) => {
   } else {
     res.status(400).send('Video ID is required');
   }
+});
+app.get('/channel/:id', (req, res) => {
+  const id = req.params.id;
+    res.redirect(`/c/${id}`);
 });
 
 //リダイレクト
