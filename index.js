@@ -515,48 +515,6 @@ video {
   }
 });
 
-//てーすと
-const instances = [
-    'https://yewtu.be',
-    'https://vid.puffyan.us',
-    'https://invidious.flokinet.to',
-    'https://inv.tux.pizza',
-    'https://iv.ggtyler.dev',
-    'https://inv.nadeko.net',
-    "https://invidious.lunar.icu/","https://onion.tube/","https://inv.riverside.rocks/","https://invidio.xamh.de/","https://y.com.sb/","https://invidious.sethforprivacy.com/","https://invidious.tiekoetter.com/","https://inv.bp.projectsegfau.lt/","https://inv.vern.cc/","https://invidious.nerdvpn.de/","https://inv.privacy.com.de/","https://invidious.rhyshl.live/","https://invidious.slipfox.xyz/","https://invidious.weblibre.org/","https://invidious.namazso.eu/"
-];
-
-async function getBestStream(videoId) {
-    for (const instance of instances) {
-        try {
-            const response = await axios.get(`${instance}/api/v1/videos/${videoId}`);
-            const streams = response.data.formatStreams;
-
-            if (streams) {
-                // 画質を降順にソート
-                streams.sort((a, b) => b.qualityLabel.localeCompare(a.qualityLabel));
-                return streams[0].url;
-            } else {
-                console.error(`インスタンス ${instance}: formatStreamsが見つかりません。`);
-            }
-        } catch (error) {
-            console.error(`インスタンス ${instance} でエラーが発生しました: ${error.message}`);
-        }
-    }
-    return null;
-}
-
-app.get('/stream/:id', async (req, res) => {
-    const videoId = req.params.id;
-    const streamUrl = await getBestStream(videoId);
-
-    if (streamUrl) {
-        res.json({ streamUrl });
-    } else {
-        res.status(404).json({ error: '利用可能なストリームが見つかりませんでした。' });
-    }
-});
-
 //観る
 app.get('/ppsd/:id', async (req, res) => {
   let videoId = req.params.id;
@@ -802,7 +760,7 @@ app.get('/listen/:id', async (req, res) => {
 });
 
 // Video Streaming
-app.get("/s/:id", async (req, res) => {
+app.get("/streaming/:id", async (req, res) => {
 	if (!req.params.id) return res.redirect("/");
 	try {
 		let info = await ytdl.getInfo(req.params.id);
