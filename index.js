@@ -262,13 +262,20 @@ app.get('/api/login/:id', async (req, res) => {
 //直接狙った！
 // Invidiousのリスト
 const invidiousInstances = [
-  "https://invidious.ethibox.fr","https://inv.nadeko.net","https://iv.datura.network",
-  "https://invidious.jing.rocks","https://invidious.reallyaweso.me","https://inv.phene.dev","https://invidious.protokolla.fi","https://invidious.perennialte.ch",
-  "https://invidious.materialio.us","https://yewtu.be","https://invidious.fdn.fr",
-  "https://inv.tux.pizza","https://invidious.privacyredirect.com","https://invidious.drgns.space",
-  "https://vid.puffyan.us","https://vid.puffyan.us","https://inv.riverside.rocks",
-  "https://invidio.xamh.de","https://y.com.sb","https://invidious.sethforprivacy.com",
-  "https://invidious.tiekoetter.com","https://inv.bp.projectsegfau.lt","https://inv.vern.cc",
+  "https://invidious.ethibox.fr","https://inv.nadeko.net",
+  "https://iv.datura.network",
+  "https://invidious.jing.rocks","https://invidious.reallyaweso.me",
+  "https://inv.phene.dev","https://invidious.protokolla.fi",
+  "https://invidious.perennialte.ch",
+  "https://invidious.materialio.us","https://yewtu.be",
+  "https://invidious.fdn.fr",
+  "https://inv.tux.pizza","https://invidious.privacyredirect.com",
+  "https://invidious.drgns.space","https://vid.puffyan.us",
+  "https://vid.puffyan.us","https://inv.riverside.rocks",
+  "https://invidio.xamh.de","https://y.com.sb",
+  "https://invidious.sethforprivacy.com",
+  "https://invidious.tiekoetter.com",
+  "https://inv.bp.projectsegfau.lt","https://inv.vern.cc",
   "https://invidious.nerdvpn.de","https://invidious.private.coffee"
 ];
 
@@ -382,7 +389,7 @@ app.get('/ll/:id', async (req, res) => {
     });
     }
     if (!videoInfo.authorId) {
-      return res.redirect(`/wredirect/${videoId}`);
+      return res.redirect(`/redirect?p=w&id=${videoId}`);
     }
 
     const templateData = {
