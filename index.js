@@ -1051,12 +1051,16 @@ app.get('/watch', (req, res) => {
   if (videoId) {
     res.redirect(`/w/${videoId}`);
   } else {
-    res.status(400).send('Video ID is required');
+    res.redirect(`/`);
   }
 });
 app.get('/channel/:id', (req, res) => {
   const id = req.params.id;
     res.redirect(`/c/${id}`);
+});
+app.get('/channel/:id/join', (req, res) => {
+  const id = req.params.id;
+  res.redirect(`/c/${id}`);
 });
 
 //リダイレクト
