@@ -307,19 +307,10 @@ app.get('/w/:id', async (req, res) => {
     if (!videoInfo.authorId) {
       return res.redirect(`/redirect?p=w&id=${videoId}`);
     }
-    const searchResults = await ytsr(videoId, { limit: 1 });
-    
-    const videothumb = searchResults.items[0];
-    if (videothumb && videothumb.thumbnails && videothumb.thumbnails.length > 0) {
-        let thumbnailUrl = videothumb.thumbnails[0].url;
-    } else {
-        let thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
-    }
     
     const templateData = {
       stream_url: streamUrl,
       videoId: videoId,
-      thumbnailUrl: thumbnailUrl,
       channelId: videoInfo.authorId,
       channelName: videoInfo.author,
       channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
