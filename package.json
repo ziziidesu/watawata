@@ -23,12 +23,12 @@
   "engines": { "node": "16.x" },
   "repository": {
     "type": "git",
-    "url": "https://glitch.com/~wakame02q"
+    "url": "https://glitch.com/~wakame02m"
   },
   "author": "wakame",
   "private": false,
   "bugs": {
-    "url": "https://wakame02q.glitch.me/send"
+    "url": "https://wakame02m.glitch.me/send"
   },
   "homepage": "https://sites.google.com/view/wakametube",
   "devDependencies": {},
