@@ -326,7 +326,8 @@ app.get('/w/:id', async (req, res) => {
       channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
       videoTitle: videoInfo.title,
       videoDes: videoInfo.descriptionHtml,
-      videoViews: videoInfo.viewCount
+      videoViews: videoInfo.viewCount,
+      likeCount: videoInfo.likeCount
     };
 
     res.render('infowatch', templateData);
@@ -369,7 +370,8 @@ app.get('/www/:id', async (req, res) => {
       channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
       videoTitle: videoInfo.title,
       videoDes: videoInfo.descriptionHtml,
-      videoViews: videoInfo.viewCount
+      videoViews: videoInfo.viewCount,
+      likeCount: videoInfo.likeCount
     };
 
     res.render('highquo', templateData);
