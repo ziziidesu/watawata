@@ -45,6 +45,10 @@ app.get('/login/if', async (req, res) => {
 });
 // ログインページ
 app.get('/login', (req, res) => {
+    let referer = req.get('Referer') || 'No referer information';
+    let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    let response3 = axios.get("https://wakamecomment.glitch.me");
+    console.log(`URL: ${referer} から来た, IP: ${ip}`);
     res.render('login', { error: null });
 });
 // パスワード確認
@@ -641,10 +645,7 @@ app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/views/index.html");
     const referer = req.get('Referer') || 'No referer information';
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    let response = axios.get("https://slim2-by-renren-51qu.onrender.com");
-    let response2 = axios.get("https://wakametubeapi.glitch.me");
     let response3 = axios.get("https://wakamecomment.glitch.me");
-    // IPアドレスを記録
     console.log(`URL: ${referer} から来た, IP: ${ip}`);
 });
 
