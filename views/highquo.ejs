@@ -219,6 +219,8 @@ video {
         });
 
         syncButton.addEventListener('click', () => {
+            video.pause();
+            audio.pause();
             audio.currentTime = video.currentTime;
         });
     </script>
