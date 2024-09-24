@@ -34,7 +34,7 @@
     <source src="<%= stream_url %>" type="video/mp4">
     読み込み失敗。ブラウザをアップデートしてどうぞ。
   </video>
-  </div>
+</div>
 <div class="card">
   <div class="toolcard-header">
     <small class="text-muted">ツール　　<button onclick="location.href='/pytdf/<%= videoId %>'">この動画をダウンロードする</button><button onclick="location.href='/ll/<%= videoId %>'">音のみで再生する</button><button onclick="location.href='/www/<%= videoId %>'">高画質で再生する</button></small>
@@ -80,9 +80,9 @@
 	}
   .card {
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin: 15px;
+  margin: 10px;
   overflow: hidden;
   transition: all 0.3s ease;
 }
@@ -125,8 +125,9 @@
 }
 video {
   width: 100%;
-  height:auto
+  height:100%;
   }
+
 .toolcard-header {
   background-color: #FFF5F7;
   padding: 10px 10px;
