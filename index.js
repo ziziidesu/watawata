@@ -436,14 +436,9 @@ app.get('/sw', async (req, res) => {
     const formatStreams = videoInfo.formatStreams || [];
     const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
 
-    if (!streamUrl) {
-          res.status(500).render('matte', { 
-      videoId, 
-      error: 'ストリームURLが見つかりません',
-    });
-    }
     if (!videoInfo.authorId) {
-      return res.redirect(`/redirect?p=w&id=${videoId}`);
+      const plusNumber = number + 0;
+      return res.redirect(`/sw?n=${plusNumber}&id=${videoId}`);
     }
     
     const templateData = {
@@ -459,7 +454,7 @@ app.get('/sw', async (req, res) => {
       likeCount: videoInfo.likeCount
     };
 
-    res.render('infowatch', templateData);
+    res.render('errorwatch', templateData);
   } catch (error) {
         res.status(500).render('matte', { 
       videoId, 
