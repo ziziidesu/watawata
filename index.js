@@ -262,7 +262,7 @@ app.get('/api/login/:id', async (req, res) => {
 //直接狙った！
 // Invidiousのリスト
 const invidiousInstances = [
-  "https://inv.nadeko.net","https://invidious.ethibox.fr",
+  "https://inv.nadeko.net",
   "https://iv.datura.network",
   "https://invidious.jing.rocks","https://invidious.reallyaweso.me",
   "https://inv.phene.dev","https://invidious.protokolla.fi",
