@@ -17,6 +17,7 @@ const jp = require('jsonpath');
 const path = require('path');
 
 
+
 const limit = process.env.LIMIT || 50;
 
 const user_agent = process.env.USER_AGENT || "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36";
@@ -932,7 +933,6 @@ app.get("/proxy/",(req, res) => {
 })
 
 //設定
-const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
