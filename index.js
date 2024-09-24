@@ -15,7 +15,7 @@ const cookieParser = require('cookie-parser');
 const InvidJS = require('@invidjs/invid-js');
 const jp = require('jsonpath');
 const path = require('path');
-
+const bodyParser = require('body-parser');
 
 
 const limit = process.env.LIMIT || 50;
@@ -643,11 +643,15 @@ app.get("/live/:id", async (req, res) => {
 
 // ホーム
 app.get("/", (req, res) => {
-	res.sendFile(__dirname + "/views/index.html");
-    const referer = req.get('Referer') || 'No referer information';
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  fs.readFile('package.json', 'utf8', (err, data) => {
+    if (err) {
+        return res.status(500).send('Error reading package.json');
+    }
+
+    const packageJson = JSON.parse(data);
+    const version = packageJson.version;
     let response3 = axios.get("https://wakamecomment.glitch.me");
-    console.log(`URL: ${referer} から来た, IP: ${ip}`);
+  res.render('views/index.html', {version});
 });
 
 // サーチ
