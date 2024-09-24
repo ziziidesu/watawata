@@ -643,15 +643,7 @@ app.get("/live/:id", async (req, res) => {
 
 // ホーム
 app.get("/", (req, res) => {
-  fs.readFile('package.json', 'utf8', (err, data) => {
-    if (err) {
-        return res.status(500).send('Error reading package.json');
-    }
-
-    const packageJson = JSON.parse(data);
-    const version = packageJson.version;
-    let response3 = axios.get("https://wakamecomment.glitch.me");
-  res.render('views/index.html', {version});
+   res.sendFile(__dirname + "/views/index.html");
 });
 
 // サーチ
