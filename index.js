@@ -282,9 +282,13 @@ const invidiousInstances = [
 //invidiousから引っ張ってくる
 async function fetchVideoInfoParallel(videoId) {
   const requests = invidiousInstances.map(instance =>
-    axios.get(`${instance}/api/v1/videos/${videoId}`).then(response => response.data)
+    axios.get(`${instance}/api/v1/videos/${videoId}`)
+      .then(response => {
+        console.log(`使用したURL: ${instance}/api/v1/videos/${videoId}`);
+        return response.data;
+      })
   );
-  
+
   return Promise.any(requests);
 }
 
