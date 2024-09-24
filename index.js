@@ -425,45 +425,6 @@ app.get('/ll/:id', async (req, res) => {
   }
 });
 
-//エラー時の対応
-app.get('/sw', async (req, res) => {
-  const number = req.query.n;
-  const videoId= req.query.id;
-  try {
-    let instance = invidiousInstances[number];
-    const videoInfo = await axios.get(`${instance}/api/v1/videos/${videoId}`);
-    
-    const formatStreams = videoInfo.formatStreams || [];
-    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
-
-    if (!videoInfo.authorId) {
-      const plusNumber = number + 0;
-      return res.redirect(`/sw?n=${plusNumber}&id=${videoId}`);
-    }
-    
-    const templateData = {
-      stream_url: streamUrl,
-      videoId: videoId,
-      number: number,
-      channelId: videoInfo.authorId,
-      channelName: videoInfo.author,
-      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
-      videoTitle: videoInfo.title,
-      videoDes: videoInfo.descriptionHtml,
-      videoViews: videoInfo.viewCount,
-      likeCount: videoInfo.likeCount
-    };
-
-    res.render('errorwatch', templateData);
-  } catch (error) {
-        res.status(500).render('matte', { 
-      videoId, 
-      error: '動画を取得できません', 
-      details: error.message 
-    });
-  }
-});
-
 //てすとー！
 async function getYouTubePageTitle(url) {
   try {
