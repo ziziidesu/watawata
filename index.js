@@ -612,7 +612,6 @@ app.get('/pytd/:id', async (req, res) => {
       res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(sanitizedTitle)}.mp4`);
       res.setHeader('Content-Type', 'video/mp4');
 
-      // ダウンロード
       streamResponse.pipe(res);
     }).on('error', (err) => {
       res.status(500).send(`Request error: ${err.message}`);
