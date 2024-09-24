@@ -220,11 +220,6 @@ video {
 
         syncButton.addEventListener('click', () => {
             audio.currentTime = video.currentTime;
-            if (audio.paused) {
-                audio.play().catch(error => {
-                    console.error("オーディオの再生エラー:", error);
-                });
-            }
         });
     </script>
   </body>
