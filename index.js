@@ -624,6 +624,47 @@ app.get("/block/cc3q",(req, res) => {
   res.render('../views/tst/2.ejs', { ip: cleanIp });
 })
 
+//くえすちおん
+// 質問ページ
+app.get('/question', (req, res) => {
+    res.render('../views/question/que.ejs');
+});
+
+// 選択肢の処理
+app.post('/question/answer', (req, res) => {
+    if (req.body.option === 'classroom') {
+        res.redirect('/question/class');
+    } else if (req.body.option === 'massiro') {
+        res.redirect('/question/massiro');
+    }
+});
+
+// クラスルーム
+app.get('/question/class', (req, res) => {
+    res.render('../views/question/class.ejs');
+});
+
+app.post('/question/class/answer', (req, res) => {
+    if (req.body.answer === 'うぇうぇ') {
+        res.send('正解');
+    } else {
+        res.send('不正解');
+    }
+});
+
+// まっしろ
+app.get('/question/massiro', (req, res) => {
+    res.render('../views/question/massiro.ejs');
+});
+
+app.post('/question/massiro/answer', (req, res) => {
+    if (req.body.answer === '【悠久の絆】主人公＆マリユス') {
+        res.send('正解');
+    } else {
+        res.send('不正解');
+    }
+});
+
 // エラー
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
