@@ -27,8 +27,13 @@ app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-//爆撃
+
+//ログイン
+// ログインちぇっく
 app.use((req, res, next) => {
+    if (req.cookies.massiropass !== 'ok' && !req.path.includes('login')) {
+        return res.redirect('/login');
+    }
     const randomNum = Math.floor(Math.random() * 10);
 
     if (randomNum === 0) {
@@ -38,14 +43,6 @@ app.use((req, res, next) => {
     } else {
         next();
     }
-});
-//ログイン
-// ログインちぇっく
-app.use((req, res, next) => {
-    if (req.cookies.massiropass !== 'ok' && !req.path.includes('login')) {
-        return res.redirect('/login');
-    }
-    next();
 });
 //ログイン済み？
 app.get('/login/if', async (req, res) => {
