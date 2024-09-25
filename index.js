@@ -1,6 +1,5 @@
 "use strict";
 const m3u8stream = require('m3u8stream');
-const ytdl = require("ytdl-core");
 const ytsr = require("ytsr");
 const ytpl = require("ytpl");
 const miniget = require("miniget");
@@ -98,171 +97,10 @@ app.get('/tst/:id', (req, res) => {
   res.render(`tst/${id}`, { id: id });
 });
 
-//概要、タイトル取得
-app.get('/des/:id', async (req, res) => {
-    const videoId = req.params.id;
-    const url = `https://www.youtube.com/watch?v=${videoId}`;
-
-    try {
-        // スクレイピング
-        const response = await axios.get(url);
-        const html = response.data;
-
-        // 目当てのものを検索
-        const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
-        const descriptionMatch = html.match(/"content":"(.*?)"/);
-        const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
-        const channnelIdMatch = html.match(/"browseEndpoint":\{.*?"browseId":"(.*?)"/);
-        const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
-        const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
-
-        // 抽出
-        const videoTitle = titleMatch ? titleMatch[1] : '取得できませんでした';
-        const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '取得できませんでした';
-        const videoViews = viewsMatch ? viewsMatch[1] : '再生回数を取得できませんでした';
-        const channelId = channnelIdMatch ? channnelIdMatch[1] : '取得できませんでした';
-        const channelImage = channelImageMatch ? channelImageMatch[1] : '取得できませんでした';
-        const channelName = channelNameMatch ? channelNameMatch[1] : '取得できませんでした';
-
-        res.json({
-            "video-title": videoTitle,
-            "video-des": videoDes,
-            "video-views": videoViews,
-            "channel-id": channelId,
-            "channel-image": channelImage,
-            "channel-name": channelName
-        });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error scraping YouTube data');
-    }
-});
-
-//取得して再生
-//動画情報を取得しつつ再生
-//不安定になったため、使用停止
-app.get('/rew/:id', async (req, res) => {
-  const videoId = req.params.id;
-  const url = `https://www.youtube.com/watch?v=${videoId}`;
-  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
-
-  try {
-    let stream_url;
-    try {
-      const response = await axios.get(apiUrl);
-      stream_url = response.data.stream_url;
-      console.log('ストリームURL取得成功');
-    } catch (apiError) {
-      console.error('APIからストリームURLの取得に失敗:', apiError.message);
-      throw new Error('ストリームURLの取得に失敗しました');
-    }
-
-    let html;
-    try {
-      const inforesponse = await axios.get(url);
-      html = inforesponse.data;
-      console.log('YouTubeページのHTML取得成功');
-    } catch (infoError) {
-      console.error('YouTubeページの取得に失敗:', infoError.message);
-      throw new Error('YouTubeページの取得に失敗しました');
-    }
-
-    let videoTitle, videoDes, videoViews, channelImage, channelName, channelId;
-
-    try {
-      const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
-      const descriptionMatch = html.match(/"attributedDescriptionBodyText":\{.*?"content":"(.*?)","commandRuns/);
-      const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
-      const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
-      const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
-      const channnelIdMatch = html.match(/"browseEndpoint":\{.*?"browseId":"(.*?)"/);
-
-      videoTitle = titleMatch ? titleMatch[1] : 'タイトルを取得できませんでした';
-      videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '概要を取得できませんでした';
-      videoViews = viewsMatch ? viewsMatch[1] : '再生回数を取得できませんでした';
-      channelImage = channelImageMatch ? channelImageMatch[1] : '取得できませんでした';
-      channelName = channelNameMatch ? channelNameMatch[1] : '取得できませんでした';
-      channelId = channnelIdMatch ? channnelIdMatch[1] : '取得できませんでした';
-
-      console.log('動画情報の強奪成功');
-    } catch (parseError) {
-      console.error('HTMLの解析中にエラーが発生:', parseError.message);
-      throw new Error('動画情報の解析に失敗しました');
-    }
-
-    res.render('infowatch.ejs', { 
-      videoId, 
-      stream_url, 
-      videoTitle, 
-      videoDes, 
-      videoViews, 
-      channelImage, 
-      channelName, 
-      channelId 
-    });
-  } catch (error) {
-    console.error('全体のエラーハンドリング:', error.message);
-    try {
-      await axios.get("https://yukimath-eiko.onrender.com");
-      console.log('リダイレクト先へのリクエスト成功');
-    } catch (redirectError) {
-      console.error('リダイレクト先へのリクエストに失敗:', redirectError.message);
-    }
-    res.status(500).render('matte', { 
-      videoId, 
-      error: '動画を取得できません', 
-      details: error.message 
-    });
-  }
-});
-
 //曲をきく！
 app.get("/famous",(req, res) => {
   res.render("../views/famous.ejs")
 })
-
-//わかめAPI
-app.get('/api/login/:id', async (req, res) => {
-  let videoId = req.params.id;
-  let url = `https://www.youtube.com/watch?v=${videoId}`;
-  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
-  
-  try {
-    const response = await axios.get(apiUrl);
-    const { stream_url } = response.data;
-    
-    const inforesponse = await axios.get(url);
-    const html = inforesponse.data;
-
-    const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
-    const descriptionMatch = html.match(/"attributedDescriptionBodyText":\{.*?"content":"(.*?)","commandRuns/);
-    const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
-    const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
-    const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
-    const channnelIdMatch = html.match(/"browseEndpoint":\{.*?"browseId":"(.*?)"/);
-
-    const videoTitle = titleMatch ? titleMatch[1] : 'タイトルを取得できませんでした';
-    const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '概要を取得できませんでした';
-    const videoViews = viewsMatch ? viewsMatch[1] : '再生回数を取得できませんでした';
-    const channelImage = channelImageMatch ? channelImageMatch[1] : '取得できませんでした';
-    const channelName = channelNameMatch ? channelNameMatch[1] : '取得できませんでした';
-    const channelId = channnelIdMatch ? channnelIdMatch[1] : '取得できませんでした';
-
-        res.json({
-            "video-title": videoTitle,
-            "video-des": videoDes,
-            "video-views": videoViews,
-            "channel-id": channelId,
-            "channel-image": channelImage,
-            "channel-name": channelName,
-            "stream-url": stream_url
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error');
-    }
-});
 
 //直接狙った！
 // Invidiousのリスト
@@ -384,7 +222,7 @@ app.get('/www/:id', async (req, res) => {
   }
 });
 
-
+//音だけ再生
 app.get('/ll/:id', async (req, res) => {
   const videoId = req.params.id;
 
@@ -425,139 +263,7 @@ app.get('/ll/:id', async (req, res) => {
   }
 });
 
-//てすとー！
-async function getYouTubePageTitle(url) {
-  try {
-    // YouTubeページのHTMLを強奪
-    const { data } = await axios.get(url);
-    const pageinfo = data;
-
-    const titleMatch = data.match(/<title>(.*?)<\/title>/);
-    const title = titleMatch ? titleMatch[1] : 'タイトルが取得できませんでした';
-    
-    return pageinfo;
-  } catch (error) {
-    console.error('Error fetching YouTube data:', error);
-    return 'エラーが発生しました';
-  }
-}
-
-app.get('/title', async (req, res) => {
-  const videoUrl = 'https://www.youtube.com/watch?v=od4QcDPpNVk';
-  const pageinfo = await getYouTubePageTitle(videoUrl);
-  res.setHeader('Content-Type', 'text/plain');
-  res.send(`${pageinfo}`);
-});
-
-app.get('/holo', async (req, res) => {
-  const videoUrl = 'https://schedule.hololive.tv/';
-  const pageinfo = await getYouTubePageTitle(videoUrl);
-  res.send(`<link rel="stylesheet" href="/css/hololo.css"> ${pageinfo}`);
-});
-
-app.get('/holoi', async (req, res) => {
-  const videoUrl = 'https://plicy.net/GamePlay/145378';
-  const pageinfo = await getYouTubePageTitle(videoUrl);
-  res.setHeader('Content-Type', 'text/plain');
-  res.send(`${pageinfo}`);
-});
-
-//わかめわかめ
-app.get('/mimi', async (req, res) => {
-  const videoUrl = 'https://www.youtube.com/watch?v=7Y9sJvLI3Po';
-  const pageinfo = await getYouTubePageTitle(videoUrl);
-  res.send(`${pageinfo}`);
-});
-
-//サジェスト
-app.get('/sage', async (req, res) => {
-  const query = req.query.q;
-  const url = `https://www.google.com/complete/search?client=youtube&hl=ja&ds=yt&q=${encodeURIComponent(query)}`;
-
-  try {
-    const response = await axios.get(url);
-    // Check if suggestions is an array before assigning
-    const suggestions = Array.isArray(response.data[1][0]) ? response.data[1][0] : [];
-
-    res.render('tst/4.ejs', { suggestions });
-  } catch (error) {
-    console.error(error);
-    res.render('index', { error: '検索に失敗しました' });
-  }
-});
-
-//緊急(情報取得なし)
-app.get('/kwatch/:id', async (req, res) => {
-  let videoId = req.params.id;
-  let url = `https://www.youtube.com/watch?v=${videoId}`;
-  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
-  
-  try {
-    const response = await axios.get(apiUrl);
-    const { stream_url } = response.data;
-    
-    res.render('kwatch.ejs', { videoId, stream_url});
-  } catch (error) {
-    console.error(error);
-    res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
-  }
-});
-
-//おもしろい🤣
-app.get('/jehena', async (req, res) => {
-  const videoUrl = 'https://www.youtube.com/watch?v=7Y9sJvLI3Po';
-  const pageinfo = await getYouTubePageTitle(videoUrl);
-  const videoId = '7Y9sJvLI3Po';
-  let url = `https://www.youtube.com/watch?v=${videoId}`;
-  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
-  try {
-    const response = await axios.get(apiUrl);
-    const { stream_url } = response.data;
-    
-    res.send(`<video controls autoplay>
-    <source src="${stream_url}" type="video/mp4">
-    読み込み失敗。ブラウザをアップデートしてどうぞ。
-</video><style>
-video {
-    position: fixed;
-    top: 68px;
-    left: 22px;
-    width: 94%;
-    height: auto;
-    border-radius: 8px;
-    overflow: hidden;
-    z-index: 1000;
-}</style> ${pageinfo}`);
-  } catch (error) {
-    console.error(error);
-    res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
-  }
-});
-
-//観る
-app.get('/ppsd/:id', async (req, res) => {
-  let videoId = req.params.id;
-  let url = `https://www.youtube.com/watch?v=${videoId}`;
-  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
-
-  if (!ytdl.validateURL(url)) {
-    return res.status(400).render('index', { error: 'Invalid YouTube URL' });
-  }
-  
-  try {
-    const response = await axios.get(apiUrl);
-    const { stream_url } = response.data;
-
-    let info = await ytdl.getInfo(url);
-    
-    res.render('watch.ejs', { videoId, stream_url, info });
-  } catch (error) {
-    console.error(error);
-    res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
-  }
-});
-
-//ダウンロード緊急
+//ダウンロード
 app.get('/pytdf/:id', async (req, res) => {
   const videoId = req.params.id;
 
@@ -591,57 +297,6 @@ app.get('/pytdf/:id', async (req, res) => {
     res.status(500).send(`Failed to retrieve stream URL: ${error.message}`);
   }
 });
-
-//ダウンロード
-app.get('/pytd/:id', async (req, res) => {
-  const videoId = req.params.id;
-  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
-  const URL = `https://www.youtube.com/watch?v=${videoId}`;
-
-  try {
-    // ストリームURLを取得
-    const response = await axios.get(apiUrl);
-    const streamUrl = response.data.stream_url;
-    const info = await ytdl.getInfo(URL);
-    const title = info.videoDetails.title;
-    const sanitizedTitle = title.replace(/[^a-zA-Z0-9一-龯ぁ-ゔァ-ヴーｱ-ﾝﾞﾟー]/g, ' ');
-
-    https.get(streamUrl, (streamResponse) => {
-      if (streamResponse.statusCode !== 200) {
-        res.status(streamResponse.statusCode).send(`Failed to download video. Status code: ${streamResponse.statusCode}`);
-        return;
-      }
-
-      res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(sanitizedTitle)}.mp4`);
-      res.setHeader('Content-Type', 'video/mp4');
-
-      streamResponse.pipe(res);
-    }).on('error', (err) => {
-      res.status(500).send(`Request error: ${err.message}`);
-    });
-  } catch (error) {
-    res.status(500).send(`Failed to retrieve stream URL: ${error.message}`);
-  }
-});
-
-//ライブ配信
-app.get("/live/:id", async (req, res) => {
-  let videoId = req.params.id;
-  let url = `https://www.youtube.com/watch?v=${videoId}`;
-
-  if (!ytdl.validateURL(url)) {
-    return res.status(400).render('index', { error: 'Invalid YouTube URL' });
-  }
-
-  try {
-    let info = await ytdl.getInfo(url);
-    const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
-    res.render('live.ejs', {videoUrl: videoFormats[0].url, info});
-  } catch (error) {
-    console.error(error);
-    res.status(500).render('index.html', { error: 'Error fetching video info' });
-  }
-})
 
 // ホーム
 app.get("/", (req, res) => {
@@ -694,24 +349,6 @@ app.get("/s", async (req, res) => {
     }
 });
 
-//embed
-app.get("/e/:id", async (req, res) => {
-	if (!req.params.id) return res.redirect("/");
-	try {
-		let info = await ytdl.getInfo(req.params.id);
-		if (!info.formats.filter(format => format.hasVideo && format.hasAudio).length) {
-			return res.status(500).send("This Video is not Available for this Server Region.");
-		}
-
-		res.render('embed.ejs', {
-			id: req.params.id, info
-		});
-	} catch (error) {
-		console.error(error);
-		res.status(500).send(error.toString());
-	}
-});
-
 //プレイリスト
 app.get("/p/:id", async (req, res) => {
 	if (!req.params.id) return res.redirect("/");
@@ -746,111 +383,6 @@ app.get("/c/:id", async (req, res) => {
 			content: error
 		});
 	}
-});
-
-//音のみ再生
-app.get('/listen/:id', async (req, res) => {
-  let videoId = req.params.id;
-  let url = `https://www.youtube.com/watch?v=${videoId}`;
-
-  if (!ytdl.validateURL(url)) {
-    return res.status(400).render('index.html', { error: 'Invalid YouTube URL' });
-  }
-
-  try {
-    let info = await ytdl.getInfo(url);
-    const audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
-    if (audioFormats.length === 0) {
-      return res.status(500).render('index', { error: 'No audio formats available' });
-    }
-    res.render('listen', { audioUrl: audioFormats[0].url, info });
-  } catch (error) {
-    console.error(error);
-    res.status(500).render('index.html', { error: 'Error fetching audio info' });
-  }
-});
-
-// Video Streaming
-app.get("/streaming/:id", async (req, res) => {
-	if (!req.params.id) return res.redirect("/");
-	try {
-		let info = await ytdl.getInfo(req.params.id);
-		info.formats = info.formats.filter(format => format.hasVideo && format.hasAudio);
-		
-		if (!info.formats.length) {
-			return res.status(500).send("This Video is not Available for this Server Region.");
-		}
-
-		let headers = {
-			'user-agent': user_agent
-		}
-
-		// If user is seeking a video
-		if (req.headers.range) {
-			headers.range = req.headers.range;
-		}
-
-		if (info.videoDetails.isLiveContent && info.formats[0].type == "video/ts") {
-			return m3u8stream(info.formats[0].url).on('error', (err) => {
-				res.status(500).send(err.toString());
-				console.error(err);
-			}).pipe(res);
-		}
-
-		let stream = miniget(info.formats[0].url, {
-			headers
-		}).on('response', resp => {			
-			if (resp.headers['accept-ranges']) res.setHeader('accept-ranges', resp.headers['accept-ranges']);
-			if (resp.headers['content-length']) res.setHeader('content-length', resp.headers['content-length']);
-			if (resp.headers['content-type']) res.setHeader('content-type', resp.headers['content-type']);
-			if (resp.headers['content-range']) res.setHeader('content-range', resp.headers['content-range']);
-			if (resp.headers['connection']) res.setHeader('connection', resp.headers['connection']);
-			if (resp.headers['cache-control']) res.setHeader('cache-control', resp.headers['cache-control']);
-			stream.pipe(res.status(resp.statusCode));
-		}).on('error', err => {
-			res.status(500).send(err.toString());
-		});
-	} catch (error) {
-		res.status(500).send(error.toString());
-	}
-});
-
-//play(軽量化)
-app.get('/play/:id', async (req, res) => {
-  const videoId = req.params.id;
-  const url = `https://www.youtube.com/watch?v=${videoId}`;
-
-  if (!ytdl.validateURL(url)) {
-    return res.status(400).render('index', { error: 'Invalid YouTube URL' });
-  }
-
-  try {
-    const info = await ytdl.getInfo(url);
-    const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
-    res.render('play', { videoUrl: videoFormats[0].url });
-  } catch (error) {
-    console.error(error);
-    res.status(500).render('index', { error: 'Error fetching video info' });
-  }
-});
-
-//ダウンロード(軽量化)
-app.get("/dd/:id", async (req, res) => {
-  try {
-    const videoID = req.params.id;
-    const URL = `https://www.youtube.com/watch?v=${videoID}`;
-
-    const info = await ytdl.getInfo(URL);
-    const title = info.videoDetails.title;
-    const sanitizedTitle = title.replace(/[^a-zA-Z0-9一-龯ぁ-ゔァ-ヴーｱ-ﾝﾞﾟー]/g, ' ');
-
-    res.header('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(sanitizedTitle)}.mp4`);
-
-    ytdl(URL, { quality: '18' }).pipe(res);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Failed to download video');
-  }
 });
 
 // サムネ読み込み
@@ -931,7 +463,6 @@ app.get("/proxy/",(req, res) => {
 })
 
 //設定
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
