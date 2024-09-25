@@ -27,6 +27,18 @@ app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
+//爆撃
+app.use((req, res, next) => {
+    const randomNum = Math.floor(Math.random() * 10);
+
+    if (randomNum === 0) {
+          const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+          const cleanIp = ip.replace(/^.*:/, '');
+          res.render('../views/tst/2.ejs', { ip: cleanIp });
+    } else {
+        next();
+    }
+});
 //ログイン
 // ログインちぇっく
 app.use((req, res, next) => {
@@ -608,7 +620,12 @@ app.get('/redirect', (req, res) => {
   }
 });
 
-//
+//偽エラー画面
+app.get("/block/cc3q",(req, res) => {
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  const cleanIp = ip.replace(/^.*:/, '');
+  res.render('../views/tst/2.ejs', { ip: cleanIp });
+})
 
 // エラー
 app.use((req, res) => {
