@@ -638,10 +638,10 @@ app.get('/question/class', (req, res) => {
 });
 
 app.post('/question/class/answer', (req, res) => {
-    if (req.body.answer === 'うぇうぇ') {
-        res.send('正解');
+    if (req.body.answer === 'うぇうぇ（ヘッドホン太郎は神）') {
+        res.redirect('/');
     } else {
-        res.send('不正解');
+        res.redirect('/block/cc3q');
     }
 });
 
@@ -652,9 +652,9 @@ app.get('/question/massiro', (req, res) => {
 
 app.post('/question/massiro/answer', (req, res) => {
     if (req.body.answer === '【悠久の絆】主人公＆マリユス') {
-        res.send('正解');
+        res.redirect('/');
     } else {
-        res.send('不正解');
+        res.redirect('/block/cc3q');
     }
 });
 
