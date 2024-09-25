@@ -33,15 +33,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
     if (req.cookies.massiropass !== 'ok' && !req.path.includes('login')) {
         return res.redirect('/login');
-    }
-    const randomNum = Math.floor(Math.random() * 10);
-
-    if (randomNum === 0) {
-          const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-          const cleanIp = ip.replace(/^.*:/, '');
-          res.render('../views/tst/2.ejs', { ip: cleanIp });
-    } else {
-        next();
+    } else{
+       next();
     }
 });
 //ログイン済み？
