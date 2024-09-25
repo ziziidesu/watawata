@@ -608,6 +608,8 @@ app.get('/redirect', (req, res) => {
   }
 });
 
+//
+
 // エラー
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
