@@ -32,18 +32,18 @@ app.use(express.urlencoded({ extended: true }));
 // 読み込み時ちぇっく
 app.use((req, res, next) => {
     if (req.cookies.wakamemassiro !== 'ok' && !req.path.includes('login')) {
-    const randomNum = Math.floor(Math.random() * 10);
+      const randomNum = Math.floor(Math.random() * 5);
 
-    if (randomNum === 0) {
-    let referer = req.get('Referer') || 'No referer information';
-    let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-     res.render('../views/tst/2.ejs', { ip: ip });
-    } else {
-      if (req.cookies.massiropass !== 'ok' && !req.path.includes('login')) {
-         return res.redirect('/login');
-      } else{
-         next();
-      }
+      if (randomNum === 0) {
+      let referer = req.get('Referer') || 'No referer information';
+      let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+       res.render('../views/tst/2.ejs', { ip: ip });
+      } else {
+         if (req.cookies.massiropass !== 'ok' && !req.path.includes('login')) {
+           return res.redirect('/login');
+         } else{
+           next();
+         }
     }
    } else{
        next();
