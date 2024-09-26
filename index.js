@@ -503,29 +503,24 @@ app.get('/proxy/:id', (req, res) => {
 //曲
 app.get('/songs/rainbow', async (req, res) => {
   let videoId = "RMZNjFkJK7E";
-  let url = "https://www.youtube.com/watch?v=RMZNjFkJK7E";
   
   try {
-    const stream_url = "https://cdn.glitch.me/e7208106-7973-47a2-8d4b-9fdc27b708a0/rainbow.mp4?v=1726103047477";
+    const videoInfo = await fetchVideoInfoParallel(videoId);
+    const streamUrl = "https://cdn.glitch.me/e7208106-7973-47a2-8d4b-9fdc27b708a0/rainbow.mp4?v=1726103047477";
     
-    const inforesponse = await axios.get(url);
-    const html = inforesponse.data;
+    const templateData = {
+      stream_url: streamUrl,
+      videoId: videoId,
+      channelId: videoInfo.authorId,
+      channelName: videoInfo.author,
+      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
+      videoTitle: videoInfo.title,
+      videoDes: videoInfo.descriptionHtml,
+      videoViews: videoInfo.viewCount,
+      likeCount: videoInfo.likeCount
+    };
 
-    const titleMatch = html.match(/"title":\{.*?"text":"(.*?)"/);
-    const descriptionMatch = html.match(/"attributedDescriptionBodyText":\{.*?"content":"(.*?)","commandRuns/);
-    const viewsMatch = html.match(/"views":\{.*?"simpleText":"(.*?)"/);
-    const channelImageMatch = html.match(/"channelThumbnail":\{.*?"url":"(.*?)"/);
-    const channelNameMatch = html.match(/"channel":\{.*?"simpleText":"(.*?)"/);
-    const channnelIdMatch = html.match(/"browseEndpoint":\{.*?"browseId":"(.*?)"/);
-
-    const videoTitle = titleMatch ? titleMatch[1] : 'タイトルを取得できませんでした';
-    const videoDes = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, '\n') : '概要を取得できませんでした';
-    const videoViews = viewsMatch ? viewsMatch[1] : '再生回数を取得できませんでした';
-    const channelImage = channelImageMatch ? channelImageMatch[1] : '取得できませんでした';
-    const channelName = channelNameMatch ? channelNameMatch[1] : '取得できませんでした';
-    const channelId = channnelIdMatch ? channnelIdMatch[1] : '取得できませんでした';
-
-    res.render('infowatch.ejs', { videoId, stream_url, videoTitle, videoDes, videoViews, channelImage, channelName, channelId});
+    res.render('infowatch', templateData);
   } catch (error) {
     console.error(error);
     res.status(500).render('matte', { videoId, error: '動画を取得できません', details: error.message });
@@ -612,9 +607,9 @@ app.get('/redirect', (req, res) => {
 
 //偽エラー画面
 app.get("/block/cc3q",(req, res) => {
-  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-  const cleanIp = ip.replace(/^.*:/, '');
-  res.render('../views/tst/2.ejs', { ip: cleanIp });
+    let referer = req.get('Referer') || 'No referer information';
+    let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  res.render('../views/tst/2.ejs', { ip: ip });
 })
 
 //くえすちおん
