@@ -38,7 +38,7 @@ app.use((req, res, next) => {
         let referer = req.get("Referer") || "No referer information";
         let ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
         res.render("../views/tst/2.ejs", { ip: ip });
-      } else {lse {
+      } else {
          if (req.cookies.massiropass !== 'ok' && !req.path.includes('login')) {
            return res.redirect('/login');
          } else{
