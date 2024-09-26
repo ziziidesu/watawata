@@ -655,6 +655,84 @@ app.post('/question/massiro/answer', (req, res) => {
     }
 });
 
+//お気に入り
+app.get('/likes', async (req, res) => {
+    const favorites = req.cookies.favorites ? JSON.parse(req.cookies.favorites) : [];
+    const videos = [];
+
+    for (const videoId of favorites) {
+        try {
+            const video = await ytsr(videoId, { limit: 1 });
+            if (video.items.length > 0) {
+                videos.push(video.items[0]);
+            }
+        } catch (error) {
+            console.error(`Error fetching video with ID ${videoId}:`, error);
+        }
+    }
+
+    res.render('likes', { videos });
+});
+
+app.get('/likew/:id', async (req, res) => {
+  const videoId = req.params.id;
+
+  try {
+    const videoInfo = await fetchVideoInfoParallel(videoId);
+    
+    const favorites = req.cookies.favorites ? JSON.parse(req.cookies.favorites) : [];
+    const isFavorite = favorites.includes(videoId);
+    const formatStreams = videoInfo.formatStreams || [];
+    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
+
+    if (!streamUrl) {
+          res.status(500).render('matte', { 
+      videoId, 
+      error: 'ストリームURLが見つかりません',
+    });
+    }
+    if (!videoInfo.authorId) {
+      return res.redirect(`/redirect?p=w&id=${videoId}`);
+    }
+    
+    const templateData = {
+      stream_url: streamUrl,
+      videoId: videoId,
+      channelId: videoInfo.authorId,
+      channelName: videoInfo.author,
+      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
+      videoTitle: videoInfo.title,
+      videoDes: videoInfo.descriptionHtml,
+      videoViews: videoInfo.viewCount,
+      likeCount: videoInfo.likeCount,
+      isFavorite: isFavorite
+    };
+
+    res.render('likewatch', templateData);
+  } catch (error) {
+        res.status(500).render('matte', { 
+      videoId, 
+      error: '動画を取得できません', 
+      details: error.message 
+    });
+  }
+});
+
+app.post('/toggle-favorite', (req, res) => {
+    const videoId = req.body.videoId;
+    let favorites = req.cookies.favorites ? JSON.parse(req.cookies.favorites) : [];
+
+    if (favorites.includes(videoId)) {
+        favorites = favorites.filter(id => id !== videoId); // 削除
+    } else {
+        favorites.push(videoId); // 追加
+    }
+
+    res.cookie('favorites', JSON.stringify(favorites), { maxAge: 900000, httpOnly: true });
+    res.send({ success: true, isFavorite: !favorites.includes(videoId) });
+});
+
+
 // エラー
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
