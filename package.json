@@ -9,7 +9,7 @@
     "miniget": "latest",
     "m3u8stream": "latest",
     "ytpl": "^2.x",
-    "ytsr": "^3.x",
+    "ytsr": "latest",
     "axios": "^0.24.0",
     "follow-redirects": "^1.14.5",
     "cors": "^2.8.5",
