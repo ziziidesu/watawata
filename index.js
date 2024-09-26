@@ -29,13 +29,17 @@ app.use(express.urlencoded({ extended: true }));
 
 
 //ログイン
-// ログインちぇっく
+// 読み込み時ちぇっく
 app.use((req, res, next) => {
-    if (req.cookies.massiropass !== 'ok' && !req.path.includes('login')) {
-        return res.redirect('/login');
-    } else{
+    if (req.cookies.wakamemassiro !== 'ok' && !req.path.includes('login')) {
+      if (req.cookies.massiropass !== 'ok' && !req.path.includes('login')) {
+         return res.redirect('/login');
+      } else{
+         next();
+      }
+   } else{
        next();
-    }
+   }
 });
 //ログイン済み？
 app.get('/login/if', async (req, res) => {
@@ -634,6 +638,7 @@ app.get('/question/class', (req, res) => {
 
 app.post('/question/class/answer', (req, res) => {
     if (req.body.answer === 'うぇうぇ（ヘッドホン太郎は神）') {
+        res.cookie('wakamemassiro', 'ok', { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
         res.redirect('/');
     } else {
         res.redirect('/block/cc3q');
@@ -647,6 +652,7 @@ app.get('/question/massiro', (req, res) => {
 
 app.post('/question/massiro/answer', (req, res) => {
     if (req.body.answer === '【悠久の絆】主人公＆マリユス') {
+        res.cookie('wakamemassiro', 'ok', { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
         res.redirect('/');
     } else {
         res.redirect('/block/cc3q');
