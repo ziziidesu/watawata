@@ -570,12 +570,6 @@ app.get('/getpage/:encodedUrl', async (req, res) => {
   }
 });
 
-//動画再生用リダイレクト
-app.get('/wredirect/:id', (req, res) => {
-  const id = req.params.id;
-  res.redirect(`/w/${id}`);
-});
-
 //概要欄用リダイレクト
 app.get('/watch', (req, res) => {
   const videoId = req.query.v;
@@ -592,6 +586,10 @@ app.get('/channel/:id', (req, res) => {
 app.get('/channel/:id/join', (req, res) => {
   const id = req.params.id;
   res.redirect(`/c/${id}`);
+});
+app.get('/hashtag/:des', (req, res) => {
+  const des = req.params.des;
+  res.redirect(`/s?q=${des}`);
 });
 
 //リダイレクト
