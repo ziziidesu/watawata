@@ -63,7 +63,11 @@ app.post('/login', (req, res) => {
          if (password === 'ohana') {
                return res.redirect('https://ohuaxiehui.webnode.jp');
          } else {
+              if (password === 'hikari') {
+               res.render("../views/login/hikari.ejs")
+         } else {
                res.render('login', { error: 'パスワードが間違っています。もう一度お試しください。' });
+         }
     }
     }
 });
