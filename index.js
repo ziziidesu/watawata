@@ -612,43 +612,6 @@ app.get("/block/cc3q",(req, res) => {
   res.render('../views/tst/2.ejs', { ip: ip });
 })
 
-//チャット
-const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
-
-let messages = [];
-
-app.get('/chat', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'chat.html'));
-});
-
-wss.on('connection', (ws) => {
-  ws.send(JSON.stringify({ type: 'history', messages }));
-
-  ws.on('message', (message) => {
-    const data = JSON.parse(message);
-    
-    const msg = {
-      user: data.username || 'ゲスト',
-      message: data.message,
-      image: data.image,
-      timestamp: new Date(),
-    };
-
-    messages.push(msg);
-    if (messages.length > 100) messages.shift();
-
-    wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify(msg));
-      }
-    });
-  });
-});
-app.get("/chat",(req, res) => {
-  res.render("../read/chat.ejs")
-})
-
 // エラー
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
