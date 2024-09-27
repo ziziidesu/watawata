@@ -618,43 +618,36 @@ const wss = new WebSocket.Server({ server });
 
 let messages = [];
 
-wss.on('connection', (ws) => {
-  let userId = Date.now();
-  let username = `User${userId}`;
+app.get('/chat', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'chat.html'));
+});
 
+wss.on('connection', (ws) => {
   ws.send(JSON.stringify({ type: 'history', messages }));
 
   ws.on('message', (message) => {
     const data = JSON.parse(message);
+    
+    const msg = {
+      user: data.username || 'ゲスト',
+      message: data.message,
+      image: data.image,
+      timestamp: new Date(),
+    };
 
-    if (data.type === 'change-username') {
-      username = data.username;
-    } else {
-      const msg = {
-        user: username,
-        message: data.message,
-        image: data.image,
-        id: userId,
-        timestamp: new Date()
-      };
+    messages.push(msg);
+    if (messages.length > 100) messages.shift();
 
-      messages.push(msg);
-      
-      if (messages.length > 100) {
-        messages.shift();
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify(msg));
       }
-
-      wss.clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
-          client.send(JSON.stringify(msg));
-        }
-      });
-    }
-  });
-
-  ws.on('close', () => {
+    });
   });
 });
+app.get("/chat",(req, res) => {
+  res.render("../read/chat.ejs")
+})
 
 // エラー
 app.use((req, res) => {
