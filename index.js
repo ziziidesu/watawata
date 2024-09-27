@@ -15,6 +15,8 @@ const InvidJS = require('@invidjs/invid-js');
 const jp = require('jsonpath');
 const path = require('path');
 const bodyParser = require('body-parser');
+const http = require('http');
+const WebSocket = require('ws');
 
 
 const limit = process.env.LIMIT || 50;
@@ -610,6 +612,49 @@ app.get("/block/cc3q",(req, res) => {
   res.render('../views/tst/2.ejs', { ip: ip });
 })
 
+//チャット
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
+
+let messages = [];
+
+wss.on('connection', (ws) => {
+  let userId = Date.now();
+  let username = `User${userId}`;
+
+  ws.send(JSON.stringify({ type: 'history', messages }));
+
+  ws.on('message', (message) => {
+    const data = JSON.parse(message);
+
+    if (data.type === 'change-username') {
+      username = data.username;
+    } else {
+      const msg = {
+        user: username,
+        message: data.message,
+        image: data.image,
+        id: userId,
+        timestamp: new Date()
+      };
+
+      messages.push(msg);
+      
+      if (messages.length > 100) {
+        messages.shift();
+      }
+
+      wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify(msg));
+        }
+      });
+    }
+  });
+
+  ws.on('close', () => {
+  });
+});
 
 // エラー
 app.use((req, res) => {
