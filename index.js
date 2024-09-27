@@ -15,6 +15,7 @@ const InvidJS = require('@invidjs/invid-js');
 const jp = require('jsonpath');
 const path = require('path');
 const bodyParser = require('body-parser');
+const { createLocalStorage } = require("localstorage-ponyfill");
 
 
 const limit = process.env.LIMIT || 50;
