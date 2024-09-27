@@ -15,8 +15,6 @@ const InvidJS = require('@invidjs/invid-js');
 const jp = require('jsonpath');
 const path = require('path');
 const bodyParser = require('body-parser');
-const http = require('http');
-const WebSocket = require('ws');
 
 
 const limit = process.env.LIMIT || 50;
