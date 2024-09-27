@@ -21,13 +21,14 @@ const { createLocalStorage } = require("localstorage-ponyfill");
 const limit = process.env.LIMIT || 50;
 
 const user_agent = process.env.USER_AGENT || "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36";
-　
+
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
+const localStorage = createLocalStorage();
 
 //ログイン
 // 読み込み時ちぇっく
@@ -142,7 +143,8 @@ async function fetchVideoInfoParallel(videoId) {
 //レギュラー
 app.get('/w/:id', async (req, res) => {
   const videoId = req.params.id;
-
+  localStorage.setItem("videoId", videoId);
+  
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
     
@@ -609,6 +611,11 @@ app.get("/block/cc3q",(req, res) => {
     let referer = req.get('Referer') || 'No referer information';
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   res.render('../views/tst/2.ejs', { ip: ip });
+})
+
+app.get("/locla",(req,res) =>{
+   let localstoragedv = bb;
+   let
 })
 
 // エラー
