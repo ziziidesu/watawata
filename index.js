@@ -122,13 +122,9 @@ const invidiousInstances = [
   "https://invidious.private.coffee"
 ];
 
-const invidiousInstancesema = [
-  "https://iv.datura.network","https://invidious.jing.rocks"
-];
-
 //invidiousから引っ張ってくる
 async function fetchVideoInfoParallel(videoId) {
-  const requests = invidiousInstancesema.map(instance =>
+  const requests = invidiousInstances.map(instance =>
     axios.get(`${instance}/api/v1/videos/${videoId}`)
       .then(response => {
         console.log(`使用したURL: ${instance}/api/v1/videos/${videoId}`);
