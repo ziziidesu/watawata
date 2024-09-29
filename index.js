@@ -114,7 +114,7 @@ const invidiousInstances = [
   "https://invidious.fdn.fr",
   "https://inv.tux.pizza",
   "https://vid.puffyan.us",
-  "https://invidio.xamh.de","https://y.com.sb",
+  "https://invidio.xamh.de",
   "https://invidious.sethforprivacy.com",
   "https://invidious.tiekoetter.com",
   "https://inv.bp.projectsegfau.lt",
@@ -135,12 +135,38 @@ async function fetchVideoInfoParallel(videoId) {
   return Promise.any(requests);
 }
 
+async function fetchVideoInfoParallel2(videoId) {
+  const requests = invidiousInstances.map(instance =>
+    axios.get(`${instance}/api/v1/videos/${videoId}`)
+      .then(response => {
+        console.log(`使用したURL: ${instance}/api/v1/videos/${videoId}`);
+        return response.data;
+      })
+      .catch(error => {
+        console.error(`エラー: ${error}`);
+        return null;
+      })
+  );
+
+  const results = await Promise.all(requests);
+
+
+  const validResults = results.filter(info => info && info.authorId);
+
+  if (validResults.length > 0) {
+    return validResults[0];
+  } else {
+    throw new Error("正しいデータが見つかりませんでした");
+  }
+}
+
+
 //レギュラー
 app.get('/w/:id', async (req, res) => {
   const videoId = req.params.id;
   
   try {
-    const videoInfo = await fetchVideoInfoParallel(videoId);
+    const videoInfo = await fetchVideoInfoParallel2(videoId);
     
     const formatStreams = videoInfo.formatStreams || [];
     const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
