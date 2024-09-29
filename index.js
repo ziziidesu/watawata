@@ -106,7 +106,7 @@ app.get("/famous",(req, res) => {
 //直接狙った！
 // Invidiousのリスト
 const invidiousInstances = [
-  "https://iv.datura.network",
+  "https://iv.datura.network","https://iv.melmac.space",
   "https://invidious.jing.rocks","https://invidious.reallyaweso.me",
   "https://inv.phene.dev","https://invidious.protokolla.fi",
   "https://invidious.perennialte.ch",
@@ -180,12 +180,12 @@ app.get('/w/:id', async (req, res) => {
 
 //エラー対策
 const caninvidiousInstances = [
-  "https://iv.datura.network",
+  "https://iv.melmac.space","https://iv.datura.network",
   "https://invidious.jing.rocks","https://invidious.reallyaweso.me",
   "https://inv.phene.dev","https://invidious.protokolla.fi",
   "https://invidious.perennialte.ch",
   "https://invidious.materialio.us","https://yewtu.be",
-  "https://invidious.fdn.fr",
+  "https://invidious.fdn.fr","invidious.nerdvpn.de",
   "https://inv.tux.pizza",
   "https://vid.puffyan.us",
   "https://invidio.xamh.de",
@@ -215,7 +215,7 @@ async function getytk(videoId) {
     }
   }
 
-  throw new Error("正しいデータが見つかりませんでした");
+  throw new Error("見つかりませんでした");
 }
 
 app.get('/canw/:id', async (req, res) => {
@@ -617,7 +617,24 @@ app.get('/gethtml/:encodedUrl', async (req, res) => {
     res.status(500).send('URLの取得に失敗しました');
   }
 });
+app.get('/getinv/:encodedUrl', async (req, res) => {
+  const { encodedUrl } = req.params;
+  
+  const replacedUrl = decodeURIComponent(encodedUrl);
+  
+  const url = replacedUrl.replace(/\.wakame02\./g, '.');
 
+  const invurl = url + '/api/v1/videos/f6TytcA47rI';
+  
+  try {
+    const response = await axios.get(invurl);
+    const html = response.data;
+    res.setHeader('Content-Type', 'text/plain');
+    res.send(html);
+  } catch (error) {
+    res.status(500).send('URLの取得に失敗しました');
+  }
+});
 //ページを拾ってくる
 app.get('/getpage/:encodedUrl', async (req, res) => {
   const { encodedUrl } = req.params;
