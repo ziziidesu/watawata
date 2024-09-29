@@ -119,7 +119,7 @@ const invidiousInstances = [
   "https://invidious.tiekoetter.com",
   "https://inv.bp.projectsegfau.lt",
   "https://invidious.rhyshl.live",
-  "https://invidious.private.coffee"
+  "https://invidious.private.coffee","invidious.privacyredirect.com"
 ];
 
 //invidiousから引っ張ってくる
@@ -134,53 +134,6 @@ async function fetchVideoInfoParallel(videoId) {
 
   return Promise.any(requests);
 }
-
-async function getytk(videoId) {
-  for (const instance of invidiousInstances) {
-    try {
-      const response = await axios.get(`${instance}/api/v1/videos/${videoId}`);
-      console.log(`使用したURL: ${instance}/api/v1/videos/${videoId}`);
-      
-      if (response.data && response.data.authorId) {
-        return response.data;
-      }
-    } catch (error) {
-      console.error(`エラー: ${error.message} - ${instance}`);
-    }
-  }
-
-  throw new Error("正しいデータが見つかりませんでした");
-}
-app.get('/tttw/:id', async (req, res) => {
-  const videoId = req.params.id;
-  
-  try {
-    const videoInfo = await getytk(videoId);
-    
-    const formatStreams = videoInfo.formatStreams || [];
-    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
-    
-    const templateData = {
-      stream_url: streamUrl,
-      videoId: videoId,
-      channelId: videoInfo.authorId,
-      channelName: videoInfo.author,
-      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
-      videoTitle: videoInfo.title,
-      videoDes: videoInfo.descriptionHtml,
-      videoViews: videoInfo.viewCount,
-      likeCount: videoInfo.likeCount
-    };
-
-    res.render('infowatch', templateData);
-  } catch (error) {
-        res.status(500).render('matte', { 
-      videoId, 
-      error: '動画を取得できません', 
-      details: error.message 
-    });
-  }
-});
 
 //レギュラー
 app.get('/w/:id', async (req, res) => {
