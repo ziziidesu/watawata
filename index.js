@@ -118,7 +118,7 @@ const invidiousInstances = [
   "https://invidious.sethforprivacy.com",
   "https://invidious.tiekoetter.com",
   "https://inv.bp.projectsegfau.lt",
-  "https://inv.vern.cc",
+  "https://invidious.rhyshl.live",
   "https://invidious.private.coffee"
 ];
 
@@ -159,16 +159,6 @@ app.get('/tttw/:id', async (req, res) => {
     
     const formatStreams = videoInfo.formatStreams || [];
     const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
-
-    if (!streamUrl) {
-          res.status(500).render('matte', { 
-      videoId, 
-      error: 'ストリームURLが見つかりません',
-    });
-    }
-    if (!videoInfo.authorId) {
-      return res.redirect(`/redirect?p=w&id=${videoId}`);
-    }
     
     const templateData = {
       stream_url: streamUrl,
@@ -206,6 +196,7 @@ app.get('/w/:id', async (req, res) => {
           res.status(500).render('matte', { 
       videoId, 
       error: 'ストリームURLが見つかりません',
+      details: 'error'
     });
     }
     if (!videoInfo.authorId) {
