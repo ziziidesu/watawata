@@ -178,6 +178,77 @@ app.get('/w/:id', async (req, res) => {
   }
 });
 
+//エラー対策
+const caninvidiousInstances = [
+  "https://iv.datura.network",
+  "https://invidious.jing.rocks","https://invidious.reallyaweso.me",
+  "https://inv.phene.dev","https://invidious.protokolla.fi",
+  "https://invidious.perennialte.ch",
+  "https://invidious.materialio.us","https://yewtu.be",
+  "https://invidious.fdn.fr",
+  "https://inv.tux.pizza",
+  "https://vid.puffyan.us",
+  "https://invidio.xamh.de",
+  "https://invidious.sethforprivacy.com",
+  "https://invidious.tiekoetter.com",
+  "https://inv.bp.projectsegfau.lt",
+  "https://invidious.rhyshl.live",
+  "https://invidious.private.coffee","invidious.privacyredirect.com",
+  "https://invidious.ethibox.fr",
+  "https://invidious.privacyredirect.com",
+  "https://inv.nadeko.net",
+  "https://invidious.nerdvpn.de",
+
+];
+
+async function getytk(videoId) {
+  for (const instance of caninvidiousInstances) {
+    try {
+      const response = await axios.get(`${instance}/api/v1/videos/${videoId}`);
+      console.log(`使用したURL: ${instance}/api/v1/videos/${videoId}`);
+      
+      if (response.data && response.data.authorId) {
+        return response.data;
+      }
+    } catch (error) {
+      console.error(`エラー: ${error.message} - ${instance}`);
+    }
+  }
+
+  throw new Error("正しいデータが見つかりませんでした");
+}
+
+app.get('/canw/:id', async (req, res) => {
+  const videoId = req.params.id;
+  
+  try {
+    const videoInfo = await getytk(videoId);
+    
+    const formatStreams = videoInfo.formatStreams || [];
+    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
+    
+    const templateData = {
+      stream_url: streamUrl,
+      videoId: videoId,
+      channelId: videoInfo.authorId,
+      channelName: videoInfo.author,
+      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
+      videoTitle: videoInfo.title,
+      videoDes: videoInfo.descriptionHtml,
+      videoViews: videoInfo.viewCount,
+      likeCount: videoInfo.likeCount
+    };
+
+    res.render('infowatch', templateData);
+  } catch (error) {
+        res.status(500).render('matte', { 
+      videoId, 
+      error: '動画を取得できません', 
+      details: error.message 
+    });
+  }
+});
+
 //高画質再生！！
 app.get('/www/:id', async (req, res) => {
   const videoId = req.params.id;
