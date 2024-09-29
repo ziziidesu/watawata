@@ -135,38 +135,69 @@ async function fetchVideoInfoParallel(videoId) {
   return Promise.any(requests);
 }
 
-async function fetchVideoInfoParallel2(videoId) {
-  const requests = invidiousInstances.map(instance =>
-    axios.get(`${instance}/api/v1/videos/${videoId}`)
-      .then(response => {
-        console.log(`使用したURL: ${instance}/api/v1/videos/${videoId}`);
+async function getytk(videoId) {
+  for (const instance of invidiousInstances) {
+    try {
+      const response = await axios.get(`${instance}/api/v1/videos/${videoId}`);
+      console.log(`使用したURL: ${instance}/api/v1/videos/${videoId}`);
+      
+      if (response.data && response.data.authorId) {
         return response.data;
-      })
-      .catch(error => {
-        console.error(`エラー: ${error}`);
-        return null;
-      })
-  );
-
-  const results = await Promise.all(requests);
-
-
-  const validResults = results.filter(info => info && info.authorId);
-
-  if (validResults.length > 0) {
-    return validResults[0];
-  } else {
-    throw new Error("正しいデータが見つかりませんでした");
+      }
+    } catch (error) {
+      console.error(`エラー: ${error.message} - ${instance}`);
+    }
   }
-}
 
+  throw new Error("正しいデータが見つかりませんでした");
+}
+app.get('/tttw/:id', async (req, res) => {
+  const videoId = req.params.id;
+  
+  try {
+    const videoInfo = await getytk(videoId);
+    
+    const formatStreams = videoInfo.formatStreams || [];
+    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
+
+    if (!streamUrl) {
+          res.status(500).render('matte', { 
+      videoId, 
+      error: 'ストリームURLが見つかりません',
+    });
+    }
+    if (!videoInfo.authorId) {
+      return res.redirect(`/redirect?p=w&id=${videoId}`);
+    }
+    
+    const templateData = {
+      stream_url: streamUrl,
+      videoId: videoId,
+      channelId: videoInfo.authorId,
+      channelName: videoInfo.author,
+      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
+      videoTitle: videoInfo.title,
+      videoDes: videoInfo.descriptionHtml,
+      videoViews: videoInfo.viewCount,
+      likeCount: videoInfo.likeCount
+    };
+
+    res.render('infowatch', templateData);
+  } catch (error) {
+        res.status(500).render('matte', { 
+      videoId, 
+      error: '動画を取得できません', 
+      details: error.message 
+    });
+  }
+});
 
 //レギュラー
 app.get('/w/:id', async (req, res) => {
   const videoId = req.params.id;
   
   try {
-    const videoInfo = await fetchVideoInfoParallel2(videoId);
+    const videoInfo = await fetchVideoInfoParallel(videoId);
     
     const formatStreams = videoInfo.formatStreams || [];
     const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
