@@ -239,7 +239,7 @@ app.get('/canw/:id', async (req, res) => {
       likeCount: videoInfo.likeCount
     };
 
-    res.render('infowatch', templateData);
+    res.render('deswatch', templateData);
   } catch (error) {
         res.status(500).render('matte', { 
       videoId, 
