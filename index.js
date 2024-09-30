@@ -106,7 +106,7 @@ app.get("/famous",(req, res) => {
 //直接狙った！
 // Invidiousのリスト
 const invidiousInstances = [
-  "https://iv.datura.network","https://iv.melmac.space",
+  "https://iv.datura.network",
   "https://invidious.jing.rocks","https://invidious.reallyaweso.me",
   "https://inv.phene.dev","https://invidious.protokolla.fi",
   "https://invidious.perennialte.ch",
@@ -180,8 +180,8 @@ app.get('/w/:id', async (req, res) => {
 
 //エラー対策
 const caninvidiousInstances = [
-  "https://iv.melmac.space","https://iv.datura.network",
-  "https://invidious.jing.rocks","https://invidious.reallyaweso.me",
+  "https://iv.datura.network",
+  "https://invidious.reallyaweso.me",
   "https://inv.phene.dev","https://invidious.protokolla.fi",
   "https://invidious.perennialte.ch",
   "https://invidious.materialio.us","https://yewtu.be",
