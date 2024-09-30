@@ -114,7 +114,6 @@ const invidiousapis = [
   "https://yewtu.be",
   "https://invidious.fdn.fr",
   "https://inv.tux.pizza",
-  "https://invidious.privacyredirect.com",
   "https://invidious.drgns.space",
   "https://vid.puffyan.us",
   "https://invidious.jing.rocks",
