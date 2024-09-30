@@ -29,12 +29,7 @@
  </div>
 </header>
 <div class="vcard">
-<iframe id="video" src="https://wakametubeapi.glitch.me/embed?v=<%= videoId %>" 
-        style="border: none; width: 100%; height: 100%;" 
-        allowfullscreen 
-        autoplay 
-        preload="auto">
-</iframe>
+<iframe width="100%" height="100%" src="https://wakametubeapi.glitch.me/embed?v=<%= videoId %>" title="video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   </div>
 <div class="card">
   <div class="toolcard-header">
@@ -84,22 +79,17 @@
   overflow: hidden;
   transition: all 0.3s ease;
 }
-vcard {
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding-bottom: 56.25%;
-}
 
-#video {
-    border: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  .vcard {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  width: 90%;
+  height: auto;
 }
-
 .card:hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
