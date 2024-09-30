@@ -105,34 +105,34 @@ app.get("/famous",(req, res) => {
 
 //第3の目
 const invidiousapis = [
-  "https://iv.datura.network/",
-  "https://invidious.private.coffee/",
-  "https://invidious.protokolla.fi/",
-  "https://invidious.perennialte.ch/",
-  "https://yt.cdaut.de/",
-  "https://invidious.materialio.us/",
-  "https://yewtu.be/",
-  "https://invidious.fdn.fr/",
-  "https://inv.tux.pizza/",
-  "https://invidious.privacyredirect.com/",
-  "https://invidious.drgns.space/",
+  "https://iv.datura.network",
+  "https://invidious.private.coffee",
+  "https://invidious.protokolla.fi",
+  "https://invidious.perennialte.ch",
+  "https://yt.cdaut.de",
+  "https://invidious.materialio.us",
+  "https://yewtu.be",
+  "https://invidious.fdn.fr",
+  "https://inv.tux.pizza",
+  "https://invidious.privacyredirect.com",
+  "https://invidious.drgns.space",
   "https://vid.puffyan.us",
-  "https://invidious.jing.rocks/",
-  "https://youtube.076.ne.jp/",
-  "https://vid.puffyan.us/",
-  "https://inv.riverside.rocks/",
-  "https://invidio.xamh.de/",
-  "https://y.com.sb/",
-  "https://invidious.sethforprivacy.com/",
-  "https://invidious.tiekoetter.com/",
-  "https://inv.bp.projectsegfau.lt/",
-  "https://inv.vern.cc/",
-  "https://invidious.nerdvpn.de/",
-  "https://inv.privacy.com.de/",
-  "https://invidious.rhyshl.live/",
-  "https://invidious.slipfox.xyz/",
-  "https://invidious.weblibre.org/",
-  "https://invidious.namazso.eu/"
+  "https://invidious.jing.rocks",
+  "https://youtube.076.ne.jp",
+  "https://vid.puffyan.us",
+  "https://inv.riverside.rocks",
+  "https://invidio.xamh.de",
+  "https://y.com.sb",
+  "https://invidious.sethforprivacy.com",
+  "https://invidious.tiekoetter.com",
+  "https://inv.bp.projectsegfau.lt",
+  "https://inv.vern.cc",
+  "https://invidious.nerdvpn.de",
+  "https://inv.privacy.com.de",
+  "https://invidious.rhyshl.live",
+  "https://invidious.slipfox.xyz",
+  "https://invidious.weblibre.org",
+  "https://invidious.namazso.eu"
 ];
 
 //直接狙った！
@@ -156,46 +156,35 @@ const invidiousInstances = [
 ];
 
 //invidiousから引っ張ってくる
-const MAX_API_WAIT_TIME = 3000; 
-const MAX_TIME = 10000; 
+const MAX_API_WAIT_TIME = 3000; // 3秒
+const MAX_TIME = 10000; // 10秒
 
 async function fetchVideoInfoParallel(videoId) {
   const startTime = Date.now();
   const instanceErrors = new Set();
 
-  const requests = invidiousapis.map(async (instance) => {
+  for (const instance of invidiousapis) {
     try {
       const response = await axios.get(`${instance}/api/v1/videos/${videoId}`, { timeout: MAX_API_WAIT_TIME });
-      console.log(`使ってみたURL: ${instance}/api/v1/videos/${videoId}`);
-      return response.data; 
+      console.log(`使用したURL: ${instance}/api/v1/videos/${videoId}`);
+
+      if (response.data && response.data.formatStreams) {
+        return response.data; 
+      } else {
+        console.error(`formatStreamsが存在しない: ${instance}`);
+      }
     } catch (error) {
       console.error(`エラー発生: ${instance} - ${error.message}`);
       instanceErrors.add(instance);
     }
-  });
 
-  await Promise.all(requests);
-
-  if (Date.now() - startTime >= MAX_TIME) {
-    throw new Error("全てのAPIがタイムアウトしました");
+    // タイムアウト時間をチェック
+    if (Date.now() - startTime >= MAX_TIME) {
+      throw new Error("全てのAPIがタイムアウトしました");
+    }
   }
 
-  const successfulInstances = invidiousInstances.filter(instance => !instanceErrors.has(instance));
-
-  if (successfulInstances.length === 0) {
-    throw new Error("利用可能なAPIインスタンスがありません");
-  }
-
-  return await fetchVideoInfoFromAvailableInstances(videoId, successfulInstances);
-}
-
-async function fetchVideoInfoFromAvailableInstances(videoId, instances) {
-  const requests = instances.map(instance =>
-    axios.get(`${instance}/api/v1/videos/${videoId}`)
-      .then(response => response.data)
-  );
-
-  return Promise.any(requests);
+  throw new Error("利用可能なAPIインスタンスがありません");
 }
 
 //レギュラー
@@ -242,7 +231,7 @@ app.get('/w/:id', async (req, res) => {
 const caninvidiousInstances = [
   "https://inv.riverside.rocks",
   "https://youtube.076.ne.jp",
-  "https://invidious.weblibre.org/","https://iv.datura.network",
+  "https://invidious.weblibre.org","https://iv.datura.network",
   "https://invidious.reallyaweso.me",
   "https://inv.phene.dev","https://invidious.protokolla.fi",
   "https://invidious.perennialte.ch",
