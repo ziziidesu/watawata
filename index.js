@@ -177,7 +177,7 @@ async function fetchVideoInfoParallel(videoId) {
     }
 
     if (Date.now() - startTime >= MAX_TIME) {
-      throw new Error("APIがタイムアウトしました");
+      throw new Error("接続がタイムアウトしました");
     }
   }
 
@@ -246,6 +246,7 @@ const caninvidiousInstances = [
   "https://invidious.privacyredirect.com",
   "https://inv.nadeko.net",
   "https://invidious.nerdvpn.de",
+  "https://invidious.namazso.eu"
 ];
 //Get YTK
 async function getytk(videoId) {
