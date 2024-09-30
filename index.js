@@ -103,12 +103,44 @@ app.get("/famous",(req, res) => {
   res.render("../views/famous.ejs")
 })
 
+//第3の目
+const invidiousapis = [
+  "https://iv.datura.network/",
+  "https://invidious.private.coffee/",
+  "https://invidious.protokolla.fi/",
+  "https://invidious.perennialte.ch/",
+  "https://yt.cdaut.de/",
+  "https://invidious.materialio.us/",
+  "https://yewtu.be/",
+  "https://invidious.fdn.fr/",
+  "https://inv.tux.pizza/",
+  "https://invidious.privacyredirect.com/",
+  "https://invidious.drgns.space/",
+  "https://vid.puffyan.us",
+  "https://invidious.jing.rocks/",
+  "https://youtube.076.ne.jp/",
+  "https://vid.puffyan.us/",
+  "https://inv.riverside.rocks/",
+  "https://invidio.xamh.de/",
+  "https://y.com.sb/",
+  "https://invidious.sethforprivacy.com/",
+  "https://invidious.tiekoetter.com/",
+  "https://inv.bp.projectsegfau.lt/",
+  "https://inv.vern.cc/",
+  "https://invidious.nerdvpn.de/",
+  "https://inv.privacy.com.de/",
+  "https://invidious.rhyshl.live/",
+  "https://invidious.slipfox.xyz/",
+  "https://invidious.weblibre.org/",
+  "https://invidious.namazso.eu/"
+];
+
 //直接狙った！
 // Invidiousのリスト
 const invidiousInstances = [
   "https://inv.riverside.rocks",
   "https://youtube.076.ne.jp",
-  "https://invidious.weblibre.org/",
+  "https://invidious.weblibre.org",
   "https://iv.datura.network",
   "https://inv.phene.dev","https://invidious.protokolla.fi",
   "https://invidious.perennialte.ch",
@@ -124,13 +156,43 @@ const invidiousInstances = [
 ];
 
 //invidiousから引っ張ってくる
+const MAX_API_WAIT_TIME = 3000; 
+const MAX_TIME = 10000; 
+
 async function fetchVideoInfoParallel(videoId) {
-  const requests = invidiousInstances.map(instance =>
+  const startTime = Date.now();
+  const instanceErrors = new Set();
+
+  const requests = invidiousapis.map(async (instance) => {
+    try {
+      const response = await axios.get(`${instance}/api/v1/videos/${videoId}`, { timeout: MAX_API_WAIT_TIME });
+      console.log(`使ってみたURL: ${instance}/api/v1/videos/${videoId}`);
+      return response.data; 
+    } catch (error) {
+      console.error(`エラー発生: ${instance} - ${error.message}`);
+      instanceErrors.add(instance);
+    }
+  });
+
+  await Promise.all(requests);
+
+  if (Date.now() - startTime >= MAX_TIME) {
+    throw new Error("全てのAPIがタイムアウトしました");
+  }
+
+  const successfulInstances = invidiousInstances.filter(instance => !instanceErrors.has(instance));
+
+  if (successfulInstances.length === 0) {
+    throw new Error("利用可能なAPIインスタンスがありません");
+  }
+
+  return await fetchVideoInfoFromAvailableInstances(videoId, successfulInstances);
+}
+
+async function fetchVideoInfoFromAvailableInstances(videoId, instances) {
+  const requests = instances.map(instance =>
     axios.get(`${instance}/api/v1/videos/${videoId}`)
-      .then(response => {
-        console.log(`使用したURL: ${instance}/api/v1/videos/${videoId}`);
-        return response.data;
-      })
+      .then(response => response.data)
   );
 
   return Promise.any(requests);
@@ -181,11 +243,11 @@ const caninvidiousInstances = [
   "https://inv.riverside.rocks",
   "https://youtube.076.ne.jp",
   "https://invidious.weblibre.org/","https://iv.datura.network",
-  "https://invidious.reallyaweso.me","https://y.com.sb",
+  "https://invidious.reallyaweso.me",
   "https://inv.phene.dev","https://invidious.protokolla.fi",
   "https://invidious.perennialte.ch",
   "https://invidious.materialio.us","https://yewtu.be",
-  "https://invidious.fdn.fr","invidious.nerdvpn.de",
+  "https://invidious.fdn.fr",
   "https://inv.tux.pizza",
   "https://vid.puffyan.us",
   "https://invidio.xamh.de",
@@ -198,7 +260,6 @@ const caninvidiousInstances = [
   "https://invidious.privacyredirect.com",
   "https://inv.nadeko.net",
   "https://invidious.nerdvpn.de",
-
 ];
 //Get YTK
 async function getytk(videoId) {
