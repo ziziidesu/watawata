@@ -107,7 +107,7 @@ app.get("/famous",(req, res) => {
 // Invidiousのリスト
 const invidiousInstances = [
   "https://iv.datura.network",
-  "https://invidious.jing.rocks","https://invidious.reallyaweso.me",
+  "https://invidious.reallyaweso.me",
   "https://inv.phene.dev","https://invidious.protokolla.fi",
   "https://invidious.perennialte.ch",
   "https://invidious.materialio.us","https://yewtu.be",
@@ -150,9 +150,6 @@ app.get('/w/:id', async (req, res) => {
       error: 'ストリームURLが見つかりません',
       details: 'error'
     });
-    }
-    if (!videoInfo.authorId) {
-      return res.redirect(`/redirect?p=w&id=${videoId}`);
     }
     
     const templateData = {
