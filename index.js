@@ -116,7 +116,6 @@ const invidiousInstances = [
   "https://vid.puffyan.us",
   "https://invidio.xamh.de",
   "https://invidious.sethforprivacy.com",
-  "https://invidious.tiekoetter.com",
   "https://inv.bp.projectsegfau.lt",
   "https://invidious.rhyshl.live",
   "https://invidious.private.coffee","invidious.privacyredirect.com"
