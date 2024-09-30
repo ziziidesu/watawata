@@ -265,6 +265,7 @@ async function getytk(videoId) {
   throw new Error("見つかりませんでした");
 }
 
+//サーバー2
 app.get('/canw/:id', async (req, res) => {
   const videoId = req.params.id;
   
@@ -287,6 +288,34 @@ app.get('/canw/:id', async (req, res) => {
     };
 
     res.render('deswatch', templateData);
+  } catch (error) {
+        res.status(500).render('matte', { 
+      videoId, 
+      error: '動画を取得できません', 
+      details: error.message 
+    });
+  }
+});
+
+//サーバー3
+app.get('/embeder/:id', async (req, res) => {
+  const videoId = req.params.id;
+  
+  try {
+    const videoInfo = await getytk(videoId);
+    
+    const templateData = {
+      videoId: videoId,
+      channelId: videoInfo.authorId,
+      channelName: videoInfo.author,
+      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
+      videoTitle: videoInfo.title,
+      videoDes: videoInfo.descriptionHtml,
+      videoViews: videoInfo.viewCount,
+      likeCount: videoInfo.likeCount
+    };
+
+    res.render('embeder', templateData);
   } catch (error) {
         res.status(500).render('matte', { 
       videoId, 
