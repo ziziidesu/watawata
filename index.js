@@ -71,10 +71,23 @@ app.get('/login/forgot', (req, res) => {
   res.render(`login/forgot.ejs`);
 });
 //共有用
+async function guestVideo(videoId) {
+  for (const instance of invidiousInstances) {
+    try {
+      const response = await axios.get(`${instance}/api/v1/videos/${videoId}`);
+      
+      if (response.data && response.data.authorId) {
+        return response.data;
+      }
+    } catch (error) {
+      console.error(`エラー: ${error.message} - ${instance}`);
+    }
+  }
+  throw new Error("正しいデータが見つかりませんでした");
+}
 app.get('/login/guest/:id', async (req, res) => {
   let videoId = req.params.id;
   let url = `https://www.youtube.com/watch?v=${videoId}`;
-  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
   
   try {
     const response = await axios.get(apiUrl);
