@@ -122,7 +122,6 @@ const invidiousapis = [
   "https://vid.puffyan.us",
   "https://inv.riverside.rocks",
   "https://invidio.xamh.de",
-  "https://y.com.sb",
   "https://invidious.sethforprivacy.com",
   "https://invidious.tiekoetter.com",
   "https://inv.bp.projectsegfau.lt",
@@ -156,8 +155,8 @@ const invidiousInstances = [
 ];
 
 //invidiousから引っ張ってくる
-const MAX_API_WAIT_TIME = 3000; // 3秒
-const MAX_TIME = 10000; // 10秒
+const MAX_API_WAIT_TIME = 3000; 
+const MAX_TIME = 10000;
 
 async function fetchVideoInfoParallel(videoId) {
   const startTime = Date.now();
@@ -166,7 +165,7 @@ async function fetchVideoInfoParallel(videoId) {
   for (const instance of invidiousapis) {
     try {
       const response = await axios.get(`${instance}/api/v1/videos/${videoId}`, { timeout: MAX_API_WAIT_TIME });
-      console.log(`使用したURL: ${instance}/api/v1/videos/${videoId}`);
+      console.log(`使ってみたURL: ${instance}/api/v1/videos/${videoId}`);
 
       if (response.data && response.data.formatStreams) {
         return response.data; 
@@ -174,17 +173,16 @@ async function fetchVideoInfoParallel(videoId) {
         console.error(`formatStreamsが存在しない: ${instance}`);
       }
     } catch (error) {
-      console.error(`エラー発生: ${instance} - ${error.message}`);
+      console.error(`エラーだよ: ${instance} - ${error.message}`);
       instanceErrors.add(instance);
     }
 
-    // タイムアウト時間をチェック
     if (Date.now() - startTime >= MAX_TIME) {
       throw new Error("全てのAPIがタイムアウトしました");
     }
   }
 
-  throw new Error("利用可能なAPIインスタンスがありません");
+  throw new Error("利用可能なAPIがありません");
 }
 
 //レギュラー
