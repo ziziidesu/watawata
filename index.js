@@ -177,7 +177,7 @@ async function fetchVideoInfoParallel(videoId) {
     }
 
     if (Date.now() - startTime >= MAX_TIME) {
-      throw new Error("全てのAPIがタイムアウトしました");
+      throw new Error("APIがタイムアウトしました");
     }
   }
 
