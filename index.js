@@ -302,7 +302,7 @@ app.get('/embeder/:id', async (req, res) => {
   const videoId = req.params.id;
   
   try {
-    const videoInfo = await getytk(videoId);
+    const videoInfo = await fetchVideoInfoParallel(videoId);
     
     const templateData = {
       videoId: videoId,
