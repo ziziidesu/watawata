@@ -73,7 +73,7 @@ app.get('/login/forgot', (req, res) => {
 //共有用
 app.get('/login/guest/:id', async (req, res) => {
   let videoId = req.params.id;
-  let url = `https://www.youtube.com/watch?v=${videoId}`;
+  const apiUrl = `https://wakametubeapi.glitch.me/api/w/${videoId}`;
   
   try {
     const response = await axios.get(apiUrl);
