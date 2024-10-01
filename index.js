@@ -121,7 +121,6 @@ const invidiousapis = [
   "https://invidious.sethforprivacy.com",
   "https://inv.bp.projectsegfau.lt",
   "https://inv.vern.cc",
-  "https://invidious.nerdvpn.de",
   "https://inv.privacy.com.de",
   "https://invidious.rhyshl.live",
   "https://invidious.slipfox.xyz",
