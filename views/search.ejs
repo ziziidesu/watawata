@@ -36,7 +36,7 @@
       <% if (video.type === 'video') { %>
         <div class="result-item">
           <a href="/w/<%= video.id %>">
-            <img src="<%= video.bestThumbnail.url.slice(19) %>" alt="<%= video.title %>">
+            <img src="/vi/<%= video.id %>/maxresdefault.jpg" alt="<%= video.title %>">
           </a>
           <p class="channel-name"><a href="/c/<%= video.author.channelID %>"><%= video.author.name %></a></p>
           <p class="video-title"><%= video.title %></p>
