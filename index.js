@@ -104,6 +104,7 @@ app.get("/famous",(req, res) => {
 
 //第3の目
 const invidiousapis = [
+  "https://invidious.privacyredirect.com",
   "https://invidious.jing.rocks",
   "https://iv.datura.network",
   "https://invidious.private.coffee",
