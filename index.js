@@ -104,6 +104,7 @@ app.get("/famous",(req, res) => {
 
 //第3の目
 const invidiousapis = [
+  "https://invidious.jing.rocks",
   "https://iv.datura.network",
   "https://invidious.private.coffee",
   "https://invidious.protokolla.fi",
@@ -114,13 +115,10 @@ const invidiousapis = [
   "https://invidious.fdn.fr",
   "https://inv.tux.pizza",
   "https://vid.puffyan.us",
-  "https://invidious.jing.rocks",
   "https://youtube.076.ne.jp",
   "https://vid.puffyan.us",
-  "https://inv.riverside.rocks",
   "https://invidio.xamh.de",
   "https://invidious.sethforprivacy.com",
-  "https://invidious.tiekoetter.com",
   "https://inv.bp.projectsegfau.lt",
   "https://inv.vern.cc",
   "https://invidious.nerdvpn.de",
@@ -149,7 +147,7 @@ const invidiousInstances = [
   "https://invidious.sethforprivacy.com",
   "https://inv.bp.projectsegfau.lt",
   "https://invidious.rhyshl.live",
-  "https://invidious.private.coffee","invidious.privacyredirect.com"
+  "https://invidious.private.coffee","https://invidious.privacyredirect.com"
 ];
 
 //invidiousから引っ張ってくる
