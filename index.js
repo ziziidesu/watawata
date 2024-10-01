@@ -15,6 +15,7 @@ const InvidJS = require('@invidjs/invid-js');
 const jp = require('jsonpath');
 const path = require('path');
 const bodyParser = require('body-parser');
+const YouTubeJS = require('youtube-js');
 
 
 const limit = process.env.LIMIT || 50;
@@ -533,19 +534,19 @@ app.get("/c/:id", async (req, res) => {
 });
 
 // サムネ読み込み
-app.get("/vi*", (req, res) => {
-	let stream = miniget(`https://i.ytimg.com/${req.url.split("?")[0]}`, {
-		headers: {
-			"user-agent": user_agent
-		}
-	});
-	stream.on('error', err => {
+app.get("/vi*", async (req, res) => {
+	const videoId = req.url.split("/vi/")[1].split("?")[0]; // 動画IDを取得
+
+	try {
+		const video = await YouTubeJS.getVideo(videoId); // YouTubeJSを使って動画情報を取得
+		const thumbnailUrl = video.thumbnail; // サムネイルURLを取得
+
+		res.redirect(thumbnailUrl);
+	} catch (err) {
 		console.log(err);
 		res.status(500).send(err.toString());
-	});
-	stream.pipe(res);
+	}
 });
-
 // 画像読み込み
 app.get("/ytc/*", (req, res) => {
 	let stream = miniget(`https://yt3.ggpht.com/${req.url}`, {
