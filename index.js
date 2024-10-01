@@ -190,14 +190,6 @@ app.get('/w/:id', async (req, res) => {
     
     const formatStreams = videoInfo.formatStreams || [];
     const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
-
-    if (!streamUrl) {
-          res.status(500).render('matte', { 
-      videoId, 
-      error: 'ストリームURLが見つかりません',
-      details: 'error'
-    });
-    }
     
     const templateData = {
       stream_url: streamUrl,
@@ -692,21 +684,37 @@ app.get('/gethtml/:encodedUrl', async (req, res) => {
   }
 });
 app.get('/getinv/:encodedUrl', async (req, res) => {
-  const { encodedUrl } = req.params;
-  
-  const replacedUrl = decodeURIComponent(encodedUrl);
-  
-  const url = replacedUrl.replace(/\.wakame02\./g, '.');
 
-  const invurl = url + '/api/v1/videos/f6TytcA47rI';
+  const { encodedUrl } = req.params;
+  const replacedUrl = decodeURIComponent(encodedUrl);
+  const invurl = replacedUrl.replace(/\.wakame02\./g, '.');
+  const videoId = "H08YWE4CIFQ";
   
   try {
-    const response = await axios.get(invurl);
-    const html = response.data;
-    res.setHeader('Content-Type', 'text/plain');
-    res.send(html);
+    const videoInfo = await axios.get(`${invurl}/api/v1/videos/H08YWE4CIFQ`);
+    
+    const formatStreams = videoInfo.formatStreams || [];
+    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
+    
+    const templateData = {
+      stream_url: streamUrl,
+      videoId: videoId,
+      channelId: videoInfo.authorId,
+      channelName: videoInfo.author,
+      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
+      videoTitle: videoInfo.title,
+      videoDes: videoInfo.descriptionHtml,
+      videoViews: videoInfo.viewCount,
+      likeCount: videoInfo.likeCount
+    };
+
+    res.render('infowatch', templateData);
   } catch (error) {
-    res.status(500).send('URLの取得に失敗しました');
+        res.status(500).render('matte', { 
+      videoId, 
+      error: '動画を取得できません', 
+      details: error.message 
+    });
   }
 });
 //ページを拾ってくる
