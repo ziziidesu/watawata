@@ -126,7 +126,8 @@ const invidiousapis = [
   "https://invidious.rhyshl.live",
   "https://invidious.slipfox.xyz",
   "https://invidious.weblibre.org",
-  "https://invidious.namazso.eu"
+  "https://invidious.namazso.eu",
+  "https://inv.nadeko.net"
 ];
 
 //直接狙った！
@@ -235,7 +236,8 @@ const caninvidiousInstances = [
   "https://invidious.privacyredirect.com",
   "https://inv.nadeko.net",
   "https://invidious.nerdvpn.de",
-  "https://invidious.namazso.eu"
+  "https://invidious.namazso.eu",
+  "https://iv.nowhere.moe/"
 ];
 //Get YTK
 async function getytk(videoId) {
