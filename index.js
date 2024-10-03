@@ -561,9 +561,7 @@ app.get("/tool",(req, res) => {
 
 app.get("/tool/n/comment/:id",(req, res) => {
   const id = req.params.id;
-  res.render("../tool/n/commnet.ejs", { 
-      id, 
-    })
+  res.render("../tool/n/comment.ejs", {id})
 })
 
 app.get('/tool/:id', (req, res) => {

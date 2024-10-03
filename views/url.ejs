@@ -22,7 +22,7 @@
     <h1>YouTubeのURLを入力</h1>
     <form id="urlForm2">
         <input type="text" id="youtubeUrl" placeholder="YouTubeのURLを入力..." required>
-        <button type="submit">再生！</button>
+        <button type="submit">再生！</button><br><br>
     </form>
     <script>
         document.getElementById('urlForm2').addEventListener('submit', function(event) {
@@ -31,6 +31,17 @@
             const videoId = extractVideoId(url);
             if (videoId) {
                 window.location.href = `/w/${videoId}`;
+            } else {
+                alert('Invalid YouTube URL');
+            }
+        });
+      
+        document.getElementById('urlForm2').addEventListener('comment', function(event) {
+            event.preventDefault();
+            const url = document.getElementById('youtubeUrl').value;
+            const videoId = extractVideoId(url);
+            if (videoId) {
+                window.location.href = `/tool/n/comment/${videoId}`;
             } else {
                 alert('Invalid YouTube URL');
             }
