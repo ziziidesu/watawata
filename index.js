@@ -127,7 +127,8 @@ const invidiousapis = [
   "https://invidious.slipfox.xyz",
   "https://invidious.weblibre.org",
   "https://invidious.namazso.eu",
-  "https://inv.nadeko.net"
+  "https://inv.nadeko.net",
+  "https://iv.nowhere.moe/"
 ];
 
 //直接狙った！
