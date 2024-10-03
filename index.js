@@ -782,6 +782,58 @@ app.get("/block/cc3q",(req, res) => {
   res.render('../views/tst/2.ejs', { ip: ip });
 })
 
+async function getData(videoId) {
+    try {
+        const response = await axios.get(`api/v1/videos/${encodeURIComponent(videoId)}`);
+
+        const data = response.data;
+
+        const recommendedVideos = data.recommendedVideos.map(video => ({
+            id: video.videoId,
+            title: video.title,
+            authorId: video.authorId,
+            author: video.author
+        }));
+
+        const formatStreams = data.formatStreams.map(stream => stream.url).reverse().slice(0, 2);
+        const descriptionHtml = data.descriptionHtml.replace(/\n/g, '<br>');
+
+        const title = data.title;
+        const authorId = data.authorId;
+        const author = data.author;
+        const authorThumbnailUrl = data.authorThumbnails[data.authorThumbnails.length - 1].url;
+
+        return {
+            recommendedVideos,
+            formatStreams,
+            descriptionHtml,
+            title,
+            authorId,
+            author,
+            authorThumbnailUrl
+        };
+    } catch (error) {
+        console.error(`APIリクエストエラー: ${error.message}`);
+        throw new Error('APIからデータを取得できませんでした');
+    }
+}
+
+// "/w/:id" にアクセスした時の処理
+app.get('/w/:id', async (req, res) => {
+    const videoId = req.params.id;
+
+    try {
+        // 動画データを取得
+        const videoData = await getData(videoId);
+
+        // 取得したデータをEJSテンプレートに渡して描画
+        res.render('infowatch', videoData);
+    } catch (error) {
+        res.status(500).send('動画情報の取得中にエラーが発生しました');
+    }
+});
+
+
 // エラー
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
