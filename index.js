@@ -558,6 +558,14 @@ app.get("/ytc/*", (req, res) => {
 app.get("/tool",(req, res) => {
   res.render("../tool/n/home.ejs")
 })
+
+app.get("/tool/n/comment/:id",(req, res) => {
+  const id = req.params.id;
+  res.render("../tool/n/commnet.ejs", { 
+      id, 
+    })
+})
+
 app.get('/tool/:id', (req, res) => {
   const id = req.params.id;
   res.render(`../tool/${id}.ejs`, { id: id });
