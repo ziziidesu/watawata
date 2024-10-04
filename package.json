@@ -1,6 +1,6 @@
 {
   "name": "わかめtube",
-  "version": "2.5.0",
+  "version": "2.5.7",
   "main": "index.js",
   "license": "CC0-v1.0",
   "dependencies": {
