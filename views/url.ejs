@@ -11,7 +11,6 @@
     <div class="banner">
       <button class="btn btn-link" onclick="window.location.href='/'">ホーム🏠</button>
       <button class="btn btn-link" onclick="window.location.href='/blog'">お知らせ</button>
-      <!-- 他のボタンもここに追加できます -->
       <form class="d-flex" action="/s">
         <input type="text" name="q" class="form-control" placeholder="キーワードを入力..." required>
       </form>
@@ -33,8 +32,7 @@
         const url = document.getElementById('youtubeUrl').value;
         const videoId = extractVideoId(url);
         if (videoId) {
-            // どのボタンが押されたか確認
-            const action = event.submitter.value; // 押されたボタンのvalueを取得
+            const action = event.submitter.value;
             if (action === 'watch') {
                 window.location.href = `/w/${videoId}`;
             } else if (action === 'comment') {
