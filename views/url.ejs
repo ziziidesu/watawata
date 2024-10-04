@@ -20,38 +20,38 @@
   </header>
   <br><br>
     <h1>YouTubeのURLを入力</h1>
-    <form id="urlForm2">
-        <input type="text" id="youtubeUrl" placeholder="YouTubeのURLを入力..." required>
-        <button type="submit">再生！</button><button type="comment">コメントのみを表示</button><br><br>
-    </form>
-    <script>
-        document.getElementById('urlForm2').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const url = document.getElementById('youtubeUrl').value;
-            const videoId = extractVideoId(url);
-            if (videoId) {
+  <form id="urlForm2">
+    <input type="text" id="youtubeUrl" placeholder="YouTubeのURLを入力..." required>
+    <button type="submit" name="action" value="watch">再生！</button>
+    <button type="submit" name="action" value="comment">コメントのみを表示</button>
+    <br><br>
+</form>
+
+<script>
+    document.getElementById('urlForm2').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const url = document.getElementById('youtubeUrl').value;
+        const videoId = extractVideoId(url);
+        if (videoId) {
+            // どのボタンが押されたか確認
+            const action = event.submitter.value; // 押されたボタンのvalueを取得
+            if (action === 'watch') {
                 window.location.href = `/w/${videoId}`;
-            } else {
-                alert('Invalid YouTube URL');
-            }
-        });
-      
-        document.getElementById('urlForm2').addEventListener('comment', function(event) {
-            event.preventDefault();
-            const url = document.getElementById('youtubeUrl').value;
-            const videoId = extractVideoId(url);
-            if (videoId) {
+            } else if (action === 'comment') {
                 window.location.href = `/tool/n/comment/${videoId}`;
             } else {
-                alert('Invalid YouTube URL');
+                alert('Invalid action type');
             }
-        });
-
-        function extractVideoId(url) {
-            const regExp = /^.*(?:youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[1].length == 11) ? match[1] : null;
+        } else {
+            alert('Invalid YouTube URL');
         }
+    });
+
+    function extractVideoId(url) {
+        const regExp = /^.*(?:youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[1].length == 11) ? match[1] : null;
+    }
     </script>
 </body>
 </html>
