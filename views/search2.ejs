@@ -39,7 +39,7 @@
       <% if (video.type === 'video') { %>
         <div class="result-item">
           <a href="/w/<%= video.id %>">
-            <img src="https://i3.ytimg.com/vi/<%= video.id %>/maxresdefault.jpg" alt="<%= video.title %>">
+            <img loading="lazy" src="https://i3.ytimg.com/vi/<%= video.id %>/sddefault.jpg" alt="<%= video.title %>">
           </a>
           <p class="channel-name"><a href="/c/<%= video.author.channelID %>"><%= video.author.name %></a></p>
           <p class="video-title"><%= video.title %></p>
