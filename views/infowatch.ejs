@@ -27,9 +27,7 @@
    <form class="d-flex" action="/s">
     <input type="text" name="q" class="form-control" placeholder="キーワードを入力..." required>
    </form>
-  <div id="toolbar" class="toolbar">
-    <button class="btn btn-link" style="position: absolute; right: 10px;">ツール</button>
-  </div>
+    <button id="menu-btn">ツール</button>
  </div>
 </header>
 <nav id="side-menu" class="side-menu">
@@ -51,9 +49,6 @@
 <div class="card">
   <div class="toolcard-header">
     <small class="text-muted">ツール　　<button onclick="location.href='/pytdf/<%= videoId %>'">この動画をダウンロードする</button><button onclick="location.href='/ll/<%= videoId %>'">音のみで再生する</button><button onclick="location.href='/www/<%= videoId %>'">高画質で再生する</button></small>
-  </div>
-  <div class="toolcard-header">
-    <small class="text-muted">&emsp;&emsp;&emsp;　　<button onclick="location.href='/vi/<%= videoId %>/maxresdefault.jpg'">サムネイルをダウンロードする</button></small>
   </div>
   <div class="toolcard-header">
     <small class="text-muted">再生できませんか？　　<button onclick="location.href='/redirect?p=w&id=<%= videoId %>'">再読み込みする</button><button onclick="location.href='/embeder/<%= videoId %>'">サーバーを変更する</button></small>
