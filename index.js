@@ -542,7 +542,7 @@ app.get("/vi*", (req, res) => {
 
 // チャンネル画像読み込み
 app.get("/ytc/*", (req, res) => {
-
+  let stream = miniget(`https://yt3.ggpht.com/${req.url}`, {
 		headers: {
 			"user-agent": user_agent
 		}
