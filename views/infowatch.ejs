@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="/css/font.css">
   <link rel="stylesheet" href="/css/plyr.css">
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/slide.css">
   <script src="/js/bootstrap.min.js"></script>
 </head>
 
@@ -21,14 +22,26 @@
 <header>
   <div class="banner">
    <button class="btn btn-link" onclick="window.location.href='/'">ホーム🏠</button>
-   <button class="btn btn-link" onclick="window.location.href='/blog'">お知らせ</button>
+   <button class="btn btn-link" onclick="window.location.href='/send'">問い合わせ</button>
   <button class="btn btn-link" onclick="window.location.href='/blog/help'">ヘルプ</button>
    <form class="d-flex" action="/s">
     <input type="text" name="q" class="form-control" placeholder="キーワードを入力..." required>
    </form>
-    <button class="btn btn-link" style="position: absolute; right: 10px;" onclick="window.location.href='/send'">問い合わせ</button>
+  <div id="toolbar" class="toolbar">
+    <button class="btn btn-link" style="position: absolute; right: 10px;">ツール</button>
+  </div>
  </div>
 </header>
+<nav id="side-menu" class="side-menu">
+    <ul>
+        <li><a href="/pytdf/<%= videoId %>"><i class="fas fa-home"></i>ダウンロード</a></li>
+        <li><a href="/ll/<%= videoId %>"><i class="fas fa-info-circle"></i>音のみで再生する</a></li>
+        <li><a href="/www/<%= videoId %>"><i class="fas fa-cogs"></i>高画質で再生する</a></li>
+        <li><a href="#"><i class="fas fa-question-circle"></i> ヘルプ</a></li>
+    </ul>
+</nav>
+<div id="overlay" class="overlay"></div>
+  
 <div class="card">
   <video controls autoplay poster="/vi/<%= videoId %>/maxresdefault.jpg">
     <source src="<%= stream_url %>" type="video/mp4">
@@ -197,5 +210,19 @@ video {
       box-sizing: border-box;
     }
   </style>
+<script>
+const menuBtn = document.getElementById('menu-btn');
+const sideMenu = document.getElementById('side-menu');
+const overlay = document.getElementById('overlay');
+
+function toggleMenu() {
+    sideMenu.classList.toggle('open');
+    overlay.classList.toggle('active');
+}
+
+menuBtn.addEventListener('click', toggleMenu);
+
+overlay.addEventListener('click', toggleMenu);
+</script>
   </body>
 </html>

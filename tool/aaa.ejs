@@ -24,13 +24,13 @@
     <div id="overlay" class="overlay"></div>
   
     <script>
-  const menuBtn = document.getElementById('menu-btn');
+const menuBtn = document.getElementById('menu-btn');
 const sideMenu = document.getElementById('side-menu');
 const overlay = document.getElementById('overlay');
 
 function toggleMenu() {
     sideMenu.classList.toggle('open');
-    overlay.classList.toggle('active'); // オーバーレイの表示・非表示を切り替える
+    overlay.classList.toggle('active');
 }
 
 menuBtn.addEventListener('click', toggleMenu);
