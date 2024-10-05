@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スライドメニュー</title>
+  <link rel="stylesheet" href="/css/slide.css">
+</head>
+<body>
+
+    <div id="toolbar" class="toolbar">
+        <button id="menu-btn" class="menu-btn"><i class="fas fa-tools"></i></button>
+    </div>
+
+    <nav id="side-menu" class="side-menu">
+        <ul>
+            <li><a href="#"><i class="fas fa-home"></i> ホーム</a></li>
+            <li><a href="#"><i class="fas fa-info-circle"></i> 情報</a></li>
+            <li><a href="#"><i class="fas fa-cogs"></i> 設定</a></li>
+            <li><a href="#"><i class="fas fa-question-circle"></i> ヘルプ</a></li>
+        </ul>
+    </nav>
+
+    <div id="overlay" class="overlay"></div>
+  
+    <script>
+  const menuBtn = document.getElementById('menu-btn');
+const sideMenu = document.getElementById('side-menu');
+const overlay = document.getElementById('overlay');
+
+function toggleMenu() {
+    sideMenu.classList.toggle('open');
+    overlay.classList.toggle('active'); // オーバーレイの表示・非表示を切り替える
+}
+
+menuBtn.addEventListener('click', toggleMenu);
+
+overlay.addEventListener('click', toggleMenu);
+
+  
+  </script>
+  
+</body>
+</html>
