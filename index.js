@@ -542,8 +542,15 @@ app.get("/vi*", (req, res) => {
 
 // チャンネル画像読み込み
 app.get("/ytc/*", (req, res) => {
-    if (req.url.startsWith("/yt3/")) req.url = req.url.slice(4)
-    requestproxy("https://yt3.ggpht.com" + req.url, req, res, user_agent);
+		headers: {
+			"user-agent": user_agent
+		}
+	});
+	stream.on('error', err => {
+		console.log(err);
+		res.status(500).send(err.toString());
+	});
+	stream.pipe(res);
 });
 
 //tool
