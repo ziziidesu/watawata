@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="/css/font.css">
   <link rel="stylesheet" href="/css/plyr.css">
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/slide.css">
   <script src="/js/bootstrap.min.js"></script>
 </head>
 
@@ -21,13 +22,24 @@
 <header>
   <div class="banner">
    <button class="btn btn-link" onclick="window.location.href='/'">ホーム🏠</button>
-   <button class="btn btn-link" onclick="window.location.href='/blog'">お知らせ</button>
+   <button class="btn btn-link" onclick="window.location.href='/send'">問い合わせ</button>
+  <button class="btn btn-link" onclick="window.location.href='/blog/help'">ヘルプ</button>
    <form class="d-flex" action="/s">
     <input type="text" name="q" class="form-control" placeholder="キーワードを入力..." required>
    </form>
-    <button class="btn btn-link" style="position: absolute; right: 10px;" onclick="window.location.href='/send'">問い合わせ</button>
+   <button class="btn btn-link" id="menu-btn" style="position: absolute; right: 10px;">ツール</button>
  </div>
 </header>
+<nav id="side-menu" class="side-menu">
+    <ul>
+        <li><a href="/pytdf/<%= videoId %>">ダウンロード</a></li>
+        <li><a href="/ll/<%= videoId %>">音のみで再生する</a></li>
+        <li><a href="/www/<%= videoId %>">高画質で再生する</a></li>
+        <li><a href="/vi/<%= videoId %>/maxresdefault.jpg">サムネイルをダウンロード</a></li>
+        <li><a href="/blog/up">アップデートを確認</a></li>
+    </ul>
+</nav>
+<div id="overlay" class="overlay"></div>
 <div class="vcard">
 <iframe width="100%" height="100%" src="https://wakametubeapi.glitch.me/embed?v=<%= videoId %>" title="video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   </div>
@@ -196,5 +208,19 @@ video {
       text-align: left;
       box-sizing: border-box;
 </style>
+<script>
+const menuBtn = document.getElementById('menu-btn');
+const sideMenu = document.getElementById('side-menu');
+const overlay = document.getElementById('overlay');
+
+function toggleMenu() {
+    sideMenu.classList.toggle('open');
+    overlay.classList.toggle('active');
+}
+
+menuBtn.addEventListener('click', toggleMenu);
+
+overlay.addEventListener('click', toggleMenu);
+</script>
   </body>
 </html>
