@@ -1,15 +1,4 @@
 /* 全体のcss */
-body {
-  font-family: 'Nico Moji', sans-serif;
-  background-color: #fffafb;
-  height: 70%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-}
-
 a {
     color: #ff69b4;
 }
