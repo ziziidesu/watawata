@@ -99,7 +99,7 @@ footer {
 }
 
 .result-item {
-  width: 160px; /* Adjusted width */
+  width: 160px;
   border: 1px solid #cccccc;
   border-radius: 10px;
   padding: 10px;
@@ -107,6 +107,7 @@ footer {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
 }
+
 
 .result-item:hover {
   transform: scale(1.50);
