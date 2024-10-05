@@ -542,6 +542,7 @@ app.get("/vi*", (req, res) => {
 
 // チャンネル画像読み込み
 app.get("/ytc/*", (req, res) => {
+
 		headers: {
 			"user-agent": user_agent
 		}
