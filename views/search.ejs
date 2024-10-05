@@ -54,7 +54,7 @@
       <% } else if (video.type === 'channel') { %>
         <div class="result-item">
           <a href="/c/<%= video.channelID %>">
-            <img src="/ytc/<%= video.id %>" alt="<%= video.name %>">
+            <img src="/ytc/<%= video.id %>/mqdefault.jpg" alt="<%= video.name %>">
           </a>
           <p class="video-title"><%= video.name %></p>
           <p class="video-description"><%= video.description || video.descriptionShort %></p>
