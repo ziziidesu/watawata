@@ -3,6 +3,7 @@
 <div id="container" style="overflow: hidden; position: fixed; height: 100vh; width: 100vw;">
 	<div id="replace">
 		<div class="title">PING-PONG バトル</div>
+    <a href="/blog/pingpongrule">ルールが分かりませんか？こちらをクリック</a>
 		<div class="button" id="start" onclick="info()">すたーと！</div>
 	</div>
 </div>
@@ -18,6 +19,13 @@ body{
 	overflow: hidden;
 	height: 100vh;
 	width: 100vw;
+}
+a {
+    color: #ff69b4;
+}
+
+a:hover {
+    color: #FFA6C9;
 }
 .title{
 	font-size: 10vmax;
@@ -140,7 +148,7 @@ function info(){
 }
 function menu(){
 	var r = document.getElementById("replace");
-	r.innerHTML = '<div class="subtitle">IS THIS THE LEFT OR THE RIGHT SCREEN?</div><div class="button close" onclick="left()">LEFT</div><div class="button close" onclick="right()">RIGHT</div>';
+	r.innerHTML = '<div class="subtitle">(スクリーンが)左側か右側かを選んでください。</div><div class="button close" onclick="left()">ひだり</div><div class="button close" onclick="right()">みぎ</div>';
 }
 
 function getCode(){
@@ -158,7 +166,7 @@ function getCode(){
 }
 function left(){
 	var r = document.getElementById("replace");
-	r.innerHTML = '<div class="subtitle">ENTER THIS CODE IN THE RIGHT SCREEN.</div><div class="title" id="code" style="margin-top: 10vmax">LOADING</div>';
+	r.innerHTML = '<div class="subtitle">このコードを右側のスクリーンに入力して下さい。</div><div class="title" id="code" style="margin-top: 10vmax">LOADING</div>';
 	getCode();
 }
 function game(code){
@@ -270,7 +278,7 @@ function game(code){
 }
 function right(){
 	var r = document.getElementById("replace");
-	r.innerHTML = '<div class="subtitle">ENTER THE CODE FROM THE LEFT SCREEN HERE.</div><input class="title input" id="code" style="margin-top: 10vmax" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus onkeyup="checkCode(this)"></input>';
+	r.innerHTML = '<div class="subtitle">左側のスクリーンに表示されているコードを入力して下さい。</div><input class="title input" id="code" style="margin-top: 10vmax" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus onkeyup="checkCode(this)"></input>';
 }
 function checkCode(e){
 	if(e.value.length == 6){
