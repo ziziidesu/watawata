@@ -32,6 +32,11 @@
 </header>
 <nav id="side-menu" class="side-menu">
     <ul>
+        <li><label for="loopCheck" class="custom-checkbox">
+        ループ再生する
+        <input type="checkbox" id="loopCheck">
+        <span class="checkmark"></span>
+        </label></li>
         <li><a href="/pytdf/<%= videoId %>">ダウンロード</a></li>
         <li><a href="/ll/<%= videoId %>">音のみで再生する</a></li>
         <li><a href="/www/<%= videoId %>">高画質で再生する</a></li>
@@ -42,7 +47,7 @@
 <div id="overlay" class="overlay"></div>
   
 <div class="card">
-  <video controls autoplay poster="/vi/<%= videoId %>/maxresdefault.jpg">
+  <video id="wakameVideo" controls autoplay poster="/vi/<%= videoId %>/maxresdefault.jpg">
     <source src="<%= stream_url %>" type="video/mp4">
     読み込み失敗。ブラウザをアップデートしてどうぞ。
   </video>
@@ -219,6 +224,13 @@ function toggleMenu() {
 menuBtn.addEventListener('click', toggleMenu);
 
 overlay.addEventListener('click', toggleMenu);
+  
+        const video = document.getElementById("wakameVideo");
+        const loopCheck = document.getElementById("loopCheck");
+
+        loopCheck.addEventListener('change', function() {
+            video.loop = this.checked;
+        });
 </script>
   </body>
 </html>
