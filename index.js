@@ -770,29 +770,15 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
 
   
     html = html.replace(/<a\s+[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/g, (match, url, innerText) => {
-      const absoluteUrl = new URL(url, baseUrl).href; 
-      const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.'); 
-      const encoded = encodeURIComponent(replacedAbsoluteUrl);
-      return `<a href="/getwakame/${encoded}">${innerText}</a>`;
-    });
-
-    html = html.replace(/<img\s+[^>]*src="([^"]+)"[^>]*\/?>/g, (match, url) => {
-      const absoluteUrl = new URL(url, baseUrl).href; 
+      let absoluteUrl;
+      if (url.startsWith('http') || url.startsWith('https')) {
+        absoluteUrl = url;
+      } else {
+        absoluteUrl = new URL(url, baseUrl).href;
+      }
       const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.');
       const encoded = encodeURIComponent(replacedAbsoluteUrl);
-      return `<img src="/getimage/${encoded}" />`;
-    });
-
-    html = html.replace(/<link\s+[^>]*href="([^"]+)"[^>]*>/g, (match, url) => {
-      const absoluteUrl = new URL(url, baseUrl).href; 
-      const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.'); 
-      return `<link href="/getpage/${encodeURIComponent(replacedAbsoluteUrl)}" />`;
-    });
-
-    html = html.replace(/<script\s+[^>]*src="([^"]+)"[^>]*><\/script>/g, (match, url) => {
-      const absoluteUrl = new URL(url, baseUrl).href; 
-      const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.'); 
-      return `<script src="/getpage/${encodeURIComponent(replacedAbsoluteUrl)}"></script>`;
+      return `<a href="/getwakame/${encoded}">${innerText}</a>`;
     });
 
     res.send(html);
