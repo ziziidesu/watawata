@@ -728,7 +728,7 @@ app.get('/getinv/:encodedUrl', async (req, res) => {
     });
   }
 });
-//ページを拾ってくる
+//わかめproxy
 app.get('/getpage/:encodedUrl', async (req, res) => {
   const { encodedUrl } = req.params;
   
@@ -748,8 +748,8 @@ app.get('/getpage/:encodedUrl', async (req, res) => {
     res.status(500).send('URLの取得に失敗しました');
   }
 });
-
-app.get('/getpage2/:encodedUrl', async (req, res) => {
+//強化版わかめproxy
+app.get('/getwakame/:encodedUrl', async (req, res) => {
   const { encodedUrl } = req.params;
 
   if (!encodedUrl) {
@@ -766,26 +766,25 @@ app.get('/getpage2/:encodedUrl', async (req, res) => {
     
     html = html
       .replace(/href="([^"]+)"/g, (match, url) => {
-        const absoluteUrl = new URL(url, baseUrl).href; // 相対URLを絶対URLに変換
-        const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.'); // .を.wakame02.に置換
-        const encoded = encodeURIComponent(replacedAbsoluteUrl); // エンコード
-        return `href="/getpage/${encoded}"`;
+        const absoluteUrl = new URL(url, baseUrl).href; 
+        const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.'); 
+        const encoded = encodeURIComponent(replacedAbsoluteUrl);
+        return `href="/getwakame/${encoded}"`;
       })
-      // <img>タグのsrcをminiget経由に変換 (画像リンクに .wakame02. を追加)
       .replace(/src="([^"]+)"/g, (match, url) => {
-        const absoluteUrl = new URL(url, baseUrl).href; // 相対URLを絶対URLに変換
-        const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.'); // .を.wakame02.に置換
-        const encoded = encodeURIComponent(replacedAbsoluteUrl); // エンコード
-        return `src="/getimage/${encoded}"`; // minigetで画像取得
+        const absoluteUrl = new URL(url, baseUrl).href;
+        const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.');
+        const encoded = encodeURIComponent(replacedAbsoluteUrl);
+        return `src="/getimage/${encoded}"`;
       });
 
     res.send(html);
   } catch (error) {
-    console.error(error.message); // コンソールにエラーを出力
+    console.error(error.message);
     res.status(500).send('URLの取得に失敗しました');
   }
 });
-
+//画像取得
 app.get('/getimage/:encodedUrl', (req, res) => {
   const { encodedUrl } = req.params;
   const imageUrl = decodeURIComponent(encodedUrl).replace(/\.wakame02\./g, '.');
@@ -795,7 +794,6 @@ app.get('/getimage/:encodedUrl', (req, res) => {
   }
 
   try {
-    // minigetで画像データをストリームとしてレスポンス
     miniget(imageUrl).pipe(res);
   } catch (error) {
     console.error(error.message);
