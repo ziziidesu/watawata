@@ -794,35 +794,18 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
 app.get('/getimage/:encodedUrl', (req, res) => {
   const { encodedUrl } = req.params;
   const imageUrl = decodeURIComponent(encodedUrl).replace(/\.wakame02\./g, '.');
-
-  if (!imageUrl) {
-    return res.status(400).send('画像URLが無効です');
-  }
-
-  try {
-    const tempFilePath = path.join(__dirname, 'temp-image');
-    const writeStream = fs.createWriteStream(tempFilePath);
-    
-    miniget(imageUrl)
-      .pipe(writeStream)
-      .on('finish', () => {
-        if (fs.existsSync(tempFilePath)) {
-          res.sendFile(tempFilePath, () => {
-            fs.unlinkSync(tempFilePath);
-          });
-        } else {
-          res.redirect(imageUrl);
-        }
-      })
-      .on('error', () => {
-        res.redirect(imageUrl);
-      });
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send('画像の取得に失敗しました');
-  }
+  
+  let image = miniget(`${imageUrl}`, {
+	  headers: {
+		  "user-agent": user_agent
+	}
+	});
+  image.on('error', err => {
+	  console.log(err);
+	  res.status(500).send(err.toString());
+	});
+	image.pipe(res);
 });
-
 
 //概要欄用リダイレクト
 app.get('/watch', (req, res) => {
