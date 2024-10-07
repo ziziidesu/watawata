@@ -856,28 +856,6 @@ app.get("/block/cc3q",(req, res) => {
   res.render('../views/tst/2.ejs', { ip: ip });
 })
 
-const { chromium } = require('playwright');
-app.use('/proxy', async (req, res) => {
-  const targetUrl = req.query.url;
-  if (!targetUrl) {
-    return res.status(400).send('URLが指定されていません。');
-  }
-
-  try {
-    const browser = await chromium.launch();
-    const page = await browser.newPage();
-    await page.goto(targetUrl, { waitUntil: 'networkidle' }); // ページが完全に読み込まれるまで待機
-
-    const content = await page.content(); // ページのHTMLを取得
-    await browser.close();
-
-    res.send(content); // HTMLをクライアントに返す
-  } catch (error) {
-    console.error('プロキシリクエストエラー:', error.message);
-    res.status(500).send('プロキシリクエストに失敗しました。');
-  }
-});
-
 // エラー
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
