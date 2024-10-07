@@ -41,7 +41,7 @@
         <li><a href="/ll/<%= videoId %>">音のみで再生する</a></li>
         <li><a href="/www/<%= videoId %>">高画質で再生する</a></li>
         <li><a href="/vi/<%= videoId %>/maxresdefault.jpg">サムネイルをダウンロード</a></li>
-        <li><a href="/blog/up">アップデートを確認</a></li>
+        <li><a href="/blog/up" target="_blank">アップデートを確認</a></li>
     </ul>
 </nav>
 <div id="overlay" class="overlay"></div>
@@ -225,12 +225,49 @@ menuBtn.addEventListener('click', toggleMenu);
 
 overlay.addEventListener('click', toggleMenu);
   
-        const video = document.getElementById("wakameVideo");
-        const loopCheck = document.getElementById("loopCheck");
+const video = document.getElementById("wakameVideo");
+const loopCheck = document.getElementById("loopCheck");
 
-        loopCheck.addEventListener('change', function() {
-            video.loop = this.checked;
-        });
+loopCheck.addEventListener('change', function() {
+    video.loop = this.checked;
+});
+
+let wakeLock = null;
+
+async function requestWakeLock() {
+            try {
+                if (!wakeLock) {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                    console.log('Wake Lock is active');
+                    
+                    wakeLock.addEventListener('release', () => {
+                        console.log('Wake Lock has been released');
+                        wakeLock = null;
+                    });
+                }
+            } catch (err) {
+                console.error(`${err.name}, ${err.message}`);
+            }
+        }
+
+document.getElementById('wakameVideo').addEventListener('play', requestWakeLock);
+
+document.getElementById('wakameVideo').addEventListener('pause', () => {
+    if (wakeLock !== null) {
+        wakeLock.release();
+        wakeLock = null;
+        console.log('Wake Lock has been released manually');
+    }
+});
+
+document.getElementById('wakameVideo').addEventListener('ended', () => {
+    const videoElement = document.getElementById('wakameVideo');
+    if (!videoElement.loop && wakeLock !== null) {
+        wakeLock.release();
+        wakeLock = null;
+        console.log('Wake Lock has been released because video ended');
+    }
+});
 </script>
   </body>
 </html>
