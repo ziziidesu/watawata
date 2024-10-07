@@ -15,6 +15,7 @@ const InvidJS = require('@invidjs/invid-js');
 const jp = require('jsonpath');
 const path = require('path');
 const bodyParser = require('body-parser');
+const { URL } = require('url');
 
 
 const limit = process.env.LIMIT || 50;
@@ -747,6 +748,61 @@ app.get('/getpage/:encodedUrl', async (req, res) => {
     res.status(500).send('URLの取得に失敗しました');
   }
 });
+
+app.get('/getpage2/:encodedUrl', async (req, res) => {
+  const { encodedUrl } = req.params;
+
+  if (!encodedUrl) {
+    return res.status(400).send('URLが入力されていません');
+  }
+
+  const replacedUrl = decodeURIComponent(encodedUrl).replace(/\.wakame02\./g, '.');
+
+  try {
+    const response = await axios.get(replacedUrl);
+    let html = response.data;
+
+    const baseUrl = new URL(replacedUrl);
+    
+    html = html
+      .replace(/href="([^"]+)"/g, (match, url) => {
+        const absoluteUrl = new URL(url, baseUrl).href; // 相対URLを絶対URLに変換
+        const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.'); // .を.wakame02.に置換
+        const encoded = encodeURIComponent(replacedAbsoluteUrl); // エンコード
+        return `href="/getpage/${encoded}"`;
+      })
+      // <img>タグのsrcをminiget経由に変換 (画像リンクに .wakame02. を追加)
+      .replace(/src="([^"]+)"/g, (match, url) => {
+        const absoluteUrl = new URL(url, baseUrl).href; // 相対URLを絶対URLに変換
+        const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.'); // .を.wakame02.に置換
+        const encoded = encodeURIComponent(replacedAbsoluteUrl); // エンコード
+        return `src="/getimage/${encoded}"`; // minigetで画像取得
+      });
+
+    res.send(html);
+  } catch (error) {
+    console.error(error.message); // コンソールにエラーを出力
+    res.status(500).send('URLの取得に失敗しました');
+  }
+});
+
+app.get('/getimage/:encodedUrl', (req, res) => {
+  const { encodedUrl } = req.params;
+  const imageUrl = decodeURIComponent(encodedUrl).replace(/\.wakame02\./g, '.');
+
+  if (!imageUrl) {
+    return res.status(400).send('画像URLが無効です');
+  }
+
+  try {
+    // minigetで画像データをストリームとしてレスポンス
+    miniget(imageUrl).pipe(res);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('画像の取得に失敗しました');
+  }
+});
+
 
 //概要欄用リダイレクト
 app.get('/watch', (req, res) => {
