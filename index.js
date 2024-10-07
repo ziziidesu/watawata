@@ -749,49 +749,7 @@ app.get('/getpage/:encodedUrl', async (req, res) => {
   }
 });
 //強化版わかめproxy
-app.get('/getwakame/:encodedUrl', async (req, res) => {
-  const { encodedUrl } = req.params;
 
-  if (!encodedUrl) {
-    return res.status(400).send('URLが入力されていません');
-  }
-
-  const replacedUrl = decodeURIComponent(encodedUrl).replace(/\.wakame02\./g, '.');
-
-  try {
-    const response = await axios.get(replacedUrl);
-    let html = response.data;
-
-    const baseUrl = new URL(replacedUrl);
-    
-    html = html.replace(/<a\s+[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/g, (match, url, innerText) => {
-      const absoluteUrl = new URL(url, baseUrl).href;
-      const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.');
-      const encoded = encodeURIComponent(replacedAbsoluteUrl);
-      return `<a href="/getpage/${encoded}">${innerText}</a>`;
-    });
-
-    html = html.replace(/<img\s+[^>]*src="([^"]+)"[^>]*\/?>/g, (match, url) => {
-      const absoluteUrl = new URL(url, baseUrl).href;
-      const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.');
-      const encoded = encodeURIComponent(replacedAbsoluteUrl);
-      return `<img src="/getimage/${encoded}" />`;
-    });
-    
-    html = html.replace(/<link\s+[^>]*href="([^"]+)"[^>]*>/g, (match, url) => {
-      const absoluteUrl = new URL(url, baseUrl).href;
-      return `<link href="${absoluteUrl}" />`;
-    });
-    html = html.replace(/<script\s+[^>]*src="([^"]+)"[^>]*><\/script>/g, (match, url) => {
-      const absoluteUrl = new URL(url, baseUrl).href;
-      return `<script src="${absoluteUrl}"></script>`;
-    });
-    res.send(html);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send('URLの取得に失敗しました');
-  }
-});
 //画像取得
 app.get('/getimage/:encodedUrl', (req, res) => {
   const { encodedUrl } = req.params;
