@@ -86,7 +86,7 @@
     font-size: 16px;
     color: #ced4da;
     line-height: 1.6;
-    border-bottom: 1px solid #495057; /* 他のメニュー項目と統一 */
+    border-bottom: 1px solid #495057;
     margin-bottom: 20px;
 }
 
@@ -107,7 +107,7 @@
   </style>
 </head>
 <body>
-<button class="slidebutton" id="menu-btn" style="position: absolute; right: 10px;">ツール</button>
+<button class="slidebutton" id="menu-btn" style="position: absolute; right: 10px;">info</button>
 <nav id="side-menu" class="side-menu">
     <ul>
         <li><a href="/">ホーム</a></li>
@@ -117,7 +117,12 @@
         <div class="description">
            <h2>わかめproxyってなに？</h2>
            <p>あなたが見たいサイトに対してリクエストを送信し、返ってきたのを表示します。仕様上、ページのデザインがぶち壊れることがあります。
-           「そのページの内容を素早く</p>
+           「そのページの内容を素早く見たい時」に使用して下さい。例えばブログとかですかね。</p>
+          <h2>軽量化版と何か違うの？</h2>
+          <p>
+            「わかめおいしい」は、すでに存在しているわかめPROXYの強化バージョンです。<br>
+            リンクを踏んでも正常に動作し、画像を一度サーバーサイドに持ってくることによって規制されているサイトの画像だろうと表示します。
+          </p>
         </div>
 </nav>
 <div id="overlay" class="overlay"></div>
@@ -141,7 +146,7 @@
 
       const replacedUrl = url.replace(/\./g, '.wakame02.');
 
-      const redirectUrl = `/getpage/${encodeURIComponent(replacedUrl)}`;
+      const redirectUrl = `/getwakame/${encodeURIComponent(replacedUrl)}`;
 
       window.location.href = redirectUrl;
     });
