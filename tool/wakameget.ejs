@@ -2,96 +2,91 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>わかめ02</title>
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02</title>
+  <link rel="stylesheet" href="/css/slide.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #7fffd4;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
 
-body {
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #1f4037, #99f2c8);
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    h1 {
+      font-size: 48px;
+      margin-bottom: 40px;
+      color: #000000;
+    }
 
-.background {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    .url-input {
+      width: 500px;
+      padding: 16px 20px;
+      border: 2px solid #ff69b4;
+      border-radius: 50px;
+      font-size: 18px;
+      outline: none;
+      box-shadow: 0 4px 10px rgba(255, 105, 180, 0.2);
+      transition: 0.3s;
+    }
 
-.container {
-  position: relative;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-  max-width: 480px;
-  width: 90%;
-  backdrop-filter: blur(10px);
-}
+    .url-input:focus {
+      border-color: #ff1493;
+      box-shadow: 0 4px 10px rgba(255, 20, 147, 0.5);
+    }
 
-h1 {
-  font-size: 30px;
-  margin-bottom: 20px;
-  font-weight: 700;
-  color: #00ffb6;
-  text-transform: uppercase;
-  text-align: center;
-}
+    .submit-btn {
+      background-color: #ff69b4;
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 30px;
+      font-size: 18px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: 0.3s;
+    }
 
-button {
-  background-color: #00ffb6;
-  color: #000;
-  border: none;
-  padding: 16px 32px;
-  font-size: 18px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  width: 100%;
-  margin-bottom: 15px;
-}
+    .submit-btn:hover {
+      background-color: #ff1493;
+      box-shadow: 0 4px 10px rgba(255, 20, 147, 0.5);
+    }
 
-button:hover {
-  background-color: #00e6a8;
-  transform: scale(1.05);
-}
-
-p {
-  font-size: 15px;
-  color: #ccc;
-  line-height: 1.6;
-  text-align: justify;
-  margin-top: 10px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-</style>
+    .footer {
+      margin-top: 40px;
+      font-size: 12px;
+      color: #999;
+    }
+  </style>
 </head>
 <body>
-<div class="background">
-  <div class="container">
-    <h1>わかめproxy</h1>
-    <button id="redirectButton">URLを入力！</button>
-    <p>URLをコピーできたら、上のボタンを押して下さい。</p>
-    <p>ウェブサイトからファイルを拾ってきます。サイトによってはUIがぶち壊れますが、「何が書いてあるか」を迅速に確認できます！</p>
-    <p>対象となるウェブサイトがX-Frame-Optionsヘッダー、またはCSPを設定している場合、取得できない場合の方が多いです。</p>
-  </div>
-</div>
+
+<button class="btn btn-link" id="menu-btn" style="position: absolute; right: 10px;">ツール</button>
+<nav id="side-menu" class="side-menu">
+    <ul>
+        
+    </ul>
+</nav>
+<div id="overlay" class="overlay"></div>
+  <h1>わかめProxy02</h1>
+  <form id="proxyForm">
+    <input type="text" id="urlInput" class="url-input" placeholder="URLを入力してください">
+    <button type="submit" class="submit-btn">Go!</button>
+  </form>
+  <p class="footer">powered by わかめ02</p>
+
   <script>
-    document.getElementById('redirectButton').addEventListener('click', () => {
-      const url = prompt('URLを入力して下さい');
+    document.getElementById('proxyForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const url = document.getElementById('urlInput').value;
 
       if (!url) {
-        alert('URLが提供されていません');
+        alert('URLが入力されていません');
         return;
       }
 
@@ -102,5 +97,6 @@ p {
       window.location.href = redirectUrl;
     });
   </script>
+
 </body>
 </html>
