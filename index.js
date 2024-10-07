@@ -770,17 +770,26 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
   
     html = html.replace(/<a\s+[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/g, (match, url, innerText) => {
       let absoluteUrl;
-
       if (url.startsWith('http') || url.startsWith('https')) {
         absoluteUrl = url;
       } else {
         absoluteUrl = new URL(url, baseUrl).href;
       }
-
       const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.');
       const encoded = encodeURIComponent(replacedAbsoluteUrl);
-
       return `<a href="/getwakame/${encoded}">${innerText}</a>`;
+    });
+    
+    html = html.replace(/<image\s+[^>]*src="([^"]+)"[^>]*>/g, (match, url, innerText) => {
+      let absoluteUrl;
+      if (url.startsWith('http') || url.startsWith('https')) {
+        absoluteUrl = url;
+      } else {
+        absoluteUrl = new URL(url, baseUrl).href;
+      }
+      const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.');
+      const encoded = encodeURIComponent(replacedAbsoluteUrl);
+      return `<image src="/getimage/${encoded}">`;
     });
 
     res.send(html);
@@ -794,6 +803,7 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
 app.get('/getimage/:encodedUrl', (req, res) => {
   const { encodedUrl } = req.params;
   const imageUrl = decodeURIComponent(encodedUrl).replace(/\.wakame02\./g, '.');
+  console.log(imageUrl);
   
   let image = miniget(`${imageUrl}`, {
 	  headers: {
