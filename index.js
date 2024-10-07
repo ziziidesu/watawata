@@ -857,14 +857,20 @@ app.get("/block/cc3q",(req, res) => {
 })
 
 const { createProxyMiddleware } = require('http-proxy-middleware');
-app.use('/ppproxy', createProxyMiddleware({
-  target: '',
-  changeOrigin: true,
-  pathRewrite: (path, req) => {
-    const url = req.query.url;
-    return url ? url.replace(/^\/proxy/, '') : '/';
-  },
-}));
+app.use('/ppproxy', (req, res, next) => {
+  const targetUrl = req.query.url; // クエリパラメータで渡されたURLを取得
+  if (targetUrl) {
+    createProxyMiddleware({
+      target: targetUrl,
+      changeOrigin: true,
+      pathRewrite: {
+        '^/proxy': '', // `/proxy`をリクエストから除外
+      },
+    })(req, res, next);
+  } else {
+    res.status(400).send('URLが指定されていません。');
+  }
+});
 
 // エラー
 app.use((req, res) => {
