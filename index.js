@@ -777,6 +777,15 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
       const encoded = encodeURIComponent(replacedAbsoluteUrl);
       return `<img src="/getimage/${encoded}" />`;
     });
+    
+    html = html.replace(/<link\s+[^>]*href="([^"]+)"[^>]*>/g, (match, url) => {
+      const absoluteUrl = new URL(url, baseUrl).href;
+      return `<link href="${absoluteUrl}" />`;
+    });
+    html = html.replace(/<script\s+[^>]*src="([^"]+)"[^>]*><\/script>/g, (match, url) => {
+      const absoluteUrl = new URL(url, baseUrl).href;
+      return `<script src="${absoluteUrl}"></script>`;
+    });
     res.send(html);
   } catch (error) {
     console.error(error.message);
@@ -793,7 +802,23 @@ app.get('/getimage/:encodedUrl', (req, res) => {
   }
 
   try {
-    miniget(imageUrl).pipe(res);
+    const tempFilePath = path.join(__dirname, 'temp-image');
+    const writeStream = fs.createWriteStream(tempFilePath);
+    
+    miniget(imageUrl)
+      .pipe(writeStream)
+      .on('finish', () => {
+        if (fs.existsSync(tempFilePath)) {
+          res.sendFile(tempFilePath, () => {
+            fs.unlinkSync(tempFilePath);
+          });
+        } else {
+          res.redirect(imageUrl);
+        }
+      })
+      .on('error', () => {
+        res.redirect(imageUrl);
+      });
   } catch (error) {
     console.error(error.message);
     res.status(500).send('画像の取得に失敗しました');
