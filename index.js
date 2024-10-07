@@ -764,13 +764,19 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
 
     const baseUrl = new URL(replacedUrl);
     
-    html = html
-      .replace(/<a href="([^"]+)"/g, (match, url) => {
-        const absoluteUrl = new URL(url, baseUrl).href; 
-        const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.'); 
-        const encoded = encodeURIComponent(replacedAbsoluteUrl);
-        return `href="/getwakame/${encoded}"`;
-      })
+    html = html.replace(/<a\s+[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/g, (match, url, innerText) => {
+      const absoluteUrl = new URL(url, baseUrl).href;
+      const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.');
+      const encoded = encodeURIComponent(replacedAbsoluteUrl);
+      return `<a href="/getpage/${encoded}">${innerText}</a>`;
+    });
+
+    html = html.replace(/<img\s+[^>]*src="([^"]+)"[^>]*\/?>/g, (match, url) => {
+      const absoluteUrl = new URL(url, baseUrl).href;
+      const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.');
+      const encoded = encodeURIComponent(replacedAbsoluteUrl);
+      return `<img src="/getimage/${encoded}" />`;
+    });
     res.send(html);
   } catch (error) {
     console.error(error.message);
