@@ -779,7 +779,6 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
       const encoded = encodeURIComponent(replacedAbsoluteUrl);
       return `<a href="/getwakame/${encoded}">${innerText}</a>`;
     });
-    
     html = html.replace(/<image\s+[^>]*src="([^"]+)"[^>]*>/g, (match, url, innerText) => {
       let absoluteUrl;
       if (url.startsWith('http') || url.startsWith('https')) {
@@ -856,6 +855,16 @@ app.get("/block/cc3q",(req, res) => {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   res.render('../views/tst/2.ejs', { ip: ip });
 })
+
+const { createProxyMiddleware } = require('http-proxy-middleware');
+app.use('/ppproxy', createProxyMiddleware({
+  target: '',
+  changeOrigin: true,
+  pathRewrite: (path, req) => {
+    const url = req.query.url;
+    return url ? url.replace(/^\/proxy/, '') : '/';
+  },
+}));
 
 // エラー
 app.use((req, res) => {

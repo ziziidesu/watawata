@@ -17,7 +17,8 @@
     "youtubei.js": "latest",
     "@invidjs/invid-js": "^1.0.0",
     "jsonpath": "^1.0.0",
-    "ws": "^8.7.0"
+    "ws": "^8.7.0",
+    "http-proxy-middleware": "^3.0.3"
   },
   "description": "YouTube代替サイト",
   "engines": {
