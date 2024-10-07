@@ -767,17 +767,19 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
 
     let html = response.data;
     const baseUrl = new URL(replacedUrl);
-
   
     html = html.replace(/<a\s+[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/g, (match, url, innerText) => {
       let absoluteUrl;
+
       if (url.startsWith('http') || url.startsWith('https')) {
         absoluteUrl = url;
       } else {
         absoluteUrl = new URL(url, baseUrl).href;
       }
+
       const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.');
       const encoded = encodeURIComponent(replacedAbsoluteUrl);
+
       return `<a href="/getwakame/${encoded}">${innerText}</a>`;
     });
 
