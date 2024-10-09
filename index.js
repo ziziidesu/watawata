@@ -789,7 +789,7 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
       const encodedString = Buffer.from(absoluteUrl).toString('base64');
       const replacedAbsoluteUrl = encodedString.replace(/\./g, '.wakame02.');
       const encoded = encodeURIComponent(replacedAbsoluteUrl);
-      return `<image src="/getimage/${encoded}">`;
+      return `<img src="/getimage/${encoded}">`;
     });
     
     const linkTags = html.match(/<link\s+[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g);
@@ -823,21 +823,20 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
 });
 
 //画像取得
+function decodeBase64Url(encodedUrl) {
+    return Buffer.from(encodedUrl, 'base64').toString('ascii');
+}
+
 app.get('/getimage/:encodedUrl', (req, res) => {
-  const { encodedUrl } = req.params;
-  const imageUrl = decodeURIComponent(encodedUrl).replace(/\.wakame02\./g, '.');
-  console.log(imageUrl);
-  
-  let image = miniget(`${imageUrl}`, {
-	  headers: {
-		  "user-agent": user_agent
-	}
-	});
-  image.on('error', err => {
-	  console.log(err);
-	  res.status(500).send(err.toString());
-	});
-	image.pipe(res);
+    const encodedUrl = req.params.encodedUrl;
+    const decodedUrl = decodeBase64Url(encodedUrl);
+
+    miniget(decodedUrl)
+        .on('error', (err) => {
+            console.error('Error fetching image:', err);
+            res.status(500).send('Error fetching image');
+        })
+        .pipe(res);
 });
 
 //概要欄用リダイレクト
