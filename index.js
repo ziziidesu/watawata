@@ -830,9 +830,8 @@ async function replaceLinkTagsWithStyle(html, baseUrl) {
     } else {
       absoluteUrl = new URL(href, baseUrl).href;
     }
-
-    const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.');
-    const requestPromise = axios.get(replacedAbsoluteUrl)
+    console.log('cssURL:', absoluteUrl);
+    const requestPromise = axios.get(absoluteUrl)
       .then(response => {
         if (response.status === 200) {
           console.log('取得したCSS:', response.data);
