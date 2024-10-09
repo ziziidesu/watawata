@@ -885,6 +885,34 @@ app.get('/redirect', (req, res) => {
   }
 });
 
+app.get("/tsttsttst", (req, res) => {
+  let html = '<a href="/rxr/page/336028010207565166.html" class="dropmenu-link">リセマラ</a>';
+  let baseUrl = 'https://kamigame.jp';
+
+  html = html.replace(/<a\s+([^>]*?)href="([^"]+)"([^>]*)>(.*?)<\/a>/g, (match, beforeHref, url, afterHref, innerText) => {
+    let absoluteUrl;
+
+    try {
+      if (url.startsWith('http') || url.startsWith('https')) {
+        absoluteUrl = url;
+      } else {
+        absoluteUrl = new URL(url, baseUrl).href;
+      }
+    } catch (e) {
+      console.error('Error parsing URL:', url, e);
+      return match;
+    }
+
+    const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.');
+    const encoded = encodeURIComponent(replacedAbsoluteUrl);
+    console.log(encoded);
+
+    return `<a ${beforeHref}href="/getwakame/${encoded}"${afterHref}>${innerText}</a>`;
+  });
+
+  res.send(html); // 変換されたHTMLをクライアントに送信
+});
+
 //偽エラー画面
 app.get("/block/cc3q",(req, res) => {
     let referer = req.get('Referer') || 'No referer information';
