@@ -838,23 +838,16 @@ html = html.replace(/<img\s+([\s\S]*?src="([\s\S]*?)"[\s\S]*?)>/g, (match, fullT
 function decodeBase64Url(encodedUrl) {
     return Buffer.from(encodedUrl, 'base64').toString('ascii');
 }
-
-app.get("/getimage/:encodedUrl", (req, res) => {
-    const decodedUrl = decodeURIComponent(req.params.encodedUrl);
-
-    let stream = miniget(decodedUrl, {
-        headers: {
-            "user-agent": user_agent
-        }
-    });
-
-    stream.on("error", (err) => {
-        console.log(err);
-        res.status(500).send(err.toString());
-    });
-
-    res.setHeader("Content-Type", "image/jpeg");
-    stream.pipe(res);
+app.get('/getimage/:encodedUrl', (req, res) => {
+  const encodedUrl = req.params.encodedUrl;
+  const decodedUrl = decodeBase64Url(encodedUrl);
+  const imageUrl = decodedUrl.replace(/\./g, '.wakame02.');
+    miniget(imageUrl)
+        .on('error', (err) => {
+            console.error('Error fetching image:', err);
+            res.status(500).send('Error fetching image');
+        })
+        .pipe(res);
 });
 
 //概要欄用リダイレクト
