@@ -779,7 +779,7 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
       return `<a href="/getwakame/${encoded}">${innerText}</a>`;
     });
     
-    html = html.replace(/<image\s+[^>]*src="([^"]+)"[^>]*>/g, (match, url, innerText) => {
+    html = html.replace(/<img\s+[^>]*src="([^"]+)"[^>]*>/g, (match, url, innerText) => {
       let absoluteUrl;
       if (url.startsWith('http') || url.startsWith('https')) {
         absoluteUrl = url;
