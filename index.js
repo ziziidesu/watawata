@@ -768,7 +768,7 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
     const baseUrl = new URL(replacedUrl);
     console.log(baseUrl)
 //リンク
-html = html.replace(/<a\s+([^>]*?)href="([^"]+)"([^>]*)>(.*?)<\/a>/g, (match, beforeHref, url, afterHref, innerText) => {
+  html = html.replace(/<a\s+([\s\S]*?)href="([\s\S]*?)"([\s\S]*?)>([\s\S]*?)<\/a>/g, (match, beforeHref, url, afterHref, innerText) => {
   let absoluteUrl;
 
   try {
@@ -789,7 +789,7 @@ html = html.replace(/<a\s+([^>]*?)href="([^"]+)"([^>]*)>(.*?)<\/a>/g, (match, be
 });
 
 //image
- html = html.replace(/<img\s+([^>]*src="([^"]+)"[^>]*)>/g, (match, fullTag, url) => {
+ html = html.replace(/<img\s+([\s\S]*?src="([\s\S]*?)"[\s\S]*?)>/g, (match, fullTag, url) => {
   let absoluteUrl;
   if (url.startsWith('http') || url.startsWith('https')) {
     absoluteUrl = url;
@@ -803,7 +803,20 @@ html = html.replace(/<a\s+([^>]*?)href="([^"]+)"([^>]*)>(.*?)<\/a>/g, (match, be
 
   return `<img ${fullTag.replace(url, `/getimage/${encoded}`)}>`;
 });
+ html = html.replace(/<image\s+([\s\S]*?src="([\s\S]*?)"[\s\S]*?)>/g, (match, fullTag, url) => {
+  let absoluteUrl;
+  if (url.startsWith('http') || url.startsWith('https')) {
+    absoluteUrl = url;
+  } else {
+    absoluteUrl = new URL(url, baseUrl).href;
+  }
 
+  const encodedString = Buffer.from(absoluteUrl).toString('base64');
+  const replacedAbsoluteUrl = encodedString.replace(/\./g, '.wakame02.');
+  const encoded = encodeURIComponent(replacedAbsoluteUrl);
+
+  return `<img ${fullTag.replace(url, `/getimage/${encoded}`)}>`;
+});
     
     const linkTags = html.match(/<link\s+[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g);
     
@@ -883,34 +896,6 @@ app.get('/redirect', (req, res) => {
   } else {
     res.redirect(`/${subp}`);
   }
-});
-
-app.get("/tsttsttst", (req, res) => {
-  let html = '<a href="/rxr/page/336028010207565166.html" class="dropmenu-link">リセマラ</a>';
-  let baseUrl = 'https://kamigame.jp';
-
-  html = html.replace(/<a\s+([^>]*?)href="([^"]+)"([^>]*)>(.*?)<\/a>/g, (match, beforeHref, url, afterHref, innerText) => {
-    let absoluteUrl;
-
-    try {
-      if (url.startsWith('http') || url.startsWith('https')) {
-        absoluteUrl = url;
-      } else {
-        absoluteUrl = new URL(url, baseUrl).href;
-      }
-    } catch (e) {
-      console.error('Error parsing URL:', url, e);
-      return match;
-    }
-
-    const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.');
-    const encoded = encodeURIComponent(replacedAbsoluteUrl);
-    console.log(encoded);
-
-    return `<a ${beforeHref}href="/getwakame/${encoded}"${afterHref}>${innerText}</a>`;
-  });
-
-  res.send(html); // 変換されたHTMLをクライアントに送信
 });
 
 //偽エラー画面
