@@ -789,21 +789,7 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
 });
 
 //image
- html = html.replace(/<img\s+([\s\S]*?src="([\s\S]*?)"[\s\S]*?)>/g, (match, fullTag, url) => {
-  let absoluteUrl;
-  if (url.startsWith('http') || url.startsWith('https')) {
-    absoluteUrl = url;
-  } else {
-    absoluteUrl = new URL(url, baseUrl).href;
-  }
-
-  const encodedString = Buffer.from(absoluteUrl).toString('base64');
-  const replacedAbsoluteUrl = encodedString.replace(/\./g, '.wakame02.');
-  const encoded = encodeURIComponent(replacedAbsoluteUrl);
-
-  return `<img ${fullTag.replace(url, `/getimage/${encoded}`)}>`;
-});
- html = html.replace(/<image\s+([\s\S]*?src="([\s\S]*?)"[\s\S]*?)>/g, (match, fullTag, url) => {
+html = html.replace(/<img\s+([\s\S]*?src="([\s\S]*?)"[\s\S]*?)>/g, (match, fullTag, url) => {
   let absoluteUrl;
   if (url.startsWith('http') || url.startsWith('https')) {
     absoluteUrl = url;
@@ -853,16 +839,22 @@ function decodeBase64Url(encodedUrl) {
     return Buffer.from(encodedUrl, 'base64').toString('ascii');
 }
 
-app.get('/getimage/:encodedUrl', (req, res) => {
-    const encodedUrl = req.params.encodedUrl;
-    const decodedUrl = decodeBase64Url(encodedUrl);
+app.get("/getimage/:encodedUrl", (req, res) => {
+    const decodedUrl = decodeURIComponent(req.params.encodedUrl);
 
-    miniget(decodedUrl)
-        .on('error', (err) => {
-            console.error('Error fetching image:', err);
-            res.status(500).send('Error fetching image');
-        })
-        .pipe(res);
+    let stream = miniget(decodedUrl, {
+        headers: {
+            "user-agent": user_agent
+        }
+    });
+
+    stream.on("error", (err) => {
+        console.log(err);
+        res.status(500).send(err.toString());
+    });
+
+    res.setHeader("Content-Type", "image/jpeg");
+    stream.pipe(res);
 });
 
 //概要欄用リダイレクト
