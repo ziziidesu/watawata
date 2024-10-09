@@ -751,7 +751,6 @@ app.get('/getpage/:encodedUrl', async (req, res) => {
 //強化版わかめproxy
 app.get('/getwakame/:encodedUrl', async (req, res) => {
   const { encodedUrl } = req.params;
-
   if (!encodedUrl) {
     return res.status(400).send('URLが入力されていません');
   }
@@ -790,6 +789,8 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
       const encoded = encodeURIComponent(replacedAbsoluteUrl);
       return `<image src="/getimage/${encoded}">`;
     });
+    
+    html = await replaceLinkTagsWithStyle(html, baseUrl);
 
     res.send(html);
   } catch (error) {
@@ -815,6 +816,47 @@ app.get('/getimage/:encodedUrl', (req, res) => {
 	});
 	image.pipe(res);
 });
+
+//css取得
+async function replaceLinkTagsWithStyle(html, baseUrl) {
+  const linkTagRegex = /<link\s+[^>]*rel="([^"]+)"[^>]*href="([^"]+)"[^>]*>/g;
+
+  const linkTagPromises = [];
+
+  html = html.replace(linkTagRegex, (match, rel, href) => {
+    let absoluteUrl;
+    if (href.startsWith('http') || href.startsWith('https')) {
+      absoluteUrl = href;
+    } else {
+      absoluteUrl = new URL(href, baseUrl).href;
+    }
+
+    const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.');
+    const requestPromise = axios.get(replacedAbsoluteUrl)
+      .then(response => {
+        if (response.status === 200) {
+          console.log('取得したCSS:', response.data);
+          return `<style>${response.data}</style>`;
+        } else {
+          return match;
+        }
+      })
+      .catch(() => {
+        return match;
+      });
+
+    linkTagPromises.push(requestPromise);
+    return `__LINK_PLACEHOLDER_${linkTagPromises.length - 1}__`;
+  });
+
+  const resolvedLinkTags = await Promise.all(linkTagPromises);
+
+  resolvedLinkTags.forEach((styleTag, index) => {
+    html = html.replace(`__LINK_PLACEHOLDER_${index}__`, styleTag);
+  });
+
+  return html;
+}
 
 //概要欄用リダイレクト
 app.get('/watch', (req, res) => {
