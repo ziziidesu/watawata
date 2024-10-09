@@ -804,8 +804,8 @@ html = html.replace(/<img\s+([\s\S]*?src="([\s\S]*?)"[\s\S]*?)>/g, (match, fullT
   return `<img ${fullTag.replace(url, `/getimage/${encoded}`)}>`;
 });
     
-    const linkTags = html.match(/<link\s+[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g);
-    
+    const linkTags = html.match(/<link\s+[^>]*href="([^"]+)"[^>]*>/g);
+
     if (linkTags) {
       for (const match of linkTags) {
         const href = match.match(/href="([^"]+)"/)[1];
@@ -841,7 +841,7 @@ function decodeBase64Url(encodedUrl) {
 app.get('/getimage/:encodedUrl', (req, res) => {
   const encodedUrl = req.params.encodedUrl;
   const decodedUrl = decodeBase64Url(encodedUrl);
-  const imageUrl = decodedUrl.replace(/\./g, '.wakame02.');
+  const imageUrl = decodedUrl.replace(/\.wakame02\./g, '.');
     miniget(imageUrl)
         .on('error', (err) => {
             console.error('Error fetching image:', err);
