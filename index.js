@@ -766,7 +766,7 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
 
     let html = response.data;
     const baseUrl = new URL(replacedUrl);
-  
+    
     html = html.replace(/<a\s+[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/g, (match, url, innerText) => {
       let absoluteUrl;
       if (url.startsWith('http') || url.startsWith('https')) {
@@ -779,18 +779,21 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
       return `<a href="/getwakame/${encoded}">${innerText}</a>`;
     });
     
-    html = html.replace(/<img\s+[^>]*src="([^"]+)"[^>]*>/g, (match, url, innerText) => {
-      let absoluteUrl;
-      if (url.startsWith('http') || url.startsWith('https')) {
-        absoluteUrl = url;
-      } else {
-        absoluteUrl = new URL(url, baseUrl).href;
-      }
-      const encodedString = Buffer.from(absoluteUrl).toString('base64');
-      const replacedAbsoluteUrl = encodedString.replace(/\./g, '.wakame02.');
-      const encoded = encodeURIComponent(replacedAbsoluteUrl);
-      return `<img src="/getimage/${encoded}">`;
-    });
+ html = html.replace(/<img\s+([^>]*src="([^"]+)"[^>]*)>/g, (match, fullTag, url) => {
+  let absoluteUrl;
+  if (url.startsWith('http') || url.startsWith('https')) {
+    absoluteUrl = url;
+  } else {
+    absoluteUrl = new URL(url, baseUrl).href;
+  }
+
+  const encodedString = Buffer.from(absoluteUrl).toString('base64');
+  const replacedAbsoluteUrl = encodedString.replace(/\./g, '.wakame02.');
+  const encoded = encodeURIComponent(replacedAbsoluteUrl);
+
+  return `<img ${fullTag.replace(url, `/getimage/${encoded}`)}>`;
+});
+
     
     const linkTags = html.match(/<link\s+[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g);
     
