@@ -15,7 +15,6 @@
     "cors": "^2.8.5",
     "cookie-parser": "^1.4.6",
     "youtubei.js": "latest",
-    "@invidjs/invid-js": "^1.0.0",
     "jsonpath": "^1.0.0",
     "ws": "^8.7.0"
   },

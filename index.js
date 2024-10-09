@@ -11,7 +11,6 @@ const fs = require('fs');
 const { https } = require('follow-redirects');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const InvidJS = require('@invidjs/invid-js');
 const jp = require('jsonpath');
 const path = require('path');
 const bodyParser = require('body-parser');
