@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "CC0-v1.0",
   "dependencies": {
-    "ejs": "^3.1.6",
+    "ejs": "^3.1.10",
     "express": "^4.17.1",
     "miniget": "latest",
     "m3u8stream": "latest",
