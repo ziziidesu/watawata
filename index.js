@@ -817,23 +817,25 @@ app.get('/getimage/:encodedUrl', (req, res) => {
 	image.pipe(res);
 });
 
-//css取得
-async function replaceLinkTagsWithStyle(html, baseUrl) {
-  const linkTagRegex = /<link\s+[^>]*rel="([^"]+)"[^>]*href="([^"]+)"[^>]*>/g;
+//css、js取得
+async function replaceLinkAndScriptTags(html, baseUrl) {
+  const linkTagRegex = /<link\s+[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g;
+  const scriptTagRegex = /<script\s+[^>]*src="([^"]+)"[^>]*><\/script>/g;
 
-  const linkTagPromises = [];
+  const promises = [];
 
-  html = html.replace(linkTagRegex, (match, rel, href) => {
+  html = html.replace(linkTagRegex, (match, href) => {
     let absoluteUrl;
     if (href.startsWith('http') || href.startsWith('https')) {
       absoluteUrl = href;
     } else {
       absoluteUrl = new URL(href, baseUrl).href;
     }
-    console.log('cssURL:', absoluteUrl);
+
     const requestPromise = axios.get(absoluteUrl)
       .then(response => {
         if (response.status === 200) {
+
           console.log('取得したCSS:', response.data);
           return `<style>${response.data}</style>`;
         } else {
@@ -844,18 +846,44 @@ async function replaceLinkTagsWithStyle(html, baseUrl) {
         return match;
       });
 
-    linkTagPromises.push(requestPromise);
-    return `__LINK_PLACEHOLDER_${linkTagPromises.length - 1}__`;
+    promises.push(requestPromise);
+    return `__LINK_PLACEHOLDER_${promises.length - 1}__`;
   });
 
-  const resolvedLinkTags = await Promise.all(linkTagPromises);
+  html = html.replace(scriptTagRegex, (match, src) => {
+    let absoluteUrl;
+    if (src.startsWith('http') || src.startsWith('https')) {
+      absoluteUrl = src;
+    } else {
+      absoluteUrl = new URL(src, baseUrl).href;
+    }
+    const requestPromise = axios.get(absoluteUrl)
+      .then(response => {
+        if (response.status === 200) {
+          console.log('取得したJS:', response.data);
+          return `<script>${response.data}</script>`;
+        } else {
+          return match;
+        }
+      })
+      .catch(() => {
+        return match;
+      });
 
-  resolvedLinkTags.forEach((styleTag, index) => {
-    html = html.replace(`__LINK_PLACEHOLDER_${index}__`, styleTag);
+    promises.push(requestPromise);
+    return `__SCRIPT_PLACEHOLDER_${promises.length - 1}__`;
+  });
+
+  const resolvedTags = await Promise.all(promises);
+
+  resolvedTags.forEach((tag, index) => {
+    html = html.replace(`__LINK_PLACEHOLDER_${index}__`, tag);
+    html = html.replace(`__SCRIPT_PLACEHOLDER_${index}__`, tag);
   });
 
   return html;
 }
+
 
 //概要欄用リダイレクト
 app.get('/watch', (req, res) => {
