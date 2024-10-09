@@ -778,6 +778,7 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
       const encoded = encodeURIComponent(replacedAbsoluteUrl);
       return `<a href="/getwakame/${encoded}">${innerText}</a>`;
     });
+    
     html = html.replace(/<image\s+[^>]*src="([^"]+)"[^>]*>/g, (match, url, innerText) => {
       let absoluteUrl;
       if (url.startsWith('http') || url.startsWith('https')) {
@@ -785,13 +786,13 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
       } else {
         absoluteUrl = new URL(url, baseUrl).href;
       }
-      const replacedAbsoluteUrl = absoluteUrl.replace(/\./g, '.wakame02.');
+      const encodedString = Buffer.from(absoluteUrl).toString('base64');
+      const replacedAbsoluteUrl = encodedString.replace(/\./g, '.wakame02.');
       const encoded = encodeURIComponent(replacedAbsoluteUrl);
       return `<image src="/getimage/${encoded}">`;
     });
     
     const linkTags = html.match(/<link\s+[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g);
-    const scriptTags = html.match(/<script\s+[^>]*src="([^"]+)"[^>]*><\/script>/g);
     
     if (linkTags) {
       for (const match of linkTags) {
@@ -806,7 +807,6 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
         try {
           const cssResponse = await axios.get(absoluteUrl);
           if (cssResponse.status === 200) {
-            console.log('取得したCSS:', cssResponse.data);
             html = html.replace(match, `<style>${cssResponse.data}</style>`);
           }
         } catch (error) {
@@ -826,7 +826,6 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
 app.get('/getimage/:encodedUrl', (req, res) => {
   const { encodedUrl } = req.params;
   const imageUrl = decodeURIComponent(encodedUrl).replace(/\.wakame02\./g, '.');
-  const encodedString = Buffer.from(imageUrl).toString('base64');
   console.log(imageUrl);
   
   let image = miniget(`${imageUrl}`, {
