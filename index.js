@@ -790,7 +790,30 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
       return `<image src="/getimage/${encoded}">`;
     });
     
-    html = await replaceLinkTagsWithStyle(html, baseUrl);
+    const linkTags = html.match(/<link\s+[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g);
+    const scriptTags = html.match(/<script\s+[^>]*src="([^"]+)"[^>]*><\/script>/g);
+    
+    if (linkTags) {
+      for (const match of linkTags) {
+        const href = match.match(/href="([^"]+)"/)[1];
+        let absoluteUrl;
+        if (href.startsWith('http') || href.startsWith('https')) {
+          absoluteUrl = href;
+        } else {
+          absoluteUrl = new URL(href, baseUrl).href;
+        }
+
+        try {
+          const cssResponse = await axios.get(absoluteUrl);
+          if (cssResponse.status === 200) {
+            console.log('取得したCSS:', cssResponse.data);
+            html = html.replace(match, `<style>${cssResponse.data}</style>`);
+          }
+        } catch (error) {
+          console.error('CSSの取得に失敗しました:', error.message);
+        }
+      }
+    }
 
     res.send(html);
   } catch (error) {
@@ -803,6 +826,7 @@ app.get('/getwakame/:encodedUrl', async (req, res) => {
 app.get('/getimage/:encodedUrl', (req, res) => {
   const { encodedUrl } = req.params;
   const imageUrl = decodeURIComponent(encodedUrl).replace(/\.wakame02\./g, '.');
+  const encodedString = Buffer.from(imageUrl).toString('base64');
   console.log(imageUrl);
   
   let image = miniget(`${imageUrl}`, {
@@ -816,74 +840,6 @@ app.get('/getimage/:encodedUrl', (req, res) => {
 	});
 	image.pipe(res);
 });
-
-//css、js取得
-async function replaceLinkAndScriptTags(html, baseUrl) {
-  const linkTagRegex = /<link\s+[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g;
-  const scriptTagRegex = /<script\s+[^>]*src="([^"]+)"[^>]*><\/script>/g;
-
-  const promises = [];
-
-  html = html.replace(linkTagRegex, (match, href) => {
-    let absoluteUrl;
-    if (href.startsWith('http') || href.startsWith('https')) {
-      absoluteUrl = href;
-    } else {
-      absoluteUrl = new URL(href, baseUrl).href;
-    }
-
-    const requestPromise = axios.get(absoluteUrl)
-      .then(response => {
-        if (response.status === 200) {
-
-          console.log('取得したCSS:', response.data);
-          return `<style>${response.data}</style>`;
-        } else {
-          return match;
-        }
-      })
-      .catch(() => {
-        return match;
-      });
-
-    promises.push(requestPromise);
-    return `__LINK_PLACEHOLDER_${promises.length - 1}__`;
-  });
-
-  html = html.replace(scriptTagRegex, (match, src) => {
-    let absoluteUrl;
-    if (src.startsWith('http') || src.startsWith('https')) {
-      absoluteUrl = src;
-    } else {
-      absoluteUrl = new URL(src, baseUrl).href;
-    }
-    const requestPromise = axios.get(absoluteUrl)
-      .then(response => {
-        if (response.status === 200) {
-          console.log('取得したJS:', response.data);
-          return `<script>${response.data}</script>`;
-        } else {
-          return match;
-        }
-      })
-      .catch(() => {
-        return match;
-      });
-
-    promises.push(requestPromise);
-    return `__SCRIPT_PLACEHOLDER_${promises.length - 1}__`;
-  });
-
-  const resolvedTags = await Promise.all(promises);
-
-  resolvedTags.forEach((tag, index) => {
-    html = html.replace(`__LINK_PLACEHOLDER_${index}__`, tag);
-    html = html.replace(`__SCRIPT_PLACEHOLDER_${index}__`, tag);
-  });
-
-  return html;
-}
-
 
 //概要欄用リダイレクト
 app.get('/watch', (req, res) => {
