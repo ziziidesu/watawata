@@ -810,10 +810,10 @@ html = html.replace(/<img\s+([\s\S]*?src="([\s\S]*?)"[\s\S]*?)>/g, (match, fullT
       for (const match of linkTags) {
         const href = match.match(/href="([^"]+)"/)[1];
         let absoluteUrl;
-        if (href.startsWith('http') || href.startsWith('https')) {
+        if (href.startsWith('http') || href.startsWith('https') || href.startsWith('//')) {
           absoluteUrl = href;
         } else {
-          absoluteUrl = new URL(href, baseUrl).href;
+            absoluteUrl = new URL(href, baseUrl).href;
         }
 
         try {
