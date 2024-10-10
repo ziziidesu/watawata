@@ -150,7 +150,8 @@ const invidiousInstances = [
   "https://invidious.sethforprivacy.com",
   "https://inv.bp.projectsegfau.lt",
   "https://invidious.rhyshl.live",
-  "https://invidious.private.coffee","https://invidious.privacyredirect.com"
+  "https://invidious.private.coffee",
+  "https://invidious.privacyredirect.com"
 ];
 
 //invidiousから引っ張ってくる
