@@ -747,6 +747,7 @@ app.get('/getpage/:encodedUrl', async (req, res) => {
     res.status(500).send('URLの取得に失敗しました');
   }
 });
+
 //強化版わかめproxy
 app.get('/getwakame/:encodedUrl', async (req, res) => {
   const { encodedUrl } = req.params;
