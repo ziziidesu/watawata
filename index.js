@@ -889,25 +889,6 @@ app.get("/block/cc3q",(req, res) => {
   res.render('../views/tst/2.ejs', { ip: ip });
 })
 
-app.get('/wer/:id', async (req, res) => {
-    const videoId = req.params.id;
-
-    try {
-        const videoInfo = await youtubedl(`https://www.youtube.com/watch?v=${videoId}`, {
-            dumpSingleJson: true,
-            noWarnings: true,
-            noCheckCertificates: true,
-            noPlaylist: true,
-        });
-        console.log(videoInfo);
-        const streamUrl = videoInfo.url;
-
-        res.render('index.html', { streamUrl });
-    } catch (err) {
-        console.error('Error fetching video:', err);
-        res.status(500).send('Error fetching video');
-    }
-});
 
 // エラー
 app.use((req, res) => {
