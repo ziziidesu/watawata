@@ -256,7 +256,6 @@ async function getytk(videoId) {
       console.error(`エラー: ${error.message} - ${instance}`);
     }
   }
-
   throw new Error("見つかりませんでした");
 }
 
@@ -387,12 +386,7 @@ app.get('/ll/:id', async (req, res) => {
     const templateData = {
       audioUrl: streamUrl,
       videoId: videoId,
-      channelId: videoInfo.authorId,
-      channelName: videoInfo.author,
-      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
       videoTitle: videoInfo.title,
-      videoDes: videoInfo.descriptionHtml,
-      videoViews: videoInfo.viewCount
     };
 
     res.render('listen', templateData);
@@ -804,7 +798,7 @@ html = html.replace(/<img\s+([\s\S]*?src="([\s\S]*?)"[\s\S]*?)>/g, (match, fullT
 
   return `<img ${fullTag.replace(url, `/getimage/${encoded}`)}>`;
 });
-    
+//css
     const linkTags = html.match(/<link\s+[^>]*href="([^"]+)"[^>]*>/g);
 
     if (linkTags) {
