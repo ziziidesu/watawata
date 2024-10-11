@@ -44,6 +44,14 @@
 </div>
 
 <script>
+document.querySelectorAll('.play-btn').forEach(element => {
+        element.addEventListener('click', function(e) {
+            e.preventDefault();
+            const trackId = e.target.getAttribute('data-track-id');
+            playTrack(trackId);
+        });
+    });
+  
 function getFavoritesFromCookies() {
     const cookieName = 'wakamemusicfavorites';
     const cookieValue = document.cookie.split('; ').find(row => row.startsWith(cookieName));
@@ -104,15 +112,13 @@ document.getElementById('save-btn').addEventListener('click', function() {
 });
 
 document.getElementById('load-btn').addEventListener('click', function() {
-    const input = prompt("保存したお気に入りデータを入力してください (JSON形式)");
+    const input = prompt("セーブコードを入力してください");
     if (input) {
         try {
             const parsedInput = JSON.parse(input); 
-            console.log('受け取ったデータ:', parsedInput);
             saveInputToFavorites(parsedInput);
         } catch (e) {
-            console.error('JSONパースエラー:', e);
-            alert('入力形式が正しくありません。JSON形式で入力してください。');
+            alert('入力形式が正しくありません。セーブコードをコピペしやがれ下さい。');
         }
     }
 });
@@ -133,9 +139,12 @@ function saveInputToFavorites(inputData) {
     });
 
     setFavoritesToCookies(favorites);
-    alert('データが保存されました');
 }
-
+  
+function setFavoritesToCookies(favorites) {
+    document.cookie = `wakamemusicfavorites=${encodeURIComponent(JSON.stringify(favorites))}; path=/; max-age=31536000`;
+    alert('データを読み込みました！');
+}
 
 document.querySelectorAll('.favorite-btn').forEach(btn => {
     const trackId = btn.getAttribute('data-id');
