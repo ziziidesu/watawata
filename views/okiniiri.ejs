@@ -56,13 +56,20 @@
         player.src = `https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${trackId}&color=%23ff5500&auto_play=true`;
 
         playerBar.style.display = 'flex';
-    }
-  
+
+const menuBtn = document.getElementById('action-btn');
+const sideMenu = document.getElementById('side-menu');
+const overlay = document.getElementById('overlay');
+
+function toggleMenu() {
+    sideMenu.classList.toggle('open');
+    overlay.classList.toggle('active');
+}
+
 menuBtn.addEventListener('click', toggleMenu);
 
 overlay.addEventListener('click', toggleMenu);
   
-
 function toggleFavorite(artwork_url, title, id) {
     let favorites = getFavoritesFromCookies();
 
@@ -94,9 +101,22 @@ function getFavoritesFromCookies() {
     }
     return [];
 }
-  
+
+function updateFavoriteButton(trackId) {
+    const favorites = getFavoritesFromCookies();
+    const favoriteBtn = document.querySelector(`button[data-id='${trackId}']`);
+
+    if (favorites.some(track => track.id === trackId)) {
+        favoriteBtn.classList.add('active');
+    } else {
+        favoriteBtn.classList.remove('active');
+    }
+}
+document.querySelectorAll('.favorite-btn').forEach(btn => {
+    const trackId = btn.getAttribute('data-id');
+    updateFavoriteButton(trackId);
+});
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("DOMContentLoaded: イベントリスナーが追加されました");
 
     document.getElementById('save-btn').addEventListener('click', function() {
         showFavorites();
