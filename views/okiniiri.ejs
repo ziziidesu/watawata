@@ -1,60 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>わかめ🎶 - <%= query %></title>
+    <title>お気に入り</title>
     <link rel="stylesheet" href="/css/wakamusic.css">
-    <link rel="stylesheet" href="/css/slide.css">
 </head>
 <body>
-
-<header>
-    <div class="search-container">
-        <form action="/wakamc" method="get">
-            <input type="text" name="q" placeholder="曲を探す" required value="<%= query %>">
-            <button type="submit">🔍</button>
-        </form>
-    </div>
-    <p>
-      &copy; わかめ02 / 2024
-  </p>
-    <button id="action-btn">
-        <img src="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/IMG_1281.png?v=1718682861752" alt="User" width="50px" />
-    </div>
-</header>
-
-<nav id="side-menu" class="side-menu">
-    <ul>
-        <li><a href="/famous">曲を聴く(旧サイト)</a></li>
-        <li><a href="/blog/up" target="_blank">アップデートを確認</a></li>
-    </ul>
-</nav>
-<div id="overlay" class="overlay"></div>
-
-<main>
-    <% if (tracks && tracks.length > 0) { %>
-        <ul>
+    <h1>お気に入りの曲</h1>
+    
+    <% if (tracks.length > 0) { %>
+        <ul class="track-list">
             <% tracks.forEach(track => { %>
-                <li>
-                    <img src="<%= track.artwork_url %>" alt="Artwork">
+                <li class="track-item">
+                    <img src="<%= track.artwork_url %>" alt="Artwork" class="track-artwork">
                     <div class="track-info">
-                        <p class="track-title"><%= track.title %></p>
-                        <p class="track-artist">by <%= track.username %></p>
+                        <h3><%= track.title %></h3>
+                        <button class="play-btn" onclick="playTrack('<%= track.stream_url %>')">Play</button>
+                        <button class="favorite-btn" onclick="addToFavorites('<%= track.artwork_url %>', '<%= track.title %>', '<%= track.id %>')">❤️</button>
                     </div>
-                    <button class="play-btn" data-track-id="<%= track.id %>">Play</button>
-                    <button class="favorite-btn" onclick="addToFavorites('<%= track.artwork_url %>', '<%= track.title %>', '<%= track.id %>')">❤️</button>
                 </li>
-            <% }) %>
+            <% }); %>
         </ul>
     <% } else { %>
-        <p>上のやつで検索してみよう。</p>
+        <p>お気に入りに登録された曲はありません。</p>
     <% } %>
-</main>
-
-<div class="player-bar" id="player-bar">
-    <iframe id="sc-player" scrolling="no" frameborder="no"></iframe>
-</div>
 
 <script>
     document.querySelectorAll('.play-btn').forEach(element => {
@@ -114,6 +84,5 @@ function getCookie(name) {
 }
 
 </script>
-
 </body>
 </html>

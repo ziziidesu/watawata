@@ -876,6 +876,17 @@ app.get('/wakamc', async (req, res) => {
     }
 });
 
+app.get('/okiniiri', (req, res) => {
+    const favoritesCookie = req.cookies.favorites;
+    let tracks = [];
+
+    if (favoritesCookie) {
+        tracks = JSON.parse(favoritesCookie);
+    }
+
+    res.render('okiniiri', { tracks });
+});
+
 //概要欄用リダイレクト
 app.get('/watch', (req, res) => {
   const videoId = req.query.v;
