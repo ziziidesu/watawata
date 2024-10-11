@@ -866,7 +866,12 @@ app.get('/wakamc', async (req, res) => {
             id: track.id,
             title: track.title,
             username: track.user.username,
-            artwork_url: track.artwork_url ? track.artwork_url.replace('-large', '-t500x500') : 'https://via.placeholder.com/500'
+            artwork_url: track.artwork_url ? track.artwork_url.replace('-large', '-t500x500') : '       <section class="log-entry">
+            <h2>2024年10月8日</h2>
+            <ul>
+                <li>サーバー1の動画のみ、wakeLockを有効化しました。端末が自動的にスリープすることを防ぎます。</li>
+            </ul>
+       </section>'
         }));
 
         res.render('wakamusic', { tracks: tracks , query: query });
