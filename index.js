@@ -846,8 +846,10 @@ app.get('/getimage/:encodedUrl', (req, res) => {
 });
 
 //わかめMusic
+const scdl = require('soundcloud-downloader').default;
+
 app.get('/wakams', (req, res) => {
-    res.render('wakamusic', { tracks: [] });
+    res.render('wakamusic', { tracks: [] , query: [] });
 });
 
 app.get('/wakamc', async (req, res) => {
@@ -867,10 +869,10 @@ app.get('/wakamc', async (req, res) => {
             artwork_url: track.artwork_url ? track.artwork_url.replace('-large', '-t500x500') : 'https://via.placeholder.com/500'
         }));
 
-        res.render('wakamusic', { tracks: tracks });
+        res.render('wakamusic', { tracks: tracks , query: query });
     } catch (error) {
         console.error('Error occurred while searching:', error);
-        res.status(500).send('An error occurred while searching for tracks');
+        res.status(500).send('えらー。あらら');
     }
 });
 

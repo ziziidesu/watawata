@@ -4,19 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SoundCloud Player</title>
-    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/css/wakamusic.css">
 </head>
 <body>
 
 <header>
     <div class="search-container">
-        <form action="/search" method="get">
+        <form action="/wakamc" method="get">
             <input type="text" name="q" placeholder="Search for a song..." required value="<%= query %>">
             <button type="submit">Search</button>
         </form>
     </div>
     <div class="action-btn">
-        <!-- ボタンの動作は後で実装されるため、ここはスタイルのみ -->
         <img src="https://placehold.co/40x40" alt="User" />
     </div>
 </header>
