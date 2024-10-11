@@ -7,22 +7,28 @@
     <link rel="stylesheet" href="/css/wakamusic.css">
 </head>
 <body>
-    <h1>お気に入りの曲</h1>
-    
-  <button id="save-btn">セーブ</button>
-  <button id="load-btn">ロード</button>
-
+<header>
+    <div class="search-container">
+        <h1>お気に入りの曲</h1>
+    </div>
+    <p>
+      &copy; わかめ02 / 2024
+  </p>
+    <button id="save-btn" class="save-load-btn">セーブ</button>
+    <button id="load-btn" class="save-load-btn">ロード</button>
+</header>
 
     <% if (tracks.length > 0) { %>
  <ul class="track-list">
   <% tracks.forEach(track => { %>
-    <li class="track-item">
+    <li>
       <img src="<%= track.artwork_url %>" alt="Artwork" class="track-artwork">
       <div class="track-info">
-        <h3><%= track.title %></h3>
+        <p class="track-title"><%= track.title %></p>
+        <p class="track-artist">お気に入り</p>
+      </div>
         <button class="favorite-btn" data-id="<%= track.id %>" onclick="toggleFavorite('<%= track.artwork_url %>', '<%= track.title %>', '<%= track.id %>')">❤️</button>
         <button class="play-btn" data-track-id="<%= track.id %>">Play</button>
-      </div>
     </li>
   <% }); %>
 </ul>

@@ -224,18 +224,3 @@ li .play-btn:hover {
     margin-top: 20px;
     text-align: center;
 }
-
-.save-btn, .load-btn {
-    background-color: #ff6f61;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.save-btn:hover, .load-btn:hover {
-    background-color: #ff1744;
-}
