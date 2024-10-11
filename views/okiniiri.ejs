@@ -58,6 +58,11 @@
         playerBar.style.display = 'flex';
     }
   
+menuBtn.addEventListener('click', toggleMenu);
+
+overlay.addEventListener('click', toggleMenu);
+  
+
 function toggleFavorite(artwork_url, title, id) {
     let favorites = getFavoritesFromCookies();
 
