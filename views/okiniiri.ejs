@@ -51,30 +51,36 @@
         playerBar.style.display = 'flex';
     }
   
-function addToFavorites(artworkUrl, title, trackId) {
-    const favoritesCookie = getCookie('wakamemusicfavorites');
-    let favorites = favoritesCookie ? JSON.parse(wakamemusicfavorites) : [];
+function toggleFavorite(artwork_url, title, id) {
+    let favorites = getFavoritesFromCookies();
 
-    const favoriteTrack = {
-        artwork_url: artworkUrl,
-        title: title,
-        id: trackId
-    };
+    const favoriteIndex = favorites.findIndex(track => track.id === id);
 
-    const isAlreadyFavorite = favorites.some(track => track.id === trackId);
-    if (!isAlreadyFavorite) {
-        favorites.push(favoriteTrack);
+    if (favoriteIndex === -1) {
+        favorites.push({ artwork_url, title, id });
+        alert('お気に入りに追加しました！');
+    } else {
+        favorites.splice(favoriteIndex, 1);
+        alert('お気に入りを解除しました！');
     }
 
-    document.cookie = `wakamemusicfavorites=${JSON.stringify(favorites)};path=/`;
+    document.cookie = `wakamemusicfavorites=${encodeURIComponent(JSON.stringify(favorites))}; path=/; max-age=31536000`;
 
-    alert("お気に入りに追加しました！");
+    updateFavoriteButton(id);
 }
 
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
+function getFavoritesFromCookies() {
+    const favoritesCookie = document.cookie.split('; ').find(row => row.startsWith('wakamemusicfavorites='));
+    if (favoritesCookie) {
+        const cookieValue = favoritesCookie.split('=')[1];
+        try {
+            return JSON.parse(decodeURIComponent(cookieValue));
+        } catch (error) {
+            console.error('Error parsing favorites cookie:', error);
+            return [];
+        }
+    }
+    return [];
 }
   
 document.addEventListener("DOMContentLoaded", function() {
@@ -90,26 +96,24 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function showFavorites() {
-    const favorites = getFavoritesFromCookies();
-    if (favorites.length > 0) {
-        alert(`お気に入り: \n${JSON.stringify(favorites, null, 2)}`);
+    let savefavorites = getFavoritesFromCookies();
+    if (savefavorites.length > 0) {
+        alert(`お気に入り: \n${JSON.stringify(savefavorites, null, 2)}`);
     } else {
         alert("お気に入りは空です。");
     }
 }
 
 function loadFavorites() {
-    const input = prompt("cookieの情報を入力してください（JSON形式）:");
-    console.log("ロードされたデータ: ", input);
+    let input = prompt("セーブデータを入力して下さい:");
     try {
         const parsedFavorites = JSON.parse(input);
-        console.log("パース成功", parsedFavorites);
 
         if (Array.isArray(parsedFavorites) && parsedFavorites.every(item => item.artwork_url && item.title && item.id)) {
             document.cookie = `wakamemusicfavorites=${JSON.stringify(parsedFavorites)}; path=/`;
             alert("cookieに保存されました。");
         } else {
-            alert("無効なフォーマットです。正しいJSON形式を入力してください。");
+            alert("無効なフォーマットです。正しいデータを入力してください。");
         }
     } catch (e) {
         alert("JSONのパースに失敗しました。正しい形式で入力してください。");
