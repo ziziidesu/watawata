@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Helvetica Neue', sans-serif;
-    background-color: #121212; /* ダークモードの背景 */
+    background-color: #121212;
     color: #e0e0e0;
     display: flex;
     flex-direction: column;
@@ -42,13 +42,13 @@ header input[type="text"] {
 }
 
 header input[type="text"]:focus {
-    border-color: #64b5f6; /* フォーカス時の色は柔らかい青 */
+    border-color: #64b5f6;
     outline: none;
 }
 
 header button {
     padding: 10px 20px;
-    background-color: #64b5f6; /* 優しい青色 */
+    background-color: #64b5f6;
     border: none;
     border-radius: 30px;
     color: #121212;
@@ -91,7 +91,7 @@ li {
     align-items: center;
     padding: 15px;
     margin-bottom: 15px;
-    background-color: #1e1e1e;
+    background-color: #696969;
     border-radius: 15px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -131,10 +131,10 @@ li .track-info .track-artist {
 
 li .play-btn {
     padding: 10px 20px;
-    background-color: #ff7043; /* 優しいオレンジ */
+    background-color: #e6e6fa;
     border: none;
     border-radius: 30px;
-    color: #fff;
+    color: #000;
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
@@ -160,7 +160,7 @@ li .play-btn:hover {
 
 .player-bar iframe {
     width: 100%;
-    height: 80px;
+    height: 110px;
     border: none;
 }
 

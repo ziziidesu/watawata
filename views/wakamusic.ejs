@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SoundCloud Player</title>
     <link rel="stylesheet" href="/css/wakamusic.css">
+    <link rel="stylesheet" href="/css/slide.css">
 </head>
 <body>
 
@@ -16,7 +17,7 @@
         </form>
     </div>
     <div class="action-btn">
-        <img src="https://placehold.co/40x40" alt="User" />
+        <img src="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/IMG_1281.png?v=1718682861752" alt="User" width="50px" />
     </div>
 </header>
 
@@ -60,6 +61,19 @@
 
         playerBar.style.display = 'flex';
     }
+  
+const menuBtn = document.getElementById('menu-btn');
+const sideMenu = document.getElementById('side-menu');
+const overlay = document.getElementById('overlay');
+
+function toggleMenu() {
+    sideMenu.classList.toggle('open');
+    overlay.classList.toggle('active');
+}
+
+menuBtn.addEventListener('click', toggleMenu);
+
+overlay.addEventListener('click', toggleMenu);
 </script>
 
 </body>
