@@ -10,18 +10,17 @@
     <h1>お気に入りの曲</h1>
     
     <% if (tracks.length > 0) { %>
-        <ul class="track-list">
-            <% tracks.forEach(track => { %>
-                <li class="track-item">
-                    <img src="<%= track.artwork_url %>" alt="Artwork" class="track-artwork">
-                    <div class="track-info">
-                        <h3><%= track.title %></h3>
-                        <button class="play-btn" onclick="playTrack('<%= track.stream_url %>')">Play</button>
-                        <button class="favorite-btn" onclick="addToFavorites('<%= track.artwork_url %>', '<%= track.title %>', '<%= track.id %>')">❤️</button>
-                    </div>
-                </li>
-            <% }); %>
-        </ul>
+ <ul class="track-list">
+  <% tracks.forEach(track => { %>
+    <li class="track-item">
+      <img src="<%= track.artwork_url %>" alt="Artwork" class="track-artwork">
+      <div class="track-info">
+        <h3><%= track.title %></h3>
+        <button class="play-btn" onclick="playTrack('<%= track.stream_url %>')">Play</button>
+      </div>
+    </li>
+  <% }); %>
+</ul>
     <% } else { %>
         <p>お気に入りに登録された曲はありません。</p>
     <% } %>
@@ -58,8 +57,8 @@ menuBtn.addEventListener('click', toggleMenu);
 overlay.addEventListener('click', toggleMenu);
   
 function addToFavorites(artworkUrl, title, trackId) {
-    const favoritesCookie = getCookie('favorites');
-    let favorites = favoritesCookie ? JSON.parse(favoritesCookie) : [];
+    const favoritesCookie = getCookie('wakamemusicfavorites');
+    let favorites = favoritesCookie ? JSON.parse(wakamemusicfavorites) : [];
 
     const favoriteTrack = {
         artwork_url: artworkUrl,
@@ -72,7 +71,7 @@ function addToFavorites(artworkUrl, title, trackId) {
         favorites.push(favoriteTrack);
     }
 
-    document.cookie = `favorites=${JSON.stringify(favorites)};path=/`;
+    document.cookie = `wakamemusicfavorites=${JSON.stringify(favorites)};path=/`;
 
     alert("お気に入りに追加しました！");
 }

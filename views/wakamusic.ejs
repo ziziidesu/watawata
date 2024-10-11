@@ -87,30 +87,25 @@ menuBtn.addEventListener('click', toggleMenu);
 
 overlay.addEventListener('click', toggleMenu);
   
-function addToFavorites(artworkUrl, title, trackId) {
-    const favoritesCookie = getCookie('favorites');
-    let favorites = favoritesCookie ? JSON.parse(favoritesCookie) : [];
+function addToFavorites(artwork_url, title, id) {
+    let favorites = getFavoritesFromCookies();
+    favorites.push({ artwork_url, title, id });
 
-    const favoriteTrack = {
-        artwork_url: artworkUrl,
-        title: title,
-        id: trackId
-    };
-
-    const isAlreadyFavorite = favorites.some(track => track.id === trackId);
-    if (!isAlreadyFavorite) {
-        favorites.push(favoriteTrack);
-    }
-
-    document.cookie = `favorites=${JSON.stringify(favorites)};path=/`;
-
-    alert("お気に入りに追加しました！");
+    document.cookie = `wakamemusicfavorites=${encodeURIComponent(JSON.stringify(favorites))}; path=/; max-age=31536000`;
 }
 
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
+function getFavoritesFromCookies() {
+    const favoritesCookie = document.cookie.split('; ').find(row => row.startsWith('wakamemusicfavorites='));
+    if (favoritesCookie) {
+        const cookieValue = favoritesCookie.split('=')[1];
+        try {
+            return JSON.parse(decodeURIComponent(cookieValue)); 
+        } catch (error) {
+            console.error('Error parsing favorites cookie:', error);
+            return [];
+        }
+    }
+    return [];
 }
 
 </script>

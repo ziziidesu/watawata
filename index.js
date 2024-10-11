@@ -877,15 +877,23 @@ app.get('/wakamc', async (req, res) => {
 });
 
 app.get('/okiniiri', (req, res) => {
-    const favoritesCookie = req.cookies.favorites;
-    let tracks = [];
+    let favorites = [];
 
-    if (favoritesCookie) {
-        tracks = JSON.parse(favoritesCookie);
+    const cookie = req.headers.cookie
+        .split('; ')
+        .find(row => row.startsWith('wakamemusicfavorites='));
+
+    if (cookie) {
+        try {
+            favorites = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
+        } catch (error) {
+            console.error('Error parsing cookie:', error);
+        }
     }
 
-    res.render('okiniiri', { tracks });
+    res.render('okiniiri', { tracks: favorites });
 });
+
 
 //概要欄用リダイレクト
 app.get('/watch', (req, res) => {
