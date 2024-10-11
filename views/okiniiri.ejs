@@ -59,7 +59,6 @@ function getFavoritesFromCookies() {
     return [];
 }
 
-// Cookieにデータを保存する関数
 function setCookie(name, value, days) {
     let expires = "";
     if (days) {
@@ -70,7 +69,6 @@ function setCookie(name, value, days) {
     document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
-// お気に入りボタンを更新する関数
 function updateFavoriteButton(trackId) {
     const favorites = getFavoritesFromCookies();
     const favoriteBtn = document.querySelector(`button[data-id='${trackId}']`);
@@ -81,8 +79,7 @@ function updateFavoriteButton(trackId) {
         favoriteBtn.classList.remove('active');
     }
 }
-
-// お気に入りの追加・解除処理
+  
 function toggleFavorite(artwork_url, title, id) {
     let favorites = getFavoritesFromCookies();
 
@@ -96,32 +93,50 @@ function toggleFavorite(artwork_url, title, id) {
         alert('お気に入りを解除しました！');
     }
 
-    // Cookieにデータを保存
-    setCookie('wakamemusicfavorites', JSON.stringify(favorites), 365);
+    document.cookie = `wakamemusicfavorites=${encodeURIComponent(JSON.stringify(favorites))}; path=/; max-age=31536000`;
+
     updateFavoriteButton(id);
 }
 
-// セーブボタンのクリックイベント
 document.getElementById('save-btn').addEventListener('click', function() {
     alert("セーブコードを表示するページを開きます");
-    window.open('/wakamc/f', '_blank');  // 新しいタブでセーブページを開く
+    window.open('/wakamc/f', '_blank'); 
 });
 
-// ロードボタンのクリックイベント
 document.getElementById('load-btn').addEventListener('click', function() {
-    const userInput = prompt("お気に入りデータを入力してください (JSON形式):");
-    if (userInput) {
+    const input = prompt("保存したお気に入りデータを入力してください (JSON形式)");
+    if (input) {
         try {
-            const parsedData = JSON.parse(userInput);
-            setCookie('wakamemusicfavorites', JSON.stringify(parsedData), 7);
-            alert("Cookieに保存されました");
+            const parsedInput = JSON.parse(input); 
+            console.log('受け取ったデータ:', parsedInput);
+            saveInputToFavorites(parsedInput);
         } catch (e) {
-            alert("無効なデータです。正しいJSON形式で入力してください。");
+            console.error('JSONパースエラー:', e);
+            alert('入力形式が正しくありません。JSON形式で入力してください。');
         }
     }
 });
 
-// お気に入りボタンの状態をページロード時に更新
+  
+function saveInputToFavorites(inputData) {
+    let favorites = getFavoritesFromCookies();
+
+    inputData.forEach(data => {
+        const existingTrack = favorites.find(track => track.id === data.id);
+        if (!existingTrack) {
+            favorites.push({
+                artwork_url: data.artwork_url,
+                title: data.title,
+                id: data.id
+            });
+        }
+    });
+
+    setFavoritesToCookies(favorites);
+    alert('データが保存されました');
+}
+
+
 document.querySelectorAll('.favorite-btn').forEach(btn => {
     const trackId = btn.getAttribute('data-id');
     updateFavoriteButton(trackId);
