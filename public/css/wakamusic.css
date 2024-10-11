@@ -176,11 +176,10 @@ li .play-btn:hover {
     background-color: #555;
     border-radius: 4px;
 }
-/* お気に入りボタンのスタイル */
 .favorite-btn {
     background-color: transparent;
     border: none;
-    color: #ff6f61; /* 柔らかいピンクオレンジ */
+    color: #ff6f61;
     font-size: 26px;
     cursor: pointer;
     transition: transform 0.2s ease, color 0.3s ease;
@@ -190,19 +189,18 @@ li .play-btn:hover {
 }
 
 .favorite-btn:hover {
-    color: #ffcccb; /* ホバー時に少し明るく */
-    transform: scale(1.1); /* ホバー時に少し大きく */
+    color: #ffcccb;
+    transform: scale(1.1);
 }
 
 .favorite-btn.active {
-    color: #ff1744; /* アクティブな場合の濃い赤 */
+    color: #ff1744; 
 }
 
 .favorite-btn:active {
-    transform: scale(0.95); /* クリック時に少し縮む */
+    transform: scale(0.95);
 }
 
-/* お気に入りボタンの周りに視覚的な円のエフェクト */
 .favorite-btn::before {
     content: '';
     display: inline-block;
@@ -219,5 +217,25 @@ li .play-btn:hover {
 }
 
 .favorite-btn:hover::before {
-    background-color: rgba(255, 111, 97, 0.3); /* ホバー時にエフェクトが少し濃くなる */
+    background-color: rgba(255, 111, 97, 0.3); 
+}
+
+.favorite-controls {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.save-btn, .load-btn {
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.save-btn:hover, .load-btn:hover {
+    background-color: #ff1744;
 }
