@@ -845,6 +845,35 @@ app.get('/getimage/:encodedUrl', (req, res) => {
         .pipe(res);
 });
 
+//わかめMusic
+app.get('/wakams', (req, res) => {
+    res.render('wakamusic', { tracks: [] });
+});
+
+app.get('/wakamc', async (req, res) => {
+    const query = req.query.q;
+
+    if (!query) {
+        return res.status(400).send('Search query is required');
+    }
+
+    try {
+        const searchResults = await scdl.search({ query: query, resourceType: 'tracks' });
+
+        const tracks = searchResults.collection.slice(0, 10).map(track => ({
+            id: track.id,
+            title: track.title,
+            username: track.user.username,
+            artwork_url: track.artwork_url ? track.artwork_url.replace('-large', '-t500x500') : 'https://via.placeholder.com/500'
+        }));
+
+        res.render('wakamusic', { tracks: tracks });
+    } catch (error) {
+        console.error('Error occurred while searching:', error);
+        res.status(500).send('An error occurred while searching for tracks');
+    }
+});
+
 //概要欄用リダイレクト
 app.get('/watch', (req, res) => {
   const videoId = req.query.v;

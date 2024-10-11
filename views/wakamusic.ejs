@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundCloud Player</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+
+<header>
+    <div class="search-container">
+        <form action="/search" method="get">
+            <input type="text" name="q" placeholder="Search for a song..." required value="<%= query %>">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="action-btn">
+        <!-- ボタンの動作は後で実装されるため、ここはスタイルのみ -->
+        <img src="https://placehold.co/40x40" alt="User" />
+    </div>
+</header>
+
+<main>
+    <% if (tracks && tracks.length > 0) { %>
+        <ul>
+            <% tracks.forEach(track => { %>
+                <li>
+                    <img src="<%= track.artwork_url %>" alt="Artwork">
+                    <div class="track-info">
+                        <p class="track-title"><%= track.title %></p>
+                        <p class="track-artist">by <%= track.username %></p>
+                    </div>
+                    <button class="play-btn" data-track-id="<%= track.id %>">Play</button>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>No tracks found.</p>
+    <% } %>
+</main>
+
+<div class="player-bar" id="player-bar">
+    <iframe id="sc-player" scrolling="no" frameborder="no"></iframe>
+</div>
+
+<script>
+    document.querySelectorAll('.play-btn').forEach(element => {
+        element.addEventListener('click', function(e) {
+            e.preventDefault();
+            const trackId = e.target.getAttribute('data-track-id');
+            playTrack(trackId);
+        });
+    });
+
+    function playTrack(trackId) {
+        const playerBar = document.getElementById('player-bar');
+        const player = document.getElementById('sc-player');
+
+        player.src = `https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${trackId}&color=%23ff5500&auto_play=true`;
+
+        playerBar.style.display = 'flex';
+    }
+</script>
+
+</body>
+</html>
