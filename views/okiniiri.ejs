@@ -20,6 +20,7 @@
       <img src="<%= track.artwork_url %>" alt="Artwork" class="track-artwork">
       <div class="track-info">
         <h3><%= track.title %></h3>
+        <button class="favorite-btn" data-id="<%= track.id %>" onclick="toggleFavorite('<%= track.artwork_url %>', '<%= track.title %>', '<%= track.id %>')">❤️</button>
         <button class="play-btn" data-track-id="<%= track.id %>">Play</button>
       </div>
     </li>
@@ -96,29 +97,40 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function showFavorites() {
-    let savefavorites = getFavoritesFromCookies();
-    if (savefavorites.length > 0) {
-        alert(`お気に入り: \n${JSON.stringify(savefavorites, null, 2)}`);
-    } else {
-        alert("お気に入りは空です。");
-    }
+    alert("セーブコードを表示するページを開きます");
+    window.open('/wakamc/f', '_blank');
 }
 
-function loadFavorites() {
-    let input = prompt("セーブデータを入力して下さい:");
-    try {
-        const parsedFavorites = JSON.parse(input);
+function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
 
-        if (Array.isArray(parsedFavorites) && parsedFavorites.every(item => item.artwork_url && item.title && item.id)) {
-            document.cookie = `wakamemusicfavorites=${JSON.stringify(parsedFavorites)}; path=/`;
-            alert("cookieに保存されました。");
-        } else {
-            alert("無効なフォーマットです。正しいデータを入力してください。");
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+}
+
+document.getElementById('load-btn').addEventListener('click', function() {
+    const userInput = prompt("お気に入りデータを入力してください:");
+    if (userInput) {
+        try {
+            const parsedData = JSON.parse(userInput);
+            setCookie('wakamemusicfavorites', JSON.stringify(parsedData), 7);
+            alert("Cookieに保存されました");
+        } catch (e) {
+            alert("無効なデータです。正しいJSON形式で入力してください。");
         }
-    } catch (e) {
-        alert("JSONのパースに失敗しました。正しい形式で入力してください。");
     }
-}
+});
+
 
 function getFavoritesFromCookies() {
     const cookieName = 'wakamemusicfavorites';

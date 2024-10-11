@@ -893,36 +893,23 @@ app.get('/okiniiri', (req, res) => {
 
     res.render('okiniiri', { tracks: favorites });
 });
+
 app.get('/wakamc/f', (req, res) => {
-    const cookies = parseCookies(req.headers.cookie);
     let favorites = [];
 
-    if (cookies.wakamemusicfavorites) {
+    const cookie = req.headers.cookie
+        .split('; ')
+        .find(row => row.startsWith('wakamemusicfavorites='));
+
+    if (cookie) {
         try {
-            favorites = JSON.parse(cookies.wakamemusicfavorites);
-        } catch (e) {
-            console.error("JSONパースエラー: ", e);
+            favorites = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
+        } catch (error) {
+            console.error('Error parsing cookie:', error);
         }
     }
 
-    res.send(`
-        <!DOCTYPE html>
-        <html lang="ja">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>お気に入り情報</title>
-            <style>
-                body { font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; padding: 20px; }
-                pre { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-            </style>
-        </head>
-        <body>
-            <h1>お気に入り情報</h1>
-            <pre>${favorites.length > 0 ? JSON.stringify(favorites, null, 2) : "お気に入りは空です。"}</pre>
-        </body>
-        </html>
-    `);
+    res.render('wakamemusicf', { favorites: favorites });
 });
 
 //概要欄用リダイレクト
