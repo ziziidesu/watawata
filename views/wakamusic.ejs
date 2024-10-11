@@ -19,6 +19,7 @@
     <p>
       &copy; わかめ02 / 2024
   </p>
+    <button class="btn btn-link" onclick="window.location.href='/okiniiri'">お気に入り</button>
     <button id="action-btn">
         <img src="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/IMG_1281.png?v=1718682861752" alt="User" width="50px" />
     </div>
@@ -42,6 +43,7 @@
                         <p class="track-title"><%= track.title %></p>
                         <p class="track-artist">by <%= track.username %></p>
                     </div>
+                    <button class="favorite-btn" data-id="<%= track.id %>" onclick="toggleFavorite('<%= track.artwork_url %>', '<%= track.title %>', '<%= track.id %>')">❤️</button>
                     <button class="play-btn" data-track-id="<%= track.id %>">Play</button>
                 </li>
             <% }) %>
@@ -86,12 +88,22 @@ menuBtn.addEventListener('click', toggleMenu);
 
 overlay.addEventListener('click', toggleMenu);
   
-function addToFavorites(artwork_url, title, id) {
+function toggleFavorite(artwork_url, title, id) {
     let favorites = getFavoritesFromCookies();
-    favorites.push({ artwork_url, title, id });
+
+    const favoriteIndex = favorites.findIndex(track => track.id === id);
+
+    if (favoriteIndex === -1) {
+        favorites.push({ artwork_url, title, id });
+        alert('お気に入りに追加しました！');
+    } else {
+        favorites.splice(favoriteIndex, 1);
+        alert('お気に入りを解除しました！');
+    }
 
     document.cookie = `wakamemusicfavorites=${encodeURIComponent(JSON.stringify(favorites))}; path=/; max-age=31536000`;
-    alert("お気に入りに追加しました！");
+
+    updateFavoriteButton(id);
 }
 
 function getFavoritesFromCookies() {
@@ -99,7 +111,7 @@ function getFavoritesFromCookies() {
     if (favoritesCookie) {
         const cookieValue = favoritesCookie.split('=')[1];
         try {
-            return JSON.parse(decodeURIComponent(cookieValue)); 
+            return JSON.parse(decodeURIComponent(cookieValue));
         } catch (error) {
             console.error('Error parsing favorites cookie:', error);
             return [];
@@ -107,6 +119,21 @@ function getFavoritesFromCookies() {
     }
     return [];
 }
+
+function updateFavoriteButton(trackId) {
+    const favorites = getFavoritesFromCookies();
+    const favoriteBtn = document.querySelector(`button[data-id='${trackId}']`);
+
+    if (favorites.some(track => track.id === trackId)) {
+        favoriteBtn.classList.add('active');
+    } else {
+        favoriteBtn.classList.remove('active');
+    }
+}
+document.querySelectorAll('.favorite-btn').forEach(btn => {
+    const trackId = btn.getAttribute('data-id');
+    updateFavoriteButton(trackId);
+});
 
 </script>
 

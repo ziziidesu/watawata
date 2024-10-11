@@ -176,3 +176,48 @@ li .play-btn:hover {
     background-color: #555;
     border-radius: 4px;
 }
+/* お気に入りボタンのスタイル */
+.favorite-btn {
+    background-color: transparent;
+    border: none;
+    color: #ff6f61; /* 柔らかいピンクオレンジ */
+    font-size: 26px;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.3s ease;
+    outline: none;
+    padding: 8px;
+    border-radius: 50%;
+}
+
+.favorite-btn:hover {
+    color: #ffcccb; /* ホバー時に少し明るく */
+    transform: scale(1.1); /* ホバー時に少し大きく */
+}
+
+.favorite-btn.active {
+    color: #ff1744; /* アクティブな場合の濃い赤 */
+}
+
+.favorite-btn:active {
+    transform: scale(0.95); /* クリック時に少し縮む */
+}
+
+/* お気に入りボタンの周りに視覚的な円のエフェクト */
+.favorite-btn::before {
+    content: '';
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 111, 97, 0.1);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    transition: background-color 0.3s ease;
+}
+
+.favorite-btn:hover::before {
+    background-color: rgba(255, 111, 97, 0.3); /* ホバー時にエフェクトが少し濃くなる */
+}
