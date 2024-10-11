@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>お気に入り</title>
     <link rel="stylesheet" href="/css/wakamusic.css">
+    <link rel="stylesheet" href="/css/slide.css">
 </head>
 <body>
 <header>
@@ -18,58 +19,70 @@
     <button id="load-btn" class="save-load-btn">ロード</button>
 </header>
 
-    <% if (tracks.length > 0) { %>
- <ul class="track-list">
-  <% tracks.forEach(track => { %>
-    <li>
-      <img src="<%= track.artwork_url %>" alt="Artwork" class="track-artwork">
-      <div class="track-info">
-        <p class="track-title"><%= track.title %></p>
-        <p class="track-artist">お気に入り</p>
-      </div>
-        <button class="favorite-btn" data-id="<%= track.id %>" onclick="toggleFavorite('<%= track.artwork_url %>', '<%= track.title %>', '<%= track.id %>')">❤️</button>
-        <button class="play-btn" data-track-id="<%= track.id %>">Play</button>
-    </li>
-  <% }); %>
-</ul>
+<main>
+    <% if (tracks && tracks.length > 0) { %>
+        <ul>
+            <% tracks.forEach(track => { %>
+                <li>
+                    <img src="<%= track.artwork_url %>" alt="Artwork">
+                    <div class="track-info">
+                        <p class="track-title"><%= track.title %></p>
+                        <p class="track-artist">お気に入り</p>
+                    </div>
+                    <button class="favorite-btn" data-id="<%= track.id %>" onclick="toggleFavorite('<%= track.artwork_url %>', '<%= track.title %>', '<%= track.id %>')">❤️</button>
+                    <button class="play-btn" data-track-id="<%= track.id %>">Play</button>
+                </li>
+            <% }) %>
+        </ul>
     <% } else { %>
-        <p>お気に入りに登録された曲はありません。</p>
+        <p>お気に入り登録された曲はありません</p>
     <% } %>
-
+</main>
+  
 <div class="player-bar" id="player-bar">
     <iframe id="sc-player" scrolling="no" frameborder="no"></iframe>
 </div>
 
 <script>
-    document.querySelectorAll('.play-btn').forEach(element => {
-        element.addEventListener('click', function(e) {
-            e.preventDefault();
-            const trackId = e.target.getAttribute('data-track-id');
-            playTrack(trackId);
-        });
-    });
-
-    function playTrack(trackId) {
-        const playerBar = document.getElementById('player-bar');
-        const player = document.getElementById('sc-player');
-
-        player.src = `https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${trackId}&color=%23ff5500&auto_play=true`;
-
-        playerBar.style.display = 'flex';
-
-const menuBtn = document.getElementById('action-btn');
-const sideMenu = document.getElementById('side-menu');
-const overlay = document.getElementById('overlay');
-
-function toggleMenu() {
-    sideMenu.classList.toggle('open');
-    overlay.classList.toggle('active');
+function getFavoritesFromCookies() {
+    const cookieName = 'wakamemusicfavorites';
+    const cookieValue = document.cookie.split('; ').find(row => row.startsWith(cookieName));
+    
+    if (cookieValue) {
+        try {
+            return JSON.parse(decodeURIComponent(cookieValue.split('=')[1]));
+        } catch (error) {
+            console.error('Error parsing favorites cookie:', error);
+            return [];
+        }
+    }
+    return [];
 }
 
-menuBtn.addEventListener('click', toggleMenu);
+// Cookieにデータを保存する関数
+function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
 
-overlay.addEventListener('click', toggleMenu);
-  
+// お気に入りボタンを更新する関数
+function updateFavoriteButton(trackId) {
+    const favorites = getFavoritesFromCookies();
+    const favoriteBtn = document.querySelector(`button[data-id='${trackId}']`);
+
+    if (favorites.some(track => track.id === trackId)) {
+        favoriteBtn.classList.add('active');
+    } else {
+        favoriteBtn.classList.remove('active');
+    }
+}
+
+// お気に入りの追加・解除処理
 function toggleFavorite(artwork_url, title, id) {
     let favorites = getFavoritesFromCookies();
 
@@ -83,74 +96,20 @@ function toggleFavorite(artwork_url, title, id) {
         alert('お気に入りを解除しました！');
     }
 
-    document.cookie = `wakamemusicfavorites=${encodeURIComponent(JSON.stringify(favorites))}; path=/; max-age=31536000`;
-
+    // Cookieにデータを保存
+    setCookie('wakamemusicfavorites', JSON.stringify(favorites), 365);
     updateFavoriteButton(id);
 }
 
-function getFavoritesFromCookies() {
-    const favoritesCookie = document.cookie.split('; ').find(row => row.startsWith('wakamemusicfavorites='));
-    if (favoritesCookie) {
-        const cookieValue = favoritesCookie.split('=')[1];
-        try {
-            return JSON.parse(decodeURIComponent(cookieValue));
-        } catch (error) {
-            console.error('Error parsing favorites cookie:', error);
-            return [];
-        }
-    }
-    return [];
-}
-
-function updateFavoriteButton(trackId) {
-    const favorites = getFavoritesFromCookies();
-    const favoriteBtn = document.querySelector(`button[data-id='${trackId}']`);
-
-    if (favorites.some(track => track.id === trackId)) {
-        favoriteBtn.classList.add('active');
-    } else {
-        favoriteBtn.classList.remove('active');
-    }
-}
-document.querySelectorAll('.favorite-btn').forEach(btn => {
-    const trackId = btn.getAttribute('data-id');
-    updateFavoriteButton(trackId);
-});
-document.addEventListener("DOMContentLoaded", function() {
-
-    document.getElementById('save-btn').addEventListener('click', function() {
-        showFavorites();
-    });
-
-    document.getElementById('load-btn').addEventListener('click', function() {
-        loadFavorites();
-    });
-});
-
-function showFavorites() {
+// セーブボタンのクリックイベント
+document.getElementById('save-btn').addEventListener('click', function() {
     alert("セーブコードを表示するページを開きます");
-    window.open('/wakamc/f', '_blank');
-}
+    window.open('/wakamc/f', '_blank');  // 新しいタブでセーブページを開く
+});
 
-function setCookie(name, value, days) {
-    let expires = "";
-    if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
-}
-
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
-}
-
+// ロードボタンのクリックイベント
 document.getElementById('load-btn').addEventListener('click', function() {
-    const userInput = prompt("お気に入りデータを入力してください:");
+    const userInput = prompt("お気に入りデータを入力してください (JSON形式):");
     if (userInput) {
         try {
             const parsedData = JSON.parse(userInput);
@@ -162,14 +121,12 @@ document.getElementById('load-btn').addEventListener('click', function() {
     }
 });
 
+// お気に入りボタンの状態をページロード時に更新
+document.querySelectorAll('.favorite-btn').forEach(btn => {
+    const trackId = btn.getAttribute('data-id');
+    updateFavoriteButton(trackId);
+});
 
-function getFavoritesFromCookies() {
-    const cookieName = 'wakamemusicfavorites';
-    const cookieValue = document.cookie.split('; ').find(row => row.startsWith(cookieName));
-    const favorites = cookieValue ? JSON.parse(cookieValue.split('=')[1]) : [];
-    console.log("取得したお気に入り: ", favorites);
-    return favorites;
-}
 </script>
 </body>
 </html>
