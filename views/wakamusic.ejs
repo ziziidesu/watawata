@@ -21,6 +21,13 @@
     </div>
 </header>
 
+<nav id="side-menu" class="side-menu">
+    <ul>
+        <li><a href="/blog/up" target="_blank">アップデートを確認</a></li>
+    </ul>
+</nav>
+<div id="overlay" class="overlay"></div>
+
 <main>
     <% if (tracks && tracks.length > 0) { %>
         <ul>
@@ -62,7 +69,7 @@
         playerBar.style.display = 'flex';
     }
   
-const menuBtn = document.getElementById('menu-btn');
+const menuBtn = document.getElementById('action-btn');
 const sideMenu = document.getElementById('side-menu');
 const overlay = document.getElementById('overlay');
 
