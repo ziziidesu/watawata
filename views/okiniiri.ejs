@@ -16,7 +16,7 @@
       <img src="<%= track.artwork_url %>" alt="Artwork" class="track-artwork">
       <div class="track-info">
         <h3><%= track.title %></h3>
-        <button class="play-btn" onclick="playTrack('<%= track.stream_url %>')">Play</button>
+        <button class="play-btn" data-track-id="<%= track.id %>">Play</button>
       </div>
     </li>
   <% }); %>
@@ -24,6 +24,10 @@
     <% } else { %>
         <p>お気に入りに登録された曲はありません。</p>
     <% } %>
+
+<div class="player-bar" id="player-bar">
+    <iframe id="sc-player" scrolling="no" frameborder="no"></iframe>
+</div>
 
 <script>
     document.querySelectorAll('.play-btn').forEach(element => {
@@ -42,19 +46,6 @@
 
         playerBar.style.display = 'flex';
     }
-  
-const menuBtn = document.getElementById('action-btn');
-const sideMenu = document.getElementById('side-menu');
-const overlay = document.getElementById('overlay');
-
-function toggleMenu() {
-    sideMenu.classList.toggle('open');
-    overlay.classList.toggle('active');
-}
-
-menuBtn.addEventListener('click', toggleMenu);
-
-overlay.addEventListener('click', toggleMenu);
   
 function addToFavorites(artworkUrl, title, trackId) {
     const favoritesCookie = getCookie('wakamemusicfavorites');

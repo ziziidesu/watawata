@@ -43,7 +43,6 @@
                         <p class="track-artist">by <%= track.username %></p>
                     </div>
                     <button class="play-btn" data-track-id="<%= track.id %>">Play</button>
-                    <button class="favorite-btn" onclick="addToFavorites('<%= track.artwork_url %>', '<%= track.title %>', '<%= track.id %>')">❤️</button>
                 </li>
             <% }) %>
         </ul>
@@ -92,6 +91,7 @@ function addToFavorites(artwork_url, title, id) {
     favorites.push({ artwork_url, title, id });
 
     document.cookie = `wakamemusicfavorites=${encodeURIComponent(JSON.stringify(favorites))}; path=/; max-age=31536000`;
+    alert("お気に入りに追加しました！");
 }
 
 function getFavoritesFromCookies() {
