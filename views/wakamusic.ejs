@@ -12,8 +12,8 @@
 <header>
     <div class="search-container">
         <form action="/wakamc" method="get">
-            <input type="text" name="q" placeholder="Search for a song..." required value="<%= query %>">
-            <button type="submit">Search</button>
+            <input type="text" name="q" placeholder="曲を探す" required value="<%= query %>">
+            <button type="submit">🔍</button>
         </form>
     </div>
     <button id="action-btn">
@@ -43,7 +43,7 @@
             <% }) %>
         </ul>
     <% } else { %>
-        <p>No tracks found.</p>
+        <p>上のやつで検索してみよう。</p>
     <% } %>
 </main>
 
