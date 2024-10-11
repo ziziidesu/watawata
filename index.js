@@ -821,7 +821,6 @@ html = html.replace(/<img\s+([\s\S]*?src="([\s\S]*?)"[\s\S]*?)>/g, (match, fullT
         }
       }
     }
-
     
     res.send(html);
   } catch (error) {
