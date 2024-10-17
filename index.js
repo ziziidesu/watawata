@@ -104,12 +104,20 @@ app.get("/famous",(req, res) => {
 
 //第3の目
 const invidiousapis = [
+  "https://api.invidious.io",
+  "https://iv.nboeck.de",
+  "https://invidious.einfachzocken.eu",
+  "https://invidious.yourdevice.ch",
+  "https://invidious.adminforge.de",
+  "https://yt.drgnz.club",
   "https://invidious.privacyredirect.com",
   "https://invidious.jing.rocks",
   "https://iv.datura.network",
   "https://invidious.private.coffee",
   "https://invidious.protokolla.fi",
   "https://invidious.perennialte.ch",
+  "https://inv.nadeko.net",
+  "https://invidious.rocks",
   "https://yt.cdaut.de",
   "https://invidious.materialio.us",
   "https://yewtu.be",
@@ -127,7 +135,6 @@ const invidiousapis = [
   "https://invidious.slipfox.xyz",
   "https://invidious.weblibre.org",
   "https://invidious.namazso.eu",
-  "https://inv.nadeko.net",
   "https://iv.nowhere.moe",
   "https://invidious.nerdvpn.de"
 ];
