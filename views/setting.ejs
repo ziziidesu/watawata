@@ -37,6 +37,20 @@
             <button type="submit" class="save-button">設定を保存</button>
         </form>
     </div>
+<br><br>
+    <div class="container">
+        <h1>埋め込みで視聴する</h1>
+        <p class="description">YouTube動画の再生を埋め込みで行います。もしも使えるなら使った方が良いです。ほとんどの人は使えないと思いますが。<br>
+          簡単に言うと、下のURLに入れる人は使えるし、入れない人は使えません()<br>
+          <a href="https://www.youtube-nocookie.com/embed/h4HkXR3NSI4" target="_blank">https://www.youtube-nocookie.com/embed/h4HkXR3NSI4</a></p>
+        <form action="/setting" method="post">
+            <div class="switch">
+                <input type="checkbox" id="wakametubeumekomi" name="wakametubeumekomi" <%= wakametubeumekomi ? 'checked' : '' %>>
+                <label for="wakametubeumekomi" class="slider"></label>
+            </div>
+            <button type="submit" class="save-button">設定を保存</button>
+        </form>
+    </div>
 <style>
 .container {
     background-color: #fff;

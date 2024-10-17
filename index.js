@@ -194,7 +194,11 @@ async function fetchVideoInfoParallel(videoId) {
 //レギュラー
 app.get('/w/:id', async (req, res) => {
   const videoId = req.params.id;
-  
+    let cookies = parseCookies(req);
+    let wakames = cookies.wakametubeumekomi === 'true';
+    if (wakames) {
+    res.redirect(`/umekomi/${videoId}`);
+    }
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
     
