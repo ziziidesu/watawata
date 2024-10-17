@@ -611,7 +611,8 @@ app.get("/proxy/",(req, res) => {
 })
 
 //設定
-
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 function parseCookies(request) {
     const list = {};
@@ -630,12 +631,19 @@ function parseCookies(request) {
 app.get('/setting', (req, res) => {
     const cookies = parseCookies(req);
     const wakames = cookies.wakames === 'true';
-    res.render('setting.ejs', { wakames });
+    const wakametubeumekomi = cookies.wakametubeumekomi === 'true';
+    res.render('setting.ejs', { wakames, wakametubeumekomi });
 });
 
 app.post('/setting', (req, res) => {
     const wakames = req.body.wakames === 'on';
-    res.setHeader('Set-Cookie', `wakames=${wakames}; HttpOnly; Max-Age=604800`);
+    const wakametubeumekomi = req.body.wakametubeumekomi === 'on';
+
+    res.setHeader('Set-Cookie', [
+        `wakames=${wakames}; HttpOnly; Max-Age=31536000`,
+        `wakametubeumekomi=${wakametubeumekomi}; HttpOnly; Max-Age=31536000`
+    ]);
+    
     res.redirect('/setting');
 });
 
@@ -915,6 +923,41 @@ app.get('/wakamc/f', (req, res) => {
     }
 
     res.render('wakamemusicf', { favorites: favorites });
+});
+
+//お気に入り
+app.get('/wakameokini', (req, res) => {
+    let favorites = [];
+
+    const cookie = req.headers.cookie
+        .split('; ')
+        .find(row => row.startsWith('wakametubefavorites='));
+
+    if (cookie) {
+        try {
+            favorites = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
+        } catch (error) {
+            console.error('Error parsing cookie:', error);
+        }
+    }
+    res.render('wakameokiniiri', { tracks: favorites });
+});
+
+app.get('/wakamehistory', (req, res) => {
+    let favorites = [];
+
+    const cookie = req.headers.cookie
+        .split('; ')
+        .find(row => row.startsWith('wakametubehistory='));
+
+    if (cookie) {
+        try {
+            favorites = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
+        } catch (error) {
+            console.error('Error parsing cookie:', error);
+        }
+    }
+    res.render('wakamehistory', { tracks: favorites });
 });
 
 //概要欄用リダイレクト
