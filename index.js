@@ -612,8 +612,7 @@ app.get("/proxy/",(req, res) => {
 })
 
 //設定
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
+
 
 function parseCookies(request) {
     const list = {};
