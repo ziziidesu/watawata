@@ -27,7 +27,11 @@
 
 <nav id="side-menu" class="side-menu">
     <ul>
+        <li><a href="/">ホーム</a></li>
+        <li><a href="/wakams">わかめMusic</a></li>
+        <li><a href="/blog/wakamc">わかめMusicの使い方</a></li>
         <li><a href="/famous">曲を聴く(旧サイト)</a></li>
+        <li><a href="/send" target="_blank">お問い合わせ</a></li>
         <li><a href="/blog/up" target="_blank">アップデートを確認</a></li>
     </ul>
 </nav>
@@ -48,8 +52,58 @@
                 </li>
             <% }) %>
         </ul>
+        <a href="/tool/春雨"><ul>
+                <li>
+                    <img src="https://appdata.chatwork.com/avatar/xArwvEGd7D.rsz.jpg" alt="Artwork">
+                    <div class="track-info">
+                        <p class="track-title">絶妙に気持ち悪い曲 - 春雨</p>
+                        <p class="track-artist">超おすすめ！これ聞いたことないやつ、人生損してる。マジで</p>
+                    </div>
+                </li>
+        </ul></a><br><br><br><br>
     <% } else { %>
-        <p>上のやつで検索してみよう。</p>
+        <% if (typeof query !== 'undefined' && query.length >= 2) { %>
+           <p>曲が見つかりません。</p>
+              <% } else { %>
+           <p>上のやつで検索してみよう。</p>
+        <% } %>
+        <br><br><br>
+        <h2>
+          おすすめ
+          </h2>
+        <ul>
+                <li>
+                    <img src="https://i1.sndcdn.com/artworks-uWLye4ipN2X1b3Dj-In7BaA-t500x500.jpg" alt="Artwork">
+                    <div class="track-info">
+                        <p class="track-title">【Kanaria】BRAIN</p>
+                        <p class="track-artist">おすすめ</p>
+                    </div>
+                    <button class="favorite-btn" data-id="1933308584" onclick="toggleFavorite('https://i1.sndcdn.com/artworks-uWLye4ipN2X1b3Dj-In7BaA-t500x500.jpg', '【Kanaria】BRAIN', '1933308584')">❤️</button>
+                    <button class="play-btn" data-track-id="1933308584">Play</button>
+                </li>
+        </ul>
+        <ul>
+                <li>
+                    <img src="https://i1.sndcdn.com/artworks-WSedAuubWHQc5zY1-maz2UQ-t500x500.jpg" alt="Artwork">
+                    <div class="track-info">
+                        <p class="track-title">くうになる - MIMI</p>
+                        <p class="track-artist">おすすめ</p>
+                    </div>
+                    <button class="favorite-btn" data-id="1196951182" onclick="toggleFavorite('https://i1.sndcdn.com/artworks-WSedAuubWHQc5zY1-maz2UQ-t500x500.jpg', 'くうになる - MIMI', '1196951182')">❤️</button>
+                    <button class="play-btn" data-track-id="1196951182">Play</button>
+                </li>
+        </ul>
+        <ul>
+                <li>
+                    <img src="https://i1.sndcdn.com/artworks-quM3Oj4I38dfVKpU-9Lqgzw-t500x500.jpg" alt="Artwork">
+                    <div class="track-info">
+                        <p class="track-title">リライトザサーガ - オルサガOP</p>
+                        <p class="track-artist">おすすめ</p>
+                    </div>
+                    <button class="favorite-btn" data-id="1196951182" onclick="toggleFavorite('https://i1.sndcdn.com/artworks-quM3Oj4I38dfVKpU-9Lqgzw-t500x500.jpg', 'リライトザサーガ', '1190533618')">❤️</button>
+                    <button class="play-btn" data-track-id="1190533618">Play</button>
+                </li>
+        </ul>
     <% } %>
 </main>
 
@@ -75,6 +129,9 @@
         playerBar.style.display = 'flex';
     }
   
+const menuBtn = document.getElementById('action-btn');
+const sideMenu = document.getElementById('side-menu');
+const overlay = document.getElementById('overlay');
 const menuBtn = document.getElementById('action-btn');
 const sideMenu = document.getElementById('side-menu');
 const overlay = document.getElementById('overlay');
@@ -135,6 +192,7 @@ document.querySelectorAll('.favorite-btn').forEach(btn => {
     updateFavoriteButton(trackId);
 });
 
+window.onload = function() {var allowedDomain = "wakame02m.glitch.me";var currentDomain = window.location.hostname;if (currentDomain !== allowedDomain) {document.body.innerHTML = "<h1>エラー: ここからのアクセスは許可されていません。。</h1>";}};
 </script>
 
 </body>

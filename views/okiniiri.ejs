@@ -10,32 +10,32 @@
 <body>
 <header>
     <div class="search-container">
-        <h1>お気に入りの曲</h1>
+      <a href="/wakams" style="color: white;"><h1>お気に入りの曲</h1></a>
     </div>
     <p>
       &copy; わかめ02 / 2024
   </p>
+    <button id="clear-btn" class="save-load-btn">クリア</button>
     <button id="save-btn" class="save-load-btn">セーブ</button>
     <button id="load-btn" class="save-load-btn">ロード</button>
 </header>
-<div id="overlay" class="overlay"></div>
 
 <main>
-    <% if (tracks && tracks.length > 0) { %>
+  <% if (tracks && tracks.length > 0) { %>
         <ul>
-            <% tracks.forEach(track => { %>
+            <% tracks.reverse().forEach(track => { %>
                 <li>
                     <img src="<%= track.artwork_url %>" alt="Artwork">
                     <div class="track-info">
                         <p class="track-title"><%= track.title %></p>
-                        <p class="track-artist"><%= track.id %></p>
+                        <p class="track-artist">お気に入り</p>
                     </div>
                     <button class="favorite-btn" data-id="<%= track.id %>" onclick="toggleFavorite('<%= track.artwork_url %>', '<%= track.title %>', '<%= track.id %>')">❤️</button>
-                    <button class="play-btn" onclick="playTrack('<%= track.id %>')">Play</button>
+                    <button class="play-btn" data-track-id="<%= track.id %>">Play</button>
                 </li>
             <% }) %>
-        </ul>
-    <% } else { %>
+        </ul><br><br><br><br>
+   <% } else { %>
         <p>お気に入り登録された曲はありません</p>
     <% } %>
 </main>
@@ -116,12 +116,12 @@ function toggleFavorite(artwork_url, title, id) {
 }
 
 document.getElementById('save-btn').addEventListener('click', function() {
-    alert("セーブコードを表示するページを開きます");
+    alert("セーブコードを表示するページを開きます。");
     window.open('/wakamc/f', '_blank'); 
 });
 
 document.getElementById('load-btn').addEventListener('click', function() {
-    const input = prompt("セーブコードを入力してください");
+    const input = prompt("お気に入りのセーブコードを入力してください");
     if (input) {
         try {
             const parsedInput = JSON.parse(input); 
@@ -132,7 +132,6 @@ document.getElementById('load-btn').addEventListener('click', function() {
     }
 });
 
-  
 function saveInputToFavorites(inputData) {
     let favorites = getFavoritesFromCookies();
 
@@ -146,15 +145,34 @@ function saveInputToFavorites(inputData) {
             });
         }
     });
-
     setFavoritesToCookies(favorites);
 }
   
 function setFavoritesToCookies(favorites) {
+    document.cookie = "wakamemusicfavorites=; path=/; max-age=0";
     document.cookie = `wakamemusicfavorites=${encodeURIComponent(JSON.stringify(favorites))}; path=/; max-age=31536000`;
     alert('データを読み込みました！');
 }
+  
+function clearFavoritesCookie() {
+    document.cookie = 'wakamemusicfavorites=; path=/; max-age=0';
+    alert('お気に入りが解除されました');
+}
 
+document.getElementById('clear-btn').addEventListener('click', function() {
+    let userConfirmed = confirm('全てのお気に入りを解除します。よろしいですか？');
+      if (userConfirmed) {
+        let userConfirmed = confirm('全てのお気に入りを解除します。本当の本当によろしいですか？');
+          if (userConfirmed) {
+            clearFavoritesCookie();
+          } else {
+            alert('キャンセルしました');
+          }
+      } else {
+        alert('キャンセルしました');
+      }
+});
+  
 document.querySelectorAll('.favorite-btn').forEach(btn => {
     const trackId = btn.getAttribute('data-id');
     updateFavoriteButton(trackId);
