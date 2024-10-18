@@ -2,7 +2,7 @@
   "name": "わかめtube",
   "version": "2.5.7",
   "main": "index.js",
-  "license": "CC0-v1.0",
+  "license": "CC-BY-4.0",
   "dependencies": {
     "ejs": "^3.1.10",
     "express": "^4.17.1",
@@ -30,9 +30,10 @@
   "author": "wakame",
   "private": false,
   "bugs": {
-    "url": "https://wakame02m.glitch.me/send"
+    "url": "https://wakame02m.glitch.me/send",
+    "email": "23h11008@gmail.com"
   },
-  "homepage": "https://sites.google.com/view/wakametube",
+  "homepage": "https://wakame02m.glitch.me",
   "devDependencies": {},
   "scripts": {
     "start": "node index.js",
