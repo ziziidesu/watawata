@@ -31,10 +31,11 @@ app.use(cors());
 // 読み込み時ちぇっく
 app.use((req, res, next) => {
     if (req.cookies.massiropass !== 'ok' && !req.path.includes('login')) {
-        return res.redirect('/login');
-    } else{
+        const redirectTo = encodeURIComponent(req.path);
+        return res.redirect(`/login?p=${redirectTo}`);
+    } else {
         next();
-   }
+    }
 });
 //ログイン済み？
 app.get('/login/if', async (req, res) => {
@@ -48,7 +49,6 @@ app.get('/login/if', async (req, res) => {
 app.get('/login', (req, res) => {
     let referer = req.get('Referer') || 'No referer information';
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    let response3 = axios.get("https://wakamecomment.glitch.me");
     console.log(`URL: ${referer} から来た, IP: ${ip}`);
     res.render('login', { error: null });
 });
@@ -57,13 +57,15 @@ app.post('/login', (req, res) => {
     const password = req.body.password;
     if (password === 'harusame' || password === '114514Kiju' || password === '810Kiju' || password === 'aihiaihi') {
         res.cookie('massiropass', 'ok', { maxAge: 5 * 24 * 60 * 60 * 1000, httpOnly: true });
-        return res.redirect('/');
+
+        const redirectTo = req.query.p || '/';
+        return res.redirect(decodeURIComponent(redirectTo));
     } else {
-         if (password === 'ohana') {
-               return res.redirect('https://ohuaxiehui.webnode.jp');
-         } else {
+        if (password === 'ohana') {
+            return res.redirect('https://ohuaxiehui.webnode.jp');
+        } else {
             res.render('login', { error: 'パスワードが間違っています。もう一度お試しください。' });
-         }
+        }
     }
 });
 //パスワードを忘れた場合
