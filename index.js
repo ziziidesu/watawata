@@ -41,24 +41,6 @@ app.use(session({
     cookie: { maxAge: 5 * 24 * 60 * 60 * 1000 }
 }));
 
-
-//せっしょんのてすとぉ
-app.get('/wakamehistory3', (req, res) => {
-    let favorites = [];
-
-    const cookie = req.session.wakamehistory;
-    console.log(cookie)
-
-    if (cookie) {
-        try {
-            favorites = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
-        } catch (error) {
-            console.error('Error parsing cookie:', error);
-        }
-    }
-    res.render('wakamehistory', { tracks: favorites });
-});
-
 //ログイン
 // 読み込み時ちぇっく
 app.use((req, res, next) => {
