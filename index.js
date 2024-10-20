@@ -483,7 +483,7 @@ app.get("/", (req, res) => {
 // サーチ
 app.get("/s", async (req, res) => {
 	let query = req.query.q;
-	let page = Number(req.query.p || 1);
+	let page = Number(req.query.p || 2);
 	if (!query) return res.redirect("/");
     let cookies = parseCookies(req);
     let wakames = cookies.wakames === 'true';
