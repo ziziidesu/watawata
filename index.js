@@ -256,10 +256,10 @@ app.get('/w/:id', async (req, res) => {
 const { data, error } = await supabase
   .from('history')
   .insert([
-    { channelId: videoInfo.authorId, channelName: videoInfo.author, videoTitle: videoInfo.title }
-  ]);
-
-    
+    { channelId: videoInfo.authorId, channelName: videoInfo.author, videoTitle: videoInfo.title },
+  ])
+  .select()
+          
     res.render('infowatch', templateData);
   } catch (error) {
         res.status(500).render('matte', { 
