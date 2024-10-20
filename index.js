@@ -616,18 +616,19 @@ app.get("/vi*", (req, res) => {
 });
 
 // チャンネル画像読み込み
-app.get("/ytc/*", (req, res) => {
-  let stream = miniget(`https://yt3.ggpht.com/${req.url}`, {
-		headers: {
-			"user-agent": user_agent
-		}
-	});
-	stream.on('error', err => {
-		console.log(err);
-		res.status(500).send(err.toString());
-	});
-	stream.pipe(res);
+app.get("/ytc*", (req, res) => {
+    let stream = miniget(`https://yt3.ggpht.com/${req.url.split("?")[0]}`, {
+        headers: {
+            "user-agent": user_agent
+        }
+    });
+    stream.on('error', err => {
+        console.log(err);
+        res.status(500).send(err.toString());
+    });
+    stream.pipe(res);
 });
+
 
 //tool
 app.get("/tool",(req, res) => {

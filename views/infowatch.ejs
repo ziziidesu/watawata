@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="/css/plyr.css">
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/slide.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="/js/bootstrap.min.js"></script>
 </head>
 
@@ -24,9 +27,9 @@
    <button class="btn btn-link" onclick="window.location.href='/'">ホーム🏠</button>
    <button class="btn btn-link" onclick="window.location.href='/send'">問い合わせ</button>
   <button class="btn btn-link" onclick="window.location.href='/blog/help'">ヘルプ</button>
-   <form class="d-flex" action="/s">
-    <input type="text" name="q" class="form-control" placeholder="キーワードを入力..." required>
-   </form>
+      <form class="d-flex" action="/s" method="get">
+          <input id="searchbox" name="q" class="form-control" type="text" placeholder="キーワードを入力..." aria-label="Search" required>
+      </form>
    <button class="btn btn-link" id="menu-btn" style="position: absolute; right: 10px;">ツール</button>
  </div>
 </header>
@@ -343,6 +346,26 @@ function getFavoritesFromCookies() {
     }
     return [];
 }
+  
+//サジェスト
+  $(function () {
+    $('#searchbox').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '/suggest',
+                data: { keyword: request.term },
+                success: function (data) {
+                    response(data);
+                }
+            });
+        },
+        delay: 1,
+        select: function (event, ui) {
+            $('#searchbox').val(ui.item.value);
+            $('form').submit();
+        }
+    });
+});
 </script>
 <scody>
 </html>
