@@ -246,8 +246,15 @@ app.get('/w/:id', async (req, res) => {
       videoViews: videoInfo.viewCount,
       likeCount: videoInfo.likeCount
     };
+    
+    const historyData = {
+      videoId: videoId,
+      channelId: videoInfo.authorId,
+      channelName: videoInfo.author,
+      videoTitle: videoInfo.title,
+    };
 
-    req.session.wakamehistory = templateData;
+    req.session.wakamehistory = historyData;
     
     res.render('infowatch', templateData);
   } catch (error) {
