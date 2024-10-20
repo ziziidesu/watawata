@@ -1010,7 +1010,6 @@ app.get('/suggest', async (req, res) => {
     }
 });
 
-
 //概要欄用リダイレクト
 app.get('/watch', (req, res) => {
   const videoId = req.query.v;
