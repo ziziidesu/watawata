@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(session({
-    secret: 'hcnecheicheicqwaaahdj435372ppq',
+    secret: 'process.env.SESSION_SECRET',
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 5 * 24 * 60 * 60 * 1000 } 
