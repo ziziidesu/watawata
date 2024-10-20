@@ -16,6 +16,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const { URL } = require('url');
 const session = require('express-session');
+const { createClient } = require('@supabase/supabase-js');
 
 const limit = process.env.LIMIT || 50;
 
@@ -27,6 +28,11 @@ app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+
+const supabaseUrl = 'process.env.SUPABASE_URL';
+const supabaseKey = 'process.env.SUPABASE_KEY'; 
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -254,7 +260,9 @@ app.get('/w/:id', async (req, res) => {
       videoTitle: videoInfo.title,
     };
 
-    req.session.wakamehistory = historyData;
+    const { data, error } = await supabase
+      .from('history')
+      .insert([historyData]);
     
     res.render('infowatch', templateData);
   } catch (error) {
