@@ -257,19 +257,12 @@ app.get('/w/:id', async (req, res) => {
       .from('history')
       .insert([
         { 
+          videoId: videoId,
           channelId: videoInfo.authorId, 
           channelName: videoInfo.author, 
           videoTitle: videoInfo.title 
         }
       ]);
-
-    // Supabaseのエラーチェック
-    if (error) {
-      console.error('Supabase Error:', error.message);
-    } else {
-      console.log('Supabase Insert Success:', data);
-    }
-
           
     res.render('infowatch', templateData);
   } catch (error) {
@@ -485,6 +478,17 @@ app.get('/umekomi/:id', async (req, res) => {
     const channelImage = channelImageMatch ? channelImageMatch[1] : '取得できませんでした';
     const channelName = channelNameMatch ? channelNameMatch[1] : '取得できませんでした';
     const channelId = channnelIdMatch ? channnelIdMatch[1] : '取得できませんでした';
+    
+    const { data, error } = await supabase
+      .from('history')
+      .insert([
+        { 
+          videoId: videoId,
+          channelId: channelId, 
+          channelName: channelName, 
+          videoTitle: videoTitle 
+        }
+      ]);
 
     res.render('umekomi.ejs', { videoId, videoTitle, videoDes, videoViews, channelImage, channelName, channelId});
   } catch (error) {
