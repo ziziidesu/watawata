@@ -253,12 +253,23 @@ app.get('/w/:id', async (req, res) => {
       likeCount: videoInfo.likeCount
     };
 
-const { data, error } = await supabase
-  .from('history')
-  .insert([
-    { channelId: videoInfo.authorId, channelName: videoInfo.author, videoTitle: videoInfo.title },
-  ])
-  .select()
+    const { data, error } = await supabase
+      .from('history')
+      .insert([
+        { 
+          channelId: videoInfo.authorId, 
+          channelName: videoInfo.author, 
+          videoTitle: videoInfo.title 
+        }
+      ]);
+
+    // Supabaseのエラーチェック
+    if (error) {
+      console.error('Supabase Error:', error.message);
+    } else {
+      console.log('Supabase Insert Success:', data);
+    }
+
           
     res.render('infowatch', templateData);
   } catch (error) {
