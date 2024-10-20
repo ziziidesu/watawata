@@ -15,6 +15,7 @@ const jp = require('jsonpath');
 const path = require('path');
 const bodyParser = require('body-parser');
 const { URL } = require('url');
+const session = require('express-session');
 
 const limit = process.env.LIMIT || 50;
 
@@ -26,13 +27,19 @@ app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(session({
+    secret: 'hcnecheicheicqwaaahdj435372ppq',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 5 * 24 * 60 * 60 * 1000 } 
+}));
 
 //ログイン
 // 読み込み時ちぇっく
 app.use((req, res, next) => {
     if (req.cookies.massiropass !== 'ok' && !req.path.includes('login')) {
-        const redirectTo = encodeURIComponent(req.path);
-        return res.redirect(`/login?p=${redirectTo}`);
+        req.session.redirectTo = req.path; 
+        return res.redirect('/login');
     } else {
         next();
     }
@@ -57,9 +64,10 @@ app.post('/login', (req, res) => {
     const password = req.body.password;
     if (password === 'harusame' || password === '114514Kiju' || password === '810Kiju' || password === 'aihiaihi') {
         res.cookie('massiropass', 'ok', { maxAge: 5 * 24 * 60 * 60 * 1000, httpOnly: true });
-
-        const redirectTo = req.query.p || '/';
-        return res.redirect(decodeURIComponent(redirectTo));
+        
+        const redirectTo = req.session.redirectTo || '/';
+        delete req.session.redirectTo;
+        return res.redirect(redirectTo);
     } else {
         if (password === 'ohana') {
             return res.redirect('https://ohuaxiehui.webnode.jp');

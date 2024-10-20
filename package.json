@@ -17,7 +17,8 @@
     "youtubei.js": "latest",
     "jsonpath": "^1.0.0",
     "ws": "^8.7.0",
-    "soundcloud-downloader": "^1.0.0"
+    "soundcloud-downloader": "^1.0.0",
+    "express-session": "^1.18.1"
   },
   "description": "わかめ",
   "engines": {
