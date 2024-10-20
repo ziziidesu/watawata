@@ -252,17 +252,13 @@ app.get('/w/:id', async (req, res) => {
       videoViews: videoInfo.viewCount,
       likeCount: videoInfo.likeCount
     };
-    
-    const historyData = {
-      videoId: videoId,
-      channelId: videoInfo.authorId,
-      channelName: videoInfo.author,
-      videoTitle: videoInfo.title,
-    };
 
-    const { data, error } = await supabase
-      .from('history')
-      .insert([historyData]);
+const { data, error } = await supabase
+  .from('history')
+  .insert([
+    { channelId: videoInfo.authorId, channelName: videoInfo.author, videoTitle: videoInfo.title }
+  ]);
+
     
     res.render('infowatch', templateData);
   } catch (error) {
