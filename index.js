@@ -997,18 +997,8 @@ app.get('/wakamehistory', (req, res) => {
 });
 
 //サジェスト
-app.get('/suggest', async (req, res) => {
-    const keyword = req.query.keyword;
-    try {
-        const response = await axios.get(
-            `http://www.google.com/complete/search?client=youtube&hl=ja&ds=yt&q=${encodeURIComponent(keyword)}`
-        );
-        const suggestions = JSON.parse(response.data.slice(19, -1))[1];
-        res.json(suggestions.map(s => s[0]));
-    } catch (error) {
-        res.status(500).send({ error: 'えらー。あららー' });
-    }
-});
+
+
 
 //概要欄用リダイレクト
 app.get('/watch', (req, res) => {
