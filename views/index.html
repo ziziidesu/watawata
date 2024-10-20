@@ -17,6 +17,9 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/font.css">
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 
 <body>
@@ -157,7 +160,7 @@ wakamep {
             margin: 0 auto;
         }
         .form-control {
-            padding-right: 80px; /* Space for the button */
+            padding-right: 80px;
         }
         .btn-search {
             position: absolute;
@@ -179,6 +182,22 @@ wakamep {
     </div>
 </div>
   </wakame02>
+<script>
+        $(function () {
+            $('#searchbox').autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/suggest',
+                        data: { keyword: request.term },
+                        success: function (data) {
+                            response(data);
+                        }
+                    });
+                },
+                delay: 300
+            });
+        });
+  </script>
 </body>
 
 </html>
