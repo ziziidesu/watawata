@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -39,164 +40,130 @@
   <main class="container text-center">
     <div class="search-bar">
       <form action="/s" method="get">
-        <input type="text" name="q" class="form-control" placeholder="キーワードを入力..." required>
+        <input type="text" name="q" id="searchbox" class="form-control" placeholder="キーワードを入力..." required>
         <button type="submit" class="btn btn-search">検索(けんさく)</button>
       </form>
     </div>
   </main>
-<a href="/proxy">
+  
   <footer class="text-center">
-    <p class="mt-5 mb-3 text-muted">WAO (プロキシ)</p>
+    <a href="/proxy"><p class="mt-5 mb-3 text-muted">WAO (プロキシ)</p></a>
+    <a href="/app"><p class="mt-5 mb-3 text-muted">app🎮</p></a>
+    <a href="/wakams"><p class="mt-5 mb-3 text-muted">わかめMusic🎶</p></a>
+    <a href="/tool"><p class="mt-5 mb-3 text-muted">ツール🧰</p></a>
+    <a href="/blog/list"><p class="mt-5 mb-3 text-muted">ブログ</p></a>
+    <a href="/blog/help"><p class="mt-5 mb-3 text-muted">ヘルプ</p></a>
   </footer>
-</a>
-<a href="/app">
-  <footer class="text-center">
-    <p class="mt-5 mb-3 text-muted">app🎮</p>
-  </footer>
-</a>
-<a href="/wakams">
-  <footer class="text-center">
-    <p class="mt-5 mb-3 text-muted">わかめMusic🎶</p>
-  </footer>
-</a>
-<a href="/tool">
-  <footer class="text-center">
-    <p class="mt-5 mb-3 text-muted">ツール🧰</p>
-  </footer>
-</a>
-<iframe src= "https://wakamecomment.glitch.me" style="border: none; margin: 0; height: 3px; width: 8px;"></iframe>
-<iframe src= "https://yukibbs.pagostepeapulco.gob.mx/info" style="border: none; margin: 0; height: 3px; width: 8px;"></iframe>
-<a href="/blog/list">
-  <footer class="text-center">
-    <p class="mt-5 mb-3 text-muted">ブログ</p>
-  </footer>
-</a>
-<a href="/blog/help">
-  <footer class="text-center">
-    <p class="mt-5 mb-3 text-muted">ヘルプ</p>
-  </footer>
-</a>
-<style>
-header {
-  background-color: #333;
-  color: white;
-  padding: 10px 0;
-  text-align: center;
-}
 
-.banner {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-.btn {
-  background: none;
-  background-color: #333;
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 10px 15px;
-  transition: background 0.3s, transform 0.3s;
-  border-radius: 5px;
-}
-
-.btn:hover {
-  background-color: #302833;
-  transform: scale(1.15);
-}
-wakame02 {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 1em 0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-wakamep {
-    font-size: 1em;
-    margin: 0;
-    color: #666;
-}
-.hover-target {
-            display: inline-block;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .profile-card {
-            display: none;
-            left: 50%;
-            border-radius: 10px;
-            max-width: 300px;
-            text-align: center;
-        }
-
-        .hover-target:hover .profile-card {
-            display: block;
-        }
-
-        .profile-card img {
-            border-radius: 50%;
-            width: 100px;
-            height: 100px;
-        }
-
-        .profile-card .name {
-            font-size: 1.5em;
-            margin: 10px 0;
-        }
-
-        .profile-card .description {
-            font-size: 1em;
-            color: #666;
-}
-        .container {
-            margin-top: 50px;
-        }
-        .search-bar {
-            position: relative;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .form-control {
-            padding-right: 80px;
-        }
-        .btn-search {
-            position: absolute;
-            right: 0;
-            top: 0;
-            height: 100%;
-            border-radius: 0;
-        }
-</style>
-  <wakame02>
+  <iframe src="https://wakamecomment.glitch.me" style="border: none; margin: 0; height: 3px; width: 8px;"></iframe>
+  
   <div class="hover-target">
-    <wakamep>&copy; 2024 わかめ02</wakamep>
     <div class="profile-card">
-        <a href="/blog/wakame02">
+      <a href="/blog/wakame02">
         <img src="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/IMG_1281.png?v=1718682861752" alt="アイコン">
         <div class="name">わかめ02</div>
         <div class="description">わーい</div>
-        </a>
+      </a>
     </div>
-</div>
-  </wakame02>
-<script>
-        $(function () {
-            $('#searchbox').autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: '/suggest',
-                        data: { keyword: request.term },
-                        success: function (data) {
-                            response(data);
-                        }
-                    });
-                },
-                delay: 300
-            });
-        });
+  </div>
+
+  <style>
+    header {
+      background-color: #333;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    .banner {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn {
+      background: none;
+      background-color: #333;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 10px 15px;
+      transition: background 0.3s, transform 0.3s;
+      border-radius: 5px;
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+
+    .search-bar {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .form-control {
+      padding-right: 80px;
+    }
+
+    .btn-search {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      border-radius: 0;
+    }
+
+    .hover-target {
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .profile-card {
+      display: none;
+      left: 50%;
+      border-radius: 10px;
+      max-width: 300px;
+      text-align: center;
+    }
+
+    .hover-target:hover .profile-card {
+      display: block;
+    }
+
+    .profile-card img {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+    }
+
+    .profile-card .name {
+      font-size: 1.5em;
+      margin: 10px 0;
+    }
+
+    .profile-card .description {
+      font-size: 1em;
+      color: #666;
+    }
+  </style>
+
+  <script>
+    $(function () {
+      $('#searchbox').autocomplete({
+        source: function (request, response) {
+          $.ajax({
+            url: '/suggest',
+            data: { keyword: request.term },
+            success: function (data) {
+              response(data);
+            }
+          });
+        },
+        delay: 300
+      });
+    });
   </script>
 </body>
 
