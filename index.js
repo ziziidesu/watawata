@@ -616,8 +616,10 @@ app.get("/vi*", (req, res) => {
 });
 
 // チャンネル画像読み込み
-app.get("/ytc*", (req, res) => {
-    let stream = miniget(`https://yt3.ggpht.com/${req.url.split("?")[0]}`, {
+app.get("/ytc/:id", (req, res) => {
+    const channelId = req.params.id;
+    const imageUrl = `https://yt3.ggpht.com/ytc/${channelId}=s900-c-k-c0xffffffff-no-rj-mo`;
+    let stream = miniget(imageUrl, {
         headers: {
             "user-agent": user_agent
         }
