@@ -27,12 +27,31 @@ app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+
 app.use(session({
-    secret: 'process.env.SESSION_SECRET',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 5 * 24 * 60 * 60 * 1000 } 
+    cookie: { maxAge: 5 * 24 * 60 * 60 * 1000 }
 }));
+
+
+//せっしょんのてすとぉ
+app.get('/wakamehistory3', (req, res) => {
+    let favorites = [];
+
+    const cookie = req.session.wakamehistory;
+    console.log(cookie)
+
+    if (cookie) {
+        try {
+            favorites = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
+        } catch (error) {
+            console.error('Error parsing cookie:', error);
+        }
+    }
+    res.render('wakamehistory', { tracks: favorites });
+});
 
 //ログイン
 // 読み込み時ちぇっく
@@ -228,6 +247,8 @@ app.get('/w/:id', async (req, res) => {
       likeCount: videoInfo.likeCount
     };
 
+    req.session.wakamehistory = templateData;
+    
     res.render('infowatch', templateData);
   } catch (error) {
         res.status(500).render('matte', { 
