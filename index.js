@@ -49,13 +49,13 @@ app.get('/tsttsttst23', async (req, res) => {
       .order('id', { ascending: false })
       .limit(3);
     if (error) {
-      throw new Error(`Supabaseからのデータ取得エラー: ${error.message}`);
+      throw new Error(`データ取得エラー: ${error.message}`);
     }
     console.log('直近3件の履歴:', data);
-    res.status(200).send('履歴データをコンソールに表示しました');
+    res.status(200).send('完了');
   } catch (error) {
-    console.error('エラーが発生しました:', error);
-    res.status(500).send('履歴を取得できませんでした');
+    console.error('エラー', error);
+    res.status(500).send('不可');
   }
 });
 
@@ -1134,6 +1134,46 @@ app.get("/block/cc3q",(req, res) => {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   res.render('../views/tst/2.ejs', { ip: ip });
 })
+
+//アカウント管理
+//登録
+app.post('/register', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password
+    });
+
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    res.status(200).json({ message: 'アカウントが作成されました！確認メールを送信しました。' });
+  } catch (err) {
+    res.status(500).json({ error: '登録中にエラーが発生しました。' });
+  }
+});
+//ログイン
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    res.status(200).json({ message: 'ログイン成功！' });
+  } catch (err) {
+    res.status(500).json({ error: 'ログイン中にエラーが発生しました。' });
+  }
+});
 
 
 // エラー
