@@ -48,17 +48,20 @@ app.get('/tsttsttst23', async (req, res) => {
       .from('history')
       .select('*')
       .order('id', { ascending: false })
-      .limit(3);
+      .limit(500); 
     if (error) {
-      throw new Error(`データ取得エラー: ${error.message}`);
+      throw new Error(`Supabaseからのデータ取得エラー: ${error.message}`);
     }
-    console.log('直近3件の履歴:', data);
-    res.status(200).send('完了');
+    const randomIndex = Math.floor(Math.random() * data.length);
+    const randomEntry = data[randomIndex];
+    const videoId = randomEntry.videoId;
+    res.redirect(`/w/${videoId}`);
   } catch (error) {
-    console.error('エラー', error);
-    res.status(500).send('不可');
+    console.error('エラーが発生しました:', error);
+    res.status(500).send('履歴を取得できませんでした');
   }
 });
+
 
 //ログイン
 // 読み込み時ちぇっく
