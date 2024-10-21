@@ -1144,7 +1144,7 @@ app.get("/aclogin",(req, res) => {
   res.render("../public/aclogin.ejs", { error: null })
 })
 //登録
-app.post('/register', async (req, res) => {
+app.post('/acregister', async (req, res) => {
   const { email, password, displayName } = req.body;
   try {
     const { data, error } = await supabase.auth.signUp({
@@ -1166,9 +1166,8 @@ app.post('/register', async (req, res) => {
     res.status(500).render('../public/register.ejs', { error: '登録中にエラーが発生しました。' });
   }
 });
-
 //ログイン
-app.post('/login', async (req, res) => {
+app.post('/aclogin', async (req, res) => {
   const { email, password } = req.body;
   let errorMsg = '';
   try {
@@ -1184,7 +1183,7 @@ app.post('/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       errorMsg = 'メールアドレスまたはパスワードが間違っています';
-      return res.status(401).render('login', { error: errorMsg });
+      return res.status(401).render('../public/aclogin.ejs', { error: errorMsg });
     }
     req.session.user = {
       email: user.email,
@@ -1192,7 +1191,7 @@ app.post('/login', async (req, res) => {
     };
     res.redirect('/');
   } catch (error) {
-    res.status(500).render('login', { error: error.message });
+    res.status(500).render('../public/aclogin.ejs', { error: error.message });
   }
 });
 

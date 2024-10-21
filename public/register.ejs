@@ -84,6 +84,16 @@
         transform: translateY(0);
       }
     }
+    .message {
+      color: #fffc;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .link {
+      color: #fff;
+      text-decoration: underline;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -94,12 +104,16 @@
       <div class="error"><%= error %></div>
     <% } %>
 
-    <form action="/register" method="POST">
+    <form action="/acregister" method="POST">
       <input type="text" name="displayName" placeholder="ディスプレイネーム" required>
       <input type="email" name="email" placeholder="メールアドレス" required>
       <input type="password" name="password" placeholder="パスワード" required>
       <button type="submit">登録</button>
     </form>
+      
+    <div class="message">
+      アカウントをすでに持っていますか？ <a href="/aclogin" class="link">ログインはこちら</a>
+    </div>
   </div>
 </body>
 </html>
