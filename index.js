@@ -1145,12 +1145,17 @@ app.get("/aclogin",(req, res) => {
 })
 //登録
 app.post('/acregister', async (req, res) => {
-  const { email, password, displayName } = req.body;
+  const { email, password, displayName, terms } = req.body;
   try {
     const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password
     });
+    if (!terms) {
+      return res.render('register', { 
+        error: '「アカウント作成の注意」を読んで下さい。' 
+      });
+    }
     if (error) {
       return res.status(400).render('../public/register.ejs', { error: error.message });
     }

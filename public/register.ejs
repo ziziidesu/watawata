@@ -49,6 +49,10 @@
       outline: none;
       background-color: rgba(255, 255, 255, 0.25);
     }
+    input::placeholder {
+      color: #ffffff;
+      opacity: 0.5;
+    }
     button {
       padding: 12px 20px;
       background-color: #667eea;
@@ -74,6 +78,16 @@
       padding: 10px;
       border-radius: 5px;
     }
+    .message {
+      color: #fffc;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .link {
+      color: #fff;
+      text-decoration: underline;
+      cursor: pointer;
+    }
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -84,15 +98,18 @@
         transform: translateY(0);
       }
     }
-    .message {
-      color: #fffc;
-      margin-top: 1rem;
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
       font-size: 0.9rem;
+      justify-content: flex-start;
     }
-    .link {
-      color: #fff;
-      text-decoration: underline;
-      cursor: pointer;
+    .checkbox-container input {
+      width: auto;
+      margin-right: 10px;
+      transform: scale(1.2);
+      accent-color: #667eea;
     }
   </style>
 </head>
@@ -105,9 +122,15 @@
     <% } %>
 
     <form action="/acregister" method="POST">
-      <input type="text" name="displayName" placeholder="ディスプレイネーム" required>
+      <input type="text" name="displayName" placeholder="ニックネーム" required>
       <input type="email" name="email" placeholder="メールアドレス" required>
       <input type="password" name="password" placeholder="パスワード" required>
+      
+      <div class="checkbox-container">
+        <input type="checkbox" name="terms" id="terms" required>
+        <p><a href="/blog/register">アカウント作成の注意</a>を読みました</p>
+      </div>
+      
       <button type="submit">登録</button>
     </form>
       
