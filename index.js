@@ -17,6 +17,7 @@ const bodyParser = require('body-parser');
 const { URL } = require('url');
 const session = require('express-session');
 const { createClient } = require('@supabase/supabase-js');
+const bcrypt = require('bcrypt');
 
 const limit = process.env.LIMIT || 50;
 
@@ -1136,44 +1137,65 @@ app.get("/block/cc3q",(req, res) => {
 })
 
 //アカウント管理
+app.get("/acregister",(req, res) => {
+  res.render("../public/register.ejs", { error: null })
+})
+app.get("/aclogin",(req, res) => {
+  res.render("../public/aclogin.ejs", { error: null })
+})
 //登録
 app.post('/register', async (req, res) => {
-  const { email, password } = req.body;
-
+  const { email, password, displayName } = req.body;
   try {
     const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password
     });
-
     if (error) {
-      return res.status(400).json({ error: error.message });
+      return res.status(400).render('../public/register.ejs', { error: error.message });
     }
-
-    res.status(200).json({ message: 'アカウントが作成されました！確認メールを送信しました。' });
+    const userId = data.user.id;
+    const { data: profileData, error: profileError } = await supabase
+      .from('profiles')
+      .insert([{ id: userId, display_name: displayName }]);
+    if (profileError) {
+      return res.status(400).render('../public/register.ejs', { error: profileError.message });
+    }
+    res.status(200).render('../public/emailSent.ejs', { email: email });
   } catch (err) {
-    res.status(500).json({ error: '登録中にエラーが発生しました。' });
+    res.status(500).render('../public/register.ejs', { error: '登録中にエラーが発生しました。' });
   }
 });
+
 //ログイン
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
-
+  let errorMsg = '';
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password
-    });
-
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('email, password, displayName')
+      .eq('email', email)
+      .single();
+    
     if (error) {
-      return res.status(400).json({ error: error.message });
+      throw new Error('ユーザーが見つかりません');
     }
-
-    res.status(200).json({ message: 'ログイン成功！' });
-  } catch (err) {
-    res.status(500).json({ error: 'ログイン中にエラーが発生しました。' });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      errorMsg = 'メールアドレスまたはパスワードが間違っています';
+      return res.status(401).render('login', { error: errorMsg });
+    }
+    req.session.user = {
+      email: user.email,
+      displayName: user.displayName,
+    };
+    res.redirect('/');
+  } catch (error) {
+    res.status(500).render('login', { error: error.message });
   }
 });
+
 
 
 // エラー

@@ -19,7 +19,8 @@
     "ws": "^8.7.0",
     "soundcloud-downloader": "^1.0.0",
     "express-session": "^1.18.1",
-    "@supabase/supabase-js": "^2.45.6"
+    "@supabase/supabase-js": "^2.45.6",
+    "bcrypt": "^5.1.1"
   },
   "description": "わかめ",
   "engines": {
