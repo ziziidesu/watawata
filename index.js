@@ -41,6 +41,24 @@ app.use(session({
     cookie: { maxAge: 5 * 24 * 60 * 60 * 1000 }
 }));
 
+app.get('/tsttsttst23', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('history')
+      .select('*')
+      .order('id', { ascending: false })
+      .limit(3);
+    if (error) {
+      throw new Error(`Supabaseからのデータ取得エラー: ${error.message}`);
+    }
+    console.log('直近3件の履歴:', data);
+    res.status(200).send('履歴データをコンソールに表示しました');
+  } catch (error) {
+    console.error('エラーが発生しました:', error);
+    res.status(500).send('履歴を取得できませんでした');
+  }
+});
+
 //ログイン
 // 読み込み時ちぇっく
 app.use((req, res, next) => {
