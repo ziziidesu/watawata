@@ -58,13 +58,6 @@
   </video>
 </div>
 <div class="card">
-  <div class="card-channel">
-    <div class="container">
-    <h4>
-      <%= videoTitle %>
-      </h4>
-    </div>
-  </div>
   <div class="toolcard-header">
     <small class="text-muted">「ツール」は右上に移動しました。</small>
     <small class="text-muted float-right"><button class="favorite-btn" onclick="toggleFavorite('<%= videoId %>', '<%= channelId %>', '<%= channelName %>','<%= videoTitle %>')">お気に入り</button></small>
@@ -85,7 +78,9 @@
     <small class="text-muted">共有用URL: https://wakame02m.glitch.me/login/guest/<%= videoId %></small>
   </div>
   <div class="card-body">
-    <h5><%= videoTitle %></h5>
+    <h4>
+      <%= videoTitle %>
+    </h4>
       <p><%- (videoDes || "").replace(/\n/g, "<br>") %></p>
   </div>
 </div>
@@ -158,6 +153,15 @@ video {
   width: 100%;
   height:100%;
   }
+.card-title h4 {
+  font-size: 1.6rem; 
+  color: #333;
+  margin: 10px 0; 
+}
+
+.card-title .container {
+  padding: 0 15px;
+}
 
 .toolcard-header {
   background-color: #FFF5F7;
