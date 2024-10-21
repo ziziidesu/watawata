@@ -58,11 +58,12 @@
   </video>
 </div>
 <div class="card">
-  <div class="toolcard-header">
-    <small class="text-muted">ツール　　<button onclick="location.href='/pytdf/<%= videoId %>'">この動画をダウンロードする</button><button onclick="location.href='/www/<%= videoId %>'">高画質で再生する</button><button class="favorite-btn" onclick="toggleFavorite('<%= videoId %>', '<%= channelId %>', '<%= channelName %>','<%= videoTitle %>')">お気に入り</button></small>
-  </div>
-  <div class="toolcard-header">
-    <small class="text-muted">再生できませんか？　　<button onclick="location.href='/redirect?p=w&id=<%= videoId %>'">再読み込みする</button><button onclick="location.href='/embeder/<%= videoId %>'">サーバーを変更する</button></small>
+  <div class="card-channel">
+    <div class="container">
+    <h4>
+      <%= videoTitle %>
+      </h4>
+    </div>
   </div>
   <div class="card-channel">
     <div class="container">
