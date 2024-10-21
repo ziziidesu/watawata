@@ -1042,6 +1042,7 @@ app.get('/wakameokini', (req, res) => {
     res.render('wakameokiniiri', { tracks: favorites });
 });
 
+
 //履歴
 app.get('/wakamehistory', (req, res) => {
     let favorites = [];
