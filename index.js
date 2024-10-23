@@ -29,6 +29,7 @@ app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(express.json());
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY; 
@@ -39,7 +40,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 5 * 24 * 60 * 60 * 1000 }
+    cookie: { maxAge: 365 * 24 * 60 * 60 * 1000 }
 }));
 
 app.get('/tsttsttst23', async (req, res) => {
@@ -1025,22 +1026,37 @@ app.get('/wakamc/f', (req, res) => {
 });
 
 //お気に入り
-app.get('/wakameokini', (req, res) => {
-    let favorites = [];
+app.post('/wakameokini/toggle', (req, res) => {
+    const { videoId, channelId, channelName, videoTitle } = req.body;
 
-    const cookie = req.headers.cookie
-        .split('; ')
-        .find(row => row.startsWith('wakametubefavorites='));
-
-    if (cookie) {
-        try {
-            favorites = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
-        } catch (error) {
-            console.error('Error parsing cookie:', error);
-        }
+    if (!req.session.favorites) {
+        req.session.favorites = [];
     }
+
+    const favorites = req.session.favorites;
+    const favoriteIndex = favorites.findIndex(track => track.videoId === videoId);
+
+    if (favoriteIndex === -1) {
+        favorites.push({ videoId, channelId, channelName, videoTitle });
+        res.json({ status: 'added' });
+    } else {
+        favorites.splice(favoriteIndex, 1);
+        res.json({ status: 'removed' });
+    }
+    req.session.favorites = favorites;
+});
+app.get('/wakameokini/fav', (req, res) => {
+    if (!req.session.favorites) {
+        req.session.favorites = [];
+    }
+    res.json(req.session.favorites);
+});
+//お気に入りページ
+app.get('/wakameokini', (req, res) => {
+    let favorites = req.session.favorites || [];
     res.render('wakameokiniiri', { tracks: favorites });
 });
+
 
 
 //履歴

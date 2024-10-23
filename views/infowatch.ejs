@@ -325,36 +325,35 @@ document.addEventListener('DOMContentLoaded', () => {
     saveToHistory(videoId, channelId, channelName, videoTitle);
 });
   
+//お気に入り
 function toggleFavorite(videoId, channelId, channelName, videoTitle) {
-    let favorites = getFavoritesFromCookies();
-    
-    const favoriteIndex = favorites.findIndex(track => track.videoId === videoId);
-
-    if (favoriteIndex === -1) {
-        favorites.push({ videoId, channelId, channelName, videoTitle });
-        alert('お気に入りに追加しました！');
-    } else {
-        favorites.splice(favoriteIndex, 1);
-        alert('お気に入りを解除しました！');
-    }
-
-    document.cookie = `wakametubefavorites=${encodeURIComponent(JSON.stringify(favorites))}; path=/; max-age=31536000`;
-
-}
-
-function getFavoritesFromCookies() {
-    const favoritesCookie = document.cookie.split('; ').find(row => row.startsWith('wakametubefavorites='));
-    if (favoritesCookie) {
-        const cookieValue = favoritesCookie.split('=')[1];
-        try {
-            return JSON.parse(decodeURIComponent(cookieValue));
-        } catch (error) {
-            console.error('Error parsing favorites cookie:', error);
-            return [];
+    fetch('/wakameokini/toggle', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ videoId, channelId, channelName, videoTitle })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'added') {
+            alert('お気に入りに追加しました！');
+        } else if (data.status === 'removed') {
+            alert('お気に入りを解除しました！');
         }
-    }
-    return [];
+    })
+    .catch(error => console.error('Error:', error));
 }
+
+function getFavorites() {
+    fetch('/wakameokini/fav')
+        .then(response => response.json())
+        .then(favorites => {
+            console.log('お気に入り一覧:', favorites);
+        })
+        .catch(error => console.error('Error fetching favorites:', error));
+}
+
   
 //サジェスト
   $(function () {
