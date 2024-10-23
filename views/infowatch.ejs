@@ -298,7 +298,7 @@ function saveToHistory(videoId, channelId, channelName, videoTitle) {
         history.splice(historyIndex, 1);
     }
 
-    if (history.length >= 10) {
+    while (history.length >= 10) {
         history.shift();
     }
 
