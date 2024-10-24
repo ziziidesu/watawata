@@ -298,13 +298,6 @@ document.getElementById('wakameVideo').addEventListener('pause', () => {
         console.log('Wake Lock has been released manually');
     }
 });
-  
-document.getElementById('wakameVideo').addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement) {
-        videoElement.style.width = '100%';
-        videoElement.style.height = 'auto';
-    }
-});
 
 document.getElementById('wakameVideo').addEventListener('ended', () => {
     const videoElement = document.getElementById('wakameVideo');
