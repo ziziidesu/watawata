@@ -50,7 +50,7 @@ app.get('/tsttsttst23', async (req, res) => {
       .order('id', { ascending: false })
       .limit(500); 
     if (error) {
-      throw new Error(`Supabaseからのデータ取得エラー: ${error.message}`);
+      throw new Error(`データ取得エラー: ${error.message}`);
     }
     const randomIndex = Math.floor(Math.random() * data.length);
     const randomEntry = data[randomIndex];
