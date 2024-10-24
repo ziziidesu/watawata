@@ -697,6 +697,11 @@ app.get("/app",(req, res) => {
   res.render("../public/apps.ejs")
 })
 
+//キリ番
+app.get("/kirikiri",(req, res) => {
+  res.render("../views/kiriban.ejs")
+})
+
 //game
 app.get('/game/:id', (req, res) => {
   const id = req.params.id;
