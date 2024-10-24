@@ -698,9 +698,27 @@ app.get("/app",(req, res) => {
 })
 
 //キリ番
-app.get("/kirikiri",(req, res) => {
-  res.render("../views/kiriban.ejs")
-})
+app.get("/kirikiri", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('history')
+      .select('id')
+      .order('id', { ascending: false })
+      .limit(1);
+    if (error) {
+      throw new Error(`データ取得エラー: ${error.message}`);
+    }
+    if (data.length === 0) {
+      throw new Error('データが存在しません');
+    }
+    const latestId = data[0].id;
+    res.render("../views/kiriban.ejs", { latestId });
+  } catch (error) {
+    console.error('エラーが発生しました:', error);
+    res.status(500).send('データを取得できませんでした');
+  }
+});
+
 
 //game
 app.get('/game/:id', (req, res) => {
