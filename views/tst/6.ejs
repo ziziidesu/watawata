@@ -20,6 +20,7 @@
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/plyr.polyfilled.js"></script>
 </script>
 </head>
 
@@ -229,6 +230,26 @@ video {
     }
   </style>
 <script>
+   document.addEventListener('DOMContentLoaded', () => {
+     const player = new Plyr('video', {
+       controls: [
+         'play-large', 'play', 'progress', 'current-time', 'duration',
+         'mute', 'volume', 'settings',
+         'airplay', 'download', 'fullscreen'
+       ],
+       settings: ['captions', 'quality', 'speed'],
+       title: '<%= videoTitle %>,',
+       iconUrl: '/plyr.svg',
+       autopause: false,
+       debug: true
+     });
+
+     player.on('error', err => {
+     	console.error(err);
+     	location.reload();
+     });
+   });
+  
 const menuBtn = document.getElementById('menu-btn');
 const sideMenu = document.getElementById('side-menu');
 const overlay = document.getElementById('overlay');
