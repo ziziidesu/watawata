@@ -226,6 +226,23 @@ video {
       text-align: left;
       box-sizing: border-box;
     }
+.video-container {
+    position: relative;
+}
+
+.loading-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 10;
+}
+
+.loading-indicator img {
+    width: 75px;
+    height: 75px;
+}
   </style>
 <script>
 const menuBtn = document.getElementById('menu-btn');
