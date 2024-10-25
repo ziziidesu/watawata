@@ -1157,6 +1157,38 @@ app.get('/suggest', (req, res) => {
     request.end();
 });
 
+//再生数トップの動画
+app.get("/topvideos", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('history')              
+      .select('videoId, title') 
+      .order('created_at', { ascending: false })
+      .limit(1000);
+
+    if (error) {
+      throw new Error(`データ取得エラー: ${error.message}`);
+    }
+
+    const videoCount = data.reduce((acc, { videoId, title }) => {
+      if (!acc[videoId]) {
+        acc[videoId] = { count: 0, title };
+      }
+      acc[videoId].count += 1;
+      return acc;
+    }, {});
+
+    const topVideos = Object.entries(videoCount)
+      .sort((a, b) => b[1].count - a[1].count)
+      .slice(0, 3);
+
+    res.render("../views/top-videos.ejs", { topVideos });
+  } catch (error) {
+    console.error('エラーが発生しました:', error);
+    res.status(500).send('データを取得できませんでした');
+  }
+});
+
 
 //概要欄用リダイレクト
 app.get('/watch', (req, res) => {
