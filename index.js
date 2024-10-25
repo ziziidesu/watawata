@@ -555,24 +555,22 @@ app.get('/pytdf/:id', async (req, res) => {
 
     const formatStreams = videoInfo.formatStreams || [];
     const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
-
     if (!streamUrl) {
           res.status(500).render('matte', { 
       videoId, 
       error: 'ストリームURLが見つかりません',
     });
     }
-    
     https.get(streamUrl, (streamResponse) => {
       if (streamResponse.statusCode !== 200) {
         res.status(streamResponse.statusCode).send(`Failed to download video. Status code: ${streamResponse.statusCode}`);
         return;
-      }
+    }
 
-      res.setHeader('Content-Disposition', `attachment; filename="wakame.mp4"`);
-      res.setHeader('Content-Type', 'video/mp4');
+    res.setHeader('Content-Disposition', `attachment; filename=wakame.mp4`);
+    res.setHeader('Content-Type', 'video/mp4');
 
-      streamResponse.pipe(res);
+    streamResponse.pipe(res);
     }).on('error', (err) => {
       res.status(500).send(`Request error: ${err.message}`);
     });
