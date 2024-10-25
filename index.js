@@ -571,8 +571,6 @@ app.get('/pytdf/:id', async (req, res) => {
   }
 });
 
-
-
 // ホーム
 app.get("/", (req, res) => {
    res.sendFile(__dirname + "/views/index.html");
