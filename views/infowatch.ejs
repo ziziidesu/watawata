@@ -42,7 +42,7 @@
         <span class="checkmark"></span>
         </label></li>
         <li><a href="/pytdf/<%= videoId %>">ダウンロード</a></li>
-        <li><a href="/pytdf/<%= videoId %>">ストリームURLに移動</a></li>
+        <li><a href="<%= stream_url %>" target="_blank">ストリームURLに移動</a></li>
         <li><a href="/ll/<%= videoId %>">音のみで再生する</a></li>
         <li><a href="/www/<%= videoId %>">高画質で再生する</a></li>
         <li><a href="/vi/<%= videoId %>/maxresdefault.jpg">サムネイルをダウンロード</a></li>
@@ -323,12 +323,15 @@ document.getElementById('wakameVideo').addEventListener('ended', () => {
         console.log('Wake Lock has been released because video ended');
     }
 });
-  
+
+//info整理
 const videoId = "<%= videoId %>";
 const channelId = "<%= channelId %>";
 const channelName = "<%= channelName %>";
 const videoTitle = "<%= videoTitle %>";
 
+
+//履歴保存
 function saveToHistory(videoId, channelId, channelName, videoTitle) {
     let history = getHistoryFromCookies();
 
@@ -360,7 +363,7 @@ function getHistoryFromCookies() {
     }
     return [];
 }
-  
+
 document.addEventListener('DOMContentLoaded', () => {
     saveToHistory(videoId, channelId, channelName, videoTitle);
 });
