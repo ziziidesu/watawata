@@ -723,6 +723,11 @@ app.get('/blog/:id', (req, res) => {
   res.render(`blog/${id}`, { id: id });
 });
 
+//ネタ
+app.get("/neta",(req, res) => {
+  res.render("../views/neta.ejs")
+})
+
 //お問い合わせ
 app.get("/send",(req, res) => {
   res.render("../views/send.ejs")
@@ -1186,7 +1191,7 @@ app.get("/topvideos", async (req, res) => {
     
     console.log(topVideos);
 
-    res.render("../views/top-videos.ejs", { topVideos });
+    res.render("../views/top-videos.ejs", { topVideos, count });
   } catch (error) {
     console.error('エラーが発生しました:', error);
     res.status(500).send('データを取得できませんでした');
