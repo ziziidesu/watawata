@@ -166,14 +166,15 @@ p.description {
       <form class="d-flex" action="/s">
         <input type="text" name="q" class="form-control" placeholder="キリ番ダネー" required>
       </form>
+      <button id="loadVideosButton">もっと遊ぶ</button>
     </div>
   </header>
 
   <div class="container">
-    <h1>きりり</h1>
-    <p class="description">わかめtube全体で何再生目か。キリ番？みたいなやつです。「わかめtube全体の総再生回数」はリアルタイム更新ですが、動画リストの方は手動なのでリアルタイムじゃないです。
-      気分で初めてみました。飽きたらやめます。タイトルが長すぎると割愛します:)<br>
-      統計開始日: 2024年10月21日</p>
+    <h1>ランキング👑</h1>
+    <p class="description">わかめtubeで直近で再生された1000件の動画の中での再生数ランキングです。一応、右上の「もっと遊ぶ」から何件までのデータを参照するかを指定できます。<br>
+    なんか友達に「面白そう」って言われたので作ってみました(・∀・)。<br>
+    感想: 僕が開発のための動作確認として聴いてる曲が上の方に来てるな、と言う印象。まぁ、同じ動画を何回も見返す人とかなかなか居らんし当然っちゃ当然なんだが。</p>
 
   <section class="results">
     <div class="results-container">
@@ -194,5 +195,15 @@ p.description {
   </section>
     
   </div>
+    <script>
+        document.getElementById('loadVideosButton').addEventListener('click', () => {
+            const count = prompt("何件まで読み込みますか？　(最大で1000件までで、1000より大きい場合は自動的に1000になります。");
+            if (count && !isNaN(count) && count > 0) {
+                window.location.href = `/topvideos?count=${count}`;
+            } else {
+                alert("有効な数値を入力してください。");
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1160,11 +1160,13 @@ app.get('/suggest', (req, res) => {
 //再生数トップの動画
 app.get("/topvideos", async (req, res) => {
   try {
+    const count = parseInt(req.query.count) || 1000;
+
     const { data, error } = await supabase
       .from('history')              
       .select('videoId, videoTitle') 
       .order('id', { ascending: false })
-      .limit(1000);
+      .limit(count);
 
     if (error) {
       throw new Error(`データ取得エラー: ${error.message}`);
@@ -1190,6 +1192,7 @@ app.get("/topvideos", async (req, res) => {
     res.status(500).send('データを取得できませんでした');
   }
 });
+
 
 
 //概要欄用リダイレクト
