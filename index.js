@@ -552,27 +552,26 @@ app.get('/pytdf/:id', async (req, res) => {
 
   try {
     const videoInfo = await fetchVideoInfoParallel(videoId);
-    
     const formatStreams = videoInfo.formatStreams || [];
     const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
-     https.get(streamUrl, (streamResponse) => {
-      if (streamResponse.statusCode !== 200) {
-        res.status(streamResponse.statusCode).send(`Failed to download video. Status code: ${streamResponse.statusCode}`);
-        return;
-      }
 
-      res.setHeader('Content-Disposition', `attachment; filename*=wakame.mp4`);
+    https.get(streamUrl, (streamResponse) => {
+
+      res.setHeader('Content-Disposition', `attachment; filename=wakame.mp4`);
       res.setHeader('Content-Type', 'video/mp4');
 
-      // ダウンロード
       streamResponse.pipe(res);
     }).on('error', (err) => {
+      console.error('Request error:', err.message);
       res.status(500).send(`Request error: ${err.message}`);
     });
   } catch (error) {
+    console.error('Failed to retrieve stream URL:', error.message);
     res.status(500).send(`Failed to retrieve stream URL: ${error.message}`);
   }
 });
+
+
 
 // ホーム
 app.get("/", (req, res) => {
