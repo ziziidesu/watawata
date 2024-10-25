@@ -55,10 +55,13 @@
 <div id="overlay" class="overlay"></div>
   
 <div class="card">
-  <video id="wakameVideo" controls autoplay poster="/vi/<%= videoId %>/maxresdefault.jpg">
-    <source src="<%= stream_url %>" type="video/mp4">
-    読み込み失敗。ブラウザをアップデートしてどうぞ。
-  </video>
+    <div class="loading-indicator">
+        <img src="/path/to/loading.gif" alt="Loading..." />
+    </div>
+    <video id="wakameVideo" controls autoplay poster="/vi/<%= videoId %>/maxresdefault.jpg">
+        <source src="<%= stream_url %>" type="video/mp4">
+        読み込み失敗。ブラウザをアップデートしてどうぞ。
+    </video>
 </div>
 <div class="card">
   <div class="toolcard-header">
