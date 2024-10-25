@@ -267,7 +267,7 @@ app.get('/w/:id', async (req, res) => {
         }
       ]);
           
-    res.render('tst/6', templateData);
+    res.render('infowatch', templateData);
   } catch (error) {
         res.status(500).render('matte', { 
       videoId, 
