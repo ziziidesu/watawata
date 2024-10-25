@@ -62,7 +62,6 @@
         <source src="<%= stream_url %>" type="video/mp4">
         読み込み失敗。ブラウザをアップデートしてどうぞ。
     </video>
-    <div id="skip-notification" class="hidden"></div>
 </div>
 <div class="card">
   <div class="toolcard-header">
@@ -251,30 +250,9 @@ video {
     width: 75px;
     height: 75px;
 }
-#skip-notification {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 2rem;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 10px 20px;
-    border-radius: 10px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-#skip-notification.show {
-    opacity: 1;
-}
-
-#skip-notification.hidden {
-    opacity: 0;
-}
 </style>
 <script>
+  //プレイヤーカスタマイズ
   document.addEventListener('DOMContentLoaded', () => {
      const player = new Plyr('video', {
        controls: [
@@ -298,68 +276,16 @@ video {
 document.addEventListener('DOMContentLoaded', function () {
     const videoElement = document.getElementById('wakameVideo');
     const loadingIndicator = document.querySelector('.loading-indicator');
-
     videoElement.addEventListener('waiting', () => {
         loadingIndicator.style.display = 'block';
     });
-
     videoElement.addEventListener('playing', () => {
         loadingIndicator.style.display = 'none';
     });
-
     videoElement.addEventListener('canplay', () => {
         loadingIndicator.style.display = 'none';
     });
 });
-
-// スキップ通知表示関数
-function showNotification(message) {
-    const skipNotification = document.getElementById('skip-notification');
-    skipNotification.textContent = message;
-    skipNotification.classList.remove('hidden');
-    skipNotification.classList.add('show');
-
-    setTimeout(() => {
-        skipNotification.classList.remove('show');
-        skipNotification.classList.add('hidden');
-    }, 800);
-}
-
-// ダブルタップ処理関数
-function handleDoubleTap(video, e) {
-    const currentTime = video.currentTime;
-    if (e.clientX > window.innerWidth / 2) {
-        video.currentTime = Math.min(currentTime + 10, video.duration);
-        showNotification('10秒スキップ');
-    } else {
-        video.currentTime = Math.max(currentTime - 10, 0);
-        showNotification('10秒戻る');
-    }
-}
-
-// イベントリスナーの設定
-function setupVideoControls() {
-    const video = document.getElementById('wakameVideo');
-    let lastTap = 0;
-    const doubleTapDelay = 300;
-
-    // ダブルタップ検知
-    video.addEventListener('click', (e) => {
-        const now = Date.now();
-        if (now - lastTap <= doubleTapDelay) {
-            handleDoubleTap(video, e);
-            lastTap = 0;  // リセット
-        } else {
-            lastTap = now;
-        }
-    });
-}
-
-// DOMContentLoadedイベントを待つ
-document.addEventListener('DOMContentLoaded', () => {
-    setupVideoControls();
-});
-
 
   
 const menuBtn = document.getElementById('menu-btn');

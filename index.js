@@ -62,6 +62,52 @@ app.get('/tsttsttst23', async (req, res) => {
   }
 });
 
+app.get('/tstw/:id', async (req, res) => {
+  const videoId = req.params.id;
+    let cookies = parseCookies(req);
+    let wakames = cookies.wakametubeumekomi === 'true';
+    if (wakames) {
+    res.redirect(`/umekomi/${videoId}`);
+    }
+  try {
+    const videoInfo = await fetchVideoInfoParallel(videoId);
+    
+    const formatStreams = videoInfo.formatStreams || [];
+    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
+    
+    const templateData = {
+      stream_url: streamUrl,
+      videoId: videoId,
+      channelId: videoInfo.authorId,
+      channelName: videoInfo.author,
+      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
+      videoTitle: videoInfo.title,
+      videoDes: videoInfo.descriptionHtml,
+      videoViews: videoInfo.viewCount,
+      likeCount: videoInfo.likeCount
+    };
+
+    const { data, error } = await supabase
+      .from('history')
+      .insert([
+        { 
+          videoId: videoId,
+          channelId: videoInfo.authorId, 
+          channelName: videoInfo.author, 
+          videoTitle: videoInfo.title 
+        }
+      ]);
+          
+    res.render('tst/6', templateData);
+  } catch (error) {
+        res.status(500).render('matte', { 
+      videoId, 
+      error: '動画を取得できません', 
+      details: error.message 
+    });
+  }
+});
+
 //ログイン
 // 読み込み時ちぇっく
 app.use((req, res, next) => {
@@ -267,7 +313,7 @@ app.get('/w/:id', async (req, res) => {
         }
       ]);
           
-    res.render('tst/6', templateData);
+    res.render('infowatch', templateData);
   } catch (error) {
         res.status(500).render('matte', { 
       videoId, 
