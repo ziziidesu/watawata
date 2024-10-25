@@ -1162,17 +1162,17 @@ app.get("/topvideos", async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('history')              
-      .select('videoId, title') 
-      .order('created_at', { ascending: false })
+      .select('videoId, videoTitle') 
+      .order('id', { ascending: false })
       .limit(1000);
 
     if (error) {
       throw new Error(`データ取得エラー: ${error.message}`);
     }
 
-    const videoCount = data.reduce((acc, { videoId, title }) => {
+    const videoCount = data.reduce((acc, { videoId, videoTitle }) => {
       if (!acc[videoId]) {
-        acc[videoId] = { count: 0, title };
+        acc[videoId] = { count: 0, videoTitle };
       }
       acc[videoId].count += 1;
       return acc;
@@ -1180,7 +1180,9 @@ app.get("/topvideos", async (req, res) => {
 
     const topVideos = Object.entries(videoCount)
       .sort((a, b) => b[1].count - a[1].count)
-      .slice(0, 3);
+      .slice(0, 10);
+    
+    console.log(topVideos);
 
     res.render("../views/top-videos.ejs", { topVideos });
   } catch (error) {
