@@ -62,6 +62,8 @@
         <source src="<%= stream_url %>" type="video/mp4">
         読み込み失敗。ブラウザをアップデートしてどうぞ。
     </video>
+  <button id="skip-backward" aria-label="10秒戻す" class="plyr__control plyr__control--custom">10秒戻す</button>
+<button id="skip-forward" aria-label="10秒進む" class="plyr__control plyr__control--custom">10秒進む</button>
 </div>
 <div class="card">
   <div class="toolcard-header">
@@ -250,10 +252,13 @@ video {
     width: 75px;
     height: 75px;
 }
+.plyr__control--custom {
+    display: none; 
+}
+
 </style>
 <script>
-  //プレイヤーカスタマイズ
-  document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
      const player = new Plyr('video', {
        controls: [
          'play-large', 'play', 'progress', 'current-time', 'duration',
@@ -272,8 +277,36 @@ video {
      	console.error(err);
      	location.reload();
      });
-   });
-  
+
+    const skipBackward = document.getElementById('skip-backward');
+    const skipForward = document.getElementById('skip-forward');
+
+    // ボタンの表示・非表示を制御する
+    player.on('play', () => {
+        skipBackward.style.display = 'inline-block';
+        skipForward.style.display = 'inline-block';
+    });
+
+    player.on('pause', () => {
+        skipBackward.style.display = 'none';
+        skipForward.style.display = 'none';
+    });
+
+    player.on('ended', () => {
+        skipBackward.style.display = 'none';
+        skipForward.style.display = 'none';
+    });
+
+    // ボタンの機能
+    skipBackward.addEventListener('click', () => {
+        player.currentTime = Math.max(0, player.currentTime - 10);
+    });
+
+    skipForward.addEventListener('click', () => {
+        player.currentTime = player.currentTime + 10;
+    });
+});
+
 document.addEventListener('DOMContentLoaded', function () {
     const videoElement = document.getElementById('wakameVideo');
     const loadingIndicator = document.querySelector('.loading-indicator');
