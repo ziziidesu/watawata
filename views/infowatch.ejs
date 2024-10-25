@@ -53,6 +53,9 @@
 <div id="overlay" class="overlay"></div>
   
 <div class="card">
+    <div class="loading-indicator">
+        <img src="https://cdn.glitch.global/3128bf45-3a23-4695-81ba-3aba21b8585b/IMG_1966.gif?v=1729824394361" alt="Loading..." />
+    </div>
   <video id="wakameVideo" controls autoplay poster="/vi/<%= videoId %>/maxresdefault.jpg">
     <source src="<%= stream_url %>" type="video/mp4">
     読み込み失敗。ブラウザをアップデートしてどうぞ。
@@ -245,6 +248,24 @@ video {
 }
   </style>
 <script>
+//ローディング
+document.addEventListener('DOMContentLoaded', function () {
+    const videoElement = document.getElementById('wakameVideo');
+    const loadingIndicator = document.querySelector('.loading-indicator');
+
+    videoElement.addEventListener('waiting', () => {
+        loadingIndicator.style.display = 'block';
+    });
+
+    videoElement.addEventListener('playing', () => {
+        loadingIndicator.style.display = 'none';
+    });
+
+    videoElement.addEventListener('canplay', () => {
+        loadingIndicator.style.display = 'none';
+    });
+});
+  
 const menuBtn = document.getElementById('menu-btn');
 const sideMenu = document.getElementById('side-menu');
 const overlay = document.getElementById('overlay');
