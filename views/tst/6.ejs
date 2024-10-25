@@ -56,7 +56,7 @@
   
 <div class="card">
     <div class="loading-indicator">
-        <img src="/path/to/loading.gif" alt="Loading..." />
+        <img src="https://cdn.glitch.global/3128bf45-3a23-4695-81ba-3aba21b8585b/IMG_1966.gif?v=1729824394361" alt="Loading..." />
     </div>
     <video id="wakameVideo" controls autoplay poster="/vi/<%= videoId %>/maxresdefault.jpg">
         <source src="<%= stream_url %>" type="video/mp4">
@@ -233,7 +233,24 @@ video {
       text-align: left;
       box-sizing: border-box;
     }
-  </style>
+.video-container {
+    position: relative;
+}
+
+.loading-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 10;
+}
+
+.loading-indicator img {
+    width: 75px;
+    height: 75px;
+}
+</style>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
      const player = new Plyr('video', {
@@ -254,6 +271,24 @@ video {
      	location.reload();
      });
    });
+  
+document.addEventListener('DOMContentLoaded', function () {
+    const videoElement = document.getElementById('wakameVideo');
+    const loadingIndicator = document.querySelector('.loading-indicator');
+
+    videoElement.addEventListener('waiting', () => {
+        loadingIndicator.style.display = 'block';
+    });
+
+    videoElement.addEventListener('playing', () => {
+        loadingIndicator.style.display = 'none';
+    });
+
+    videoElement.addEventListener('canplay', () => {
+        loadingIndicator.style.display = 'none';
+    });
+});
+
   
 const menuBtn = document.getElementById('menu-btn');
 const sideMenu = document.getElementById('side-menu');
