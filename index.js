@@ -18,6 +18,7 @@ const { URL } = require('url');
 const session = require('express-session');
 const { createClient } = require('@supabase/supabase-js');
 const bcrypt = require('bcrypt');
+const http = require('http');
 
 const limit = process.env.LIMIT || 50;
 
@@ -1133,12 +1134,11 @@ app.get('/wakamehistory', (req, res) => {
 });
 
 //サジェスト
-const http = require('http');
 app.get('/suggest', (req, res) => {
     const keyword = req.query.keyword;
     const options = {
         hostname: 'www.google.com',
-        path: `/complete/search?client=youtube&hl=ja&ds=yt&q=${encodeURIComponent(keyword)}`,
+        path: /complete/search?client=youtube&hl=ja&ds=yt&q=${encodeURIComponent(keyword)},
         method: 'GET',
         headers: {
             'User-Agent': 'Mozilla/5.0'
@@ -1169,6 +1169,7 @@ app.get('/suggest', (req, res) => {
     });
     request.end();
 });
+
 
 //再生数らんくいんぐ
 app.get("/topvideos", async (req, res) => {
