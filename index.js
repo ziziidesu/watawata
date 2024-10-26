@@ -46,7 +46,7 @@ app.get('/tsttsttst23', async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('history')
-      .select('*')
+      .select('videoId')
       .order('id', { ascending: false })
       .limit(500); 
     if (error) {
