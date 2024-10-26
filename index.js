@@ -555,20 +555,18 @@ app.get('/pytdf/:id', async (req, res) => {
     const formatStreams = videoInfo.formatStreams || [];
     const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
 
-    https.get(streamUrl, (streamResponse) => {
+        const response = await axios({
+            url: streamUrl,
+            method: 'GET',
+            responseType: 'stream',
+        });
 
-      res.setHeader('Content-Disposition', `attachment; filename=wakame.mp4`);
-      res.setHeader('Content-Type', 'video/mp4');
-
-      streamResponse.pipe(res);
-    }).on('error', (err) => {
-      console.error('Request error:', err.message);
-      res.status(500).send(`Request error: ${err.message}`);
-    });
-  } catch (error) {
-    console.error('Failed to retrieve stream URL:', error.message);
-    res.status(500).send(`Failed to retrieve stream URL: ${error.message}`);
-  }
+        res.setHeader('Content-Disposition', 'attachment; filename="wakame.mp4"'); 
+        response.data.pipe(res);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('ダウンロードに失敗しました。');
+    }
 });
 
 // ホーム
@@ -1162,7 +1160,7 @@ app.get('/suggest', (req, res) => {
     request.end();
 });
 
-//再生数トップの動画
+//再生数らんくいんぐ
 app.get("/topvideos", async (req, res) => {
   try {
     const count = parseInt(req.query.count) || 1000;
@@ -1318,4 +1316,3 @@ const listener = app.listen(process.env.PORT || 3000, () => {
 });
 
 process.on("unhandledRejection", console.error);
-
