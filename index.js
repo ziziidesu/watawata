@@ -577,49 +577,48 @@ app.get("/", (req, res) => {
 
 // サーチ
 app.get("/s", async (req, res) => {
-	let query = req.query.q;
-	let page = Number(req.query.p || 2);
-	if (!query) return res.redirect("/");
+    let query = req.query.q;
+    let page = Math.max(1, Number(req.query.p || 1));
+
+    if (query) {
+        req.session.query = query;
+    } else if (req.session.query) {
+        query = req.session.query;
+    } else {
+        return res.redirect("/");
+    }
+
     let cookies = parseCookies(req);
     let wakames = cookies.wakames === 'true';
-    if (wakames) {
+
+    const renderSearchPage = async (view) => {
         try {
-		res.render("search2.ejs", {
-			res: await ytsr(query, { limit, pages: page }),
-			query: query,
-			page
-		});
-	} catch (error) {
-		console.error(error);
-		try {
-			res.status(500).render("error.ejs", {
-				title: "ytsr Error",
-				content: error
-			});
-		} catch (error) {
-			console.error(error);
-		}
-	}
+            res.render(view, {
+                res: await ytsr(query, { limit, pages: page }),
+                query: query,
+                page
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).render("error.ejs", {
+                title: "ytsr Error",
+                content: error.message || "Unexpected error occurred."
+            });
+        }
+    };
+
+    if (wakames) {
+        renderSearchPage("search2.ejs");
     } else {
-       try {
-		res.render("search.ejs", {
-			res: await ytsr(query, { limit, pages: page }),
-			query: query,
-			page
-		});
-	} catch (error) {
-		console.error(error);
-		try {
-			res.status(500).render("error.ejs", {
-				title: "ytsr Error",
-				content: error
-			});
-		} catch (error) {
-			console.error(error);
-		}
-	}
+        renderSearchPage("search.ejs");
     }
 });
+
+// サーバーの起動
+app.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
+});
+
 
 //プレイリスト
 app.get("/p/:id", async (req, res) => {
