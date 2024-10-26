@@ -374,6 +374,9 @@ function toggleFavorite(videoId, channelId, channelName, videoTitle) {
     const favoriteIndex = favorites.findIndex(track => track.videoId === videoId);
 
     if (favoriteIndex === -1) {
+        if (favorites.length >= 10) {
+        favorites.shift();
+        }
         favorites.push({ videoId, channelId, channelName, videoTitle });
         alert('お気に入りに追加しました！');
     } else {
