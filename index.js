@@ -1348,8 +1348,7 @@ app.post('/savepage', async (req, res) => {
 
     const domain = window.location.origin; 
     const siteUrl = `${domain}/apage/${id}`;
-    
-    res.send({ siteUrl });
+    res.render('/neta/created.ejs', { siteUrl});
 });
 //id生成
 function generateRandomId(length) {
