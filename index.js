@@ -736,6 +736,10 @@ app.get('/blog/:id', (req, res) => {
 app.get("/neta",(req, res) => {
   res.render("../views/neta.ejs")
 })
+app.get('/neta/:id', (req, res) => {
+  const id = req.params.id;
+  res.render(`neta/${id}`, { id: id });
+});
 
 //お問い合わせ
 app.get("/send",(req, res) => {
@@ -1311,6 +1315,65 @@ app.post('/aclogin', async (req, res) => {
   } catch (error) {
     res.status(500).render('../public/aclogin.ejs', { error: error.message });
   }
+});
+
+//ページ作成
+app.post('/savepage', async (req, res) => {
+    let { id, html } = req.body;
+
+    let { data: existingData, error: existingError } = await supabase
+        .from('apage')
+        .select('id')
+        .eq('id', id);
+
+    if (existingError) {
+        return res.status(500).send('エラーが発生しました: ' + existingError.message);
+    }
+
+    while (existingData.length > 0) {
+        id = generateRandomId(10);
+        ({ data: existingData, error: existingError } = await supabase
+            .from('your_table')
+            .select('id')
+            .eq('id', id));
+    }
+    const { data, error } = await supabase
+        .from('your_table')
+        .insert([{ id: id, html: html }]);
+
+    if (error) {
+        return res.status(500).send('エラーが発生しました: ' + error.message);
+    }
+
+    const siteUrl = `https://wakame02m.glitch.me/apage/${id}`;
+    
+    res.send({ siteUrl });
+});
+//id生成
+function generateRandomId(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+}
+// ページ取得
+app.get('/apage/:id', async (req, res) => {
+    const siteId = req.params.id;
+
+    const { data, error } = await supabase
+        .from('apage')
+        .select('html')
+        .eq('id', siteId);
+
+    if (error) {
+        return res.status(500).send('エラーが発生しました: ' + error.message);
+    } else if (data.length > 0) {
+        res.send(data[0].html);
+    } else {
+        res.status(404).send('ページが見つかりません');
+    }
 });
 
 

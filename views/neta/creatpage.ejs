@@ -13,7 +13,7 @@
     <br>
     <button id="submitBtn">送信</button>
 
-    <script>
+        <script>
         $(document).ready(function() {
             $('#submitBtn').click(async function() {
                 const htmlContent = $('#htmlInput').val();
@@ -21,13 +21,14 @@
 
                 try {
                     const response = await $.ajax({
-                        url: '/savepage', // サーバーのエンドポイント
+                        url: '/savepage',
                         type: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify({ id: siteId, html: htmlContent }),
                     });
 
-                    alert('保存しました！');
+                    $('#siteUrl').text(response.siteUrl);
+                    $('#resultMessage').show();
                 } catch (error) {
                     alert('エラーが発生しました: ' + error.responseText);
                 }
