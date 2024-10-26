@@ -1138,7 +1138,7 @@ app.get('/suggest', (req, res) => {
     const keyword = req.query.keyword;
     const options = {
         hostname: 'www.google.com',
-        path: /complete/search?client=youtube&hl=ja&ds=yt&q=${encodeURIComponent(keyword)},
+        path: `/complete/search?client=youtube&hl=ja&ds=yt&q=${encodeURIComponent(keyword)}`,
         method: 'GET',
         headers: {
             'User-Agent': 'Mozilla/5.0'
