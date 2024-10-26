@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ページ作成</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>HTMLエディター</h1>
+    <textarea id="htmlInput" rows="10" cols="50" placeholder="HTMLをここに入力"></textarea>
+    <br>
+    <input type="text" id="siteId" placeholder="サイトのIDを入力">
+    <br>
+    <button id="submitBtn">送信</button>
+
+    <script>
+        $(document).ready(function() {
+            $('#submitBtn').click(async function() {
+                const htmlContent = $('#htmlInput').val();
+                const siteId = $('#siteId').val();
+
+                try {
+                    const response = await $.ajax({
+                        url: '/savepage', // サーバーのエンドポイント
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ id: siteId, html: htmlContent }),
+                    });
+
+                    alert('保存しました！');
+                } catch (error) {
+                    alert('エラーが発生しました: ' + error.responseText);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
