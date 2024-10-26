@@ -29,6 +29,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(cors());
 
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -1333,12 +1334,12 @@ app.post('/savepage', async (req, res) => {
     while (existingData.length > 0) {
         id = generateRandomId(10);
         ({ data: existingData, error: existingError } = await supabase
-            .from('your_table')
+            .from('apage')
             .select('id')
             .eq('id', id));
     }
     const { data, error } = await supabase
-        .from('your_table')
+        .from('apage')
         .insert([{ id: id, html: html }]);
 
     if (error) {
