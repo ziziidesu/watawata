@@ -577,48 +577,58 @@ app.get("/", (req, res) => {
 
 // サーチ
 app.get("/s", async (req, res) => {
-    let query = req.query.q;
-    let page = Math.max(1, Number(req.query.p || 1));
-
+	let query = req.query.q;
     if (query) {
-        req.session.query = query;
-    } else if (req.session.query) {
-        query = req.session.query;
+        if (!req.session.queries) {
+            req.session.queries = [];
+        }
+        req.session.queries.push(query);
+    } else if (req.session.queries && req.session.queries.length > 0) {
+        query = req.session.queries[req.session.queries.length - 1]; // 最新のクエリを取得
     } else {
         return res.redirect("/");
     }
-
+	let page = Number(req.query.p || 2);
     let cookies = parseCookies(req);
     let wakames = cookies.wakames === 'true';
-
-    const renderSearchPage = async (view) => {
-        try {
-            res.render(view, {
-                res: await ytsr(query, { limit, pages: page }),
-                query: query,
-                page
-            });
-        } catch (error) {
-            console.error(error);
-            res.status(500).render("error.ejs", {
-                title: "ytsr Error",
-                content: error.message || "Unexpected error occurred."
-            });
-        }
-    };
-
     if (wakames) {
-        renderSearchPage("search2.ejs");
+        try {
+		res.render("search2.ejs", {
+			res: await ytsr(query, { limit, pages: page }),
+			query: query,
+			page
+		});
+	} catch (error) {
+		console.error(error);
+		try {
+			res.status(500).render("error.ejs", {
+				title: "ytsr Error",
+				content: error
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	}
     } else {
-        renderSearchPage("search.ejs");
+       try {
+		res.render("search.ejs", {
+			res: await ytsr(query, { limit, pages: page }),
+			query: query,
+			page
+		});
+	} catch (error) {
+		console.error(error);
+		try {
+			res.status(500).render("error.ejs", {
+				title: "ytsr Error",
+				content: error
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	}
     }
 });
-
-// サーバーの起動
-app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
-});
-
 
 //プレイリスト
 app.get("/p/:id", async (req, res) => {

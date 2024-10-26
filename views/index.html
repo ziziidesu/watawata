@@ -158,7 +158,7 @@ $(function () {
         source: function (request, response) {
             $.ajax({
                 url: '/suggest',
-                data: { keyword: request.term },
+                data: { keyword: request.term || '' },
                 success: function (data) {
                     response(data);
                 }
@@ -171,8 +171,6 @@ $(function () {
         }
     });
 });
-  
-
 </script>
 </body>
 
