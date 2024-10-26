@@ -556,12 +556,13 @@ app.get('/pytdf/:id', async (req, res) => {
     const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
 
         const response = await axios({
+            method: 'get',
             url: streamUrl,
-            method: 'GET',
             responseType: 'stream',
         });
 
-        res.setHeader('Content-Disposition', 'attachment; filename="wakame.mp4"'); 
+        res.setHeader('Content-Disposition', 'attachment; filename=video.mp4');
+        res.setHeader('Content-Type', 'video/mp4');
         response.data.pipe(res);
     } catch (error) {
         console.error(error);
