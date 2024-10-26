@@ -1346,7 +1346,8 @@ app.post('/savepage', async (req, res) => {
         return res.status(500).send('エラーが発生しました: ' + error.message);
     }
 
-    const siteUrl = `https://wakame02m.glitch.me/apage/${id}`;
+    const domain = window.location.origin; 
+    const siteUrl = `${domain}/apage/${id}`;
     
     res.send({ siteUrl });
 });
