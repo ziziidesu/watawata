@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title><%= videoTitle %></title>
+  <title><%= videoData.videoTitle %></title>
   <meta name="description" content="わかめ">
   <meta property="og:site_name" content="わかめtube | まっしろ">
-  <meta property="og:title" content="<%= videoTitle %>">
-  <meta property="og:image" content="https://wakame02m.glitch.me/vi/<%= videoId %>/maxresdefault.jpg">
+  <meta property="og:title" content="<%= videoData.videoTitle %>">
+  <meta property="og:image" content="https://wakame02m.glitch.me/vi/<%= videoData.videoId %>/maxresdefault.jpg">
   <meta name="theme-color" content="#ff8181">
   <link rel="shortcut icon" href="/logo.png">
   <meta name="author" content="わかめtube | まっしろ">
@@ -41,10 +41,10 @@
         <input type="checkbox" id="loopCheck">
         <span class="checkmark"></span>
         </label></li>
-        <li><a href="<%= stream_url %>" target="_blank">ストリームURLに移動</a></li>
-        <li><a href="/ll/<%= videoId %>">音のみで再生する</a></li>
-        <li><a href="/www/<%= videoId %>">高画質で再生する</a></li>
-        <li><a href="/vi/<%= videoId %>/maxresdefault.jpg" target="_blank">サムネイルをダウンロード</a></li>
+        <li><a href="<%= videoData.stream_url %>" target="_blank">ストリームURLに移動</a></li>
+        <li><a href="/ll/<%= videoData.videoId %>">音のみで再生する</a></li>
+        <li><a href="/www/<%= videoData.videoId %>">高画質で再生する</a></li>
+        <li><a href="/vi/<%= videoData.videoId %>/maxresdefault.jpg" target="_blank">サムネイルをダウンロード</a></li>
         <li><a href="/wakameokini">お気に入りへ移動</a></li>
         <li><a href="/wakamehistory">再生履歴</a></li>
         <li><a href="/blog/up" target="_blank">アップデートを確認</a></li>
@@ -56,48 +56,45 @@
     <div class="loading-indicator">
         <img src="https://cdn.glitch.global/3128bf45-3a23-4695-81ba-3aba21b8585b/IMG_1966.gif?v=1729824394361" alt="Loading..." />
     </div>
-  <video id="wakameVideo" controls autoplay poster="/vi/<%= videoId %>/maxresdefault.jpg">
-    <source src="<%= stream_url %>" type="video/mp4">
+  <video id="wakameVideo" controls autoplay poster="/vi/<%= videoData.videoId %>/maxresdefault.jpg">
+    <source src="<%= videoData.stream_url %>" type="video/mp4">
     読み込み失敗。ブラウザをアップデートしてどうぞ。
   </video>
 </div>
 <div class="card">
   <div class="toolcard-header">
     <small class="text-muted">「ツール」は右上に移動しました。</small>
-    <small class="text-muted float-right"><button class="favorite-btn" onclick="toggleFavorite('<%= videoId %>', '<%= channelId %>', '<%= channelName %>','<%= videoTitle %>')">お気に入り</button></small>
+    <small class="text-muted float-right"><button class="favorite-btn" onclick="toggleFavorite('<%= videoData.videoId %>', '<%= videoData.channelId %>', '<%= videoData.channelName %>','<%= videoData.videoTitle %>')">お気に入り</button></small>
   </div>
   <div class="card-channel">
     <div class="container">
-    <a href="/c/<%= channelId %>">
-    <img src="<%= channelImage %>" alt="画像">
-    <%= channelName %>
+    <a href="/c/<%= videoData.channelId %>">
+    <img src="<%= videoData.channelImage %>" alt="画像">
+    <%= videoData.channelName %>
     </a>
     </div>
   </div>
   <div class="toolcard-header">
-    <small class="text-muted"><%= likeCount %>いいね</small>
-    <small class="text-muted float-right"><%= videoViews %>回再生</small>
-  </div>
-  <div class="toolcard-header">
-    <small class="text-muted">共有用URL: https://wakame02m.glitch.me/login/guest/<%= videoId %></small>
+    <small class="text-muted"><%= videoData.likeCount %>いいね</small>
+    <small class="text-muted float-right"><%= videoData.videoViews %>回再生</small>
   </div>
   <div class="card-body">
     <h4>
-      <%= videoTitle %>
+      <%= videoData.videoTitle %>
     </h4>
-      <p><%- (videoDes || "").replace(/\n/g, "<br>") %></p>
+      <p><%- (videoData.videoDes || "").replace(/\n/g, "<br>") %></p>
   </div>
 </div>
   <div class="comment-box">
     <h2>コメント</h2>
     <div class="iframe-container">
-      <iframe src="https://wakamecomment.glitch.me/wakame/<%= videoId %>" scrolling="yes"></iframe>
+      <iframe src="https://wakamecomment.glitch.me/wakame/<%= videoData.videoId %>" scrolling="yes"></iframe>
     </div>
   </div>
     <br>
   <div class="tube-box">
     <div class="iframe-container">
-<iframe src="https://wakamecomment.glitch.me/wakamer/<%= videoId %>" scrolling="yes"></iframe>
+<iframe src="https://wakamecomment.glitch.me/wakamer/<%= videoData.videoId %>" scrolling="yes"></iframe>
     </div>
   </div>
    <style>
@@ -324,10 +321,10 @@ document.getElementById('wakameVideo').addEventListener('ended', () => {
 });
 
 //info整理
-const videoId = "<%= videoId %>";
-const channelId = "<%= channelId %>";
-const channelName = "<%= channelName %>";
-const videoTitle = "<%= videoTitle %>";
+const videoId = "<%= videoData.videoId %>";
+const channelId = "<%= videoData.channelId %>";
+const channelName = "<%= videoData.channelName %>";
+const videoTitle = "<%= videoData.videoTitle %>";
 
 
 //履歴保存

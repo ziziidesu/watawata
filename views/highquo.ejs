@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title><%= videoTitle %></title>
+  <title><%= videoData.videoTitle %></title>
   <meta name="description" content="わかめ">
   <meta property="og:site_name" content="わかめtube | まっしろ">
   <meta name="theme-color" content="#ff8181">
@@ -29,8 +29,8 @@
  </div>
 </header>
 <div class="card">
-  <video controls autoplay preload="auto" id="video" poster="/vi/<%= videoId %>/maxresdefault.jpg">
-    <source src="<%= highstreamUrl %>" type="video/mp4">
+  <video controls autoplay preload="auto" id="video" poster="/vi/<%= videoData.videoId %>/maxresdefault.jpg">
+    <source src="<%= videoData.highstreamUrl %>" type="video/mp4">
     読み込み失敗。ブラウザをアップデートしてどうぞ。
   </video>
   </div>

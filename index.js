@@ -41,12 +41,16 @@ app.get('/w/:id', async (req, res) => {
     try {
         const response = await axios.get(`https://wakame02m.glitch.me/api/login/${videoId}`);
         const videoData = response.data;
+        console.log(videoData);
 
         res.render('infowatch', { videoData });
-    } catch (error) {
-        console.error('Error fetching video data:', error);
-        res.status(500).send('動画データの取得に失敗しました');
-    }
+  } catch (error) {
+        res.status(500).render('matte', { 
+      videoId, 
+      error: '動画を取得できません', 
+      details: error.message 
+    });
+  }
 });
 
 //高画質再生！！
