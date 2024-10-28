@@ -46,9 +46,6 @@
 <iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/<%= videoId %>" title="video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   </div>
 <div class="card">
-  <div class="toolcard-header">
-    <small class="text-muted">共有用URL: https://butube.glitch.me/#<%= videoId %></small>
-  </div>
   <div class="card-channel">
     <a href="/c/<%= channelId %>">
     <div class="container">
@@ -65,18 +62,6 @@
       <p><%- (videoDes || "").replace(/\n/g, "<br>") %></p>
   </div>
 </div>
-  <div class="comment-box">
-    <h2>コメント</h2>
-    <div class="iframe-container">
-      <iframe src="https://wakamecomment.glitch.me/wakame/<%= videoId %>" scrolling="yes"></iframe>
-    </div>
-  </div>
-    <br>
-  <div class="tube-box">
-    <div class="iframe-container">
-<iframe src="https://wakamecomment.glitch.me/wakamer/<%= videoId %>" scrolling="yes"></iframe>
-    </div>
-  </div>
 <style>
 	* {
 		--plyr-color-main: #ff8181;
