@@ -39,7 +39,7 @@ app.get('/w/:id', async (req, res) => {
     res.redirect(`/umekomi/${videoId}`);
     }
     try {
-        const response = await axios.get(`https://wakame02m.glitch.me/api/login/${videoId}`);
+        const response = await axios.get(`https://vivid-healthy-treatment/api/${videoId}?token=wakameoishi`);
         const videoData = response.data;
         console.log(videoData);
 
