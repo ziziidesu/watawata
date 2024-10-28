@@ -59,7 +59,6 @@ app.get('/www/:id', async (req, res) => {
     try {
         const response = await axios.get(`https://watawatawata.glitch.me/api/${videoId}?token=wakameoishi`);
         const videoData = response.data;
-        console.log(videoData);
 
         res.render('highquo', { videoData });
   } catch (error) {
