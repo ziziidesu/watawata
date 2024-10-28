@@ -15,8 +15,6 @@ const jp = require('jsonpath');
 const path = require('path');
 const bodyParser = require('body-parser');
 const { URL } = require('url');
-const session = require('express-session');
-const { createClient } = require('@supabase/supabase-js');
 const bcrypt = require('bcrypt');
 const http = require('http');
 
@@ -32,13 +30,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 5 * 24 * 60 * 60 * 1000 }
-}));
-
 //レギュラー
 app.get('/w/:id', async (req, res) => {
   const videoId = req.params.id;
@@ -47,123 +38,45 @@ app.get('/w/:id', async (req, res) => {
     if (wakames) {
     res.redirect(`/umekomi/${videoId}`);
     }
-  try {
-    const videoInfo = await fetchVideoInfoParallel(videoId);
-    
-    const formatStreams = videoInfo.formatStreams || [];
-    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
-    
-    const templateData = {
-      stream_url: streamUrl,
-      videoId: videoId,
-      channelId: videoInfo.authorId,
-      channelName: videoInfo.author,
-      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
-      videoTitle: videoInfo.title,
-      videoDes: videoInfo.descriptionHtml,
-      videoViews: videoInfo.viewCount,
-      likeCount: videoInfo.likeCount
-    };
+    try {
+        const response = await axios.get(`https://wakame02m.glitch.me/api/login/${videoId}`);
+        const videoData = response.data;
 
-    const { data, error } = await supabase
-      .from('history')
-      .insert([
-        { 
-          videoId: videoId,
-          channelId: videoInfo.authorId, 
-          channelName: videoInfo.author, 
-          videoTitle: videoInfo.title 
-        }
-      ]);
-          
-    res.render('infowatch', templateData);
-  } catch (error) {
-        res.status(500).render('matte', { 
-      videoId, 
-      error: '動画を取得できません', 
-      details: error.message 
-    });
-  }
+        res.render('infowatch', { videoData });
+    } catch (error) {
+        console.error('Error fetching video data:', error);
+        res.status(500).send('動画データの取得に失敗しました');
+    }
 });
 
 //高画質再生！！
 app.get('/www/:id', async (req, res) => {
   const videoId = req.params.id;
-  try {
-    const videoInfo = await fetchVideoInfoParallel(videoId);
-    
-    const audioStreams = videoInfo.adaptiveFormats || [];
-    let streamUrl = audioStreams
-      .filter(stream => stream.container === 'mp4' && stream.resolution === '1080p')
-      .map(stream => stream.url)[0];
-    
-    if (!streamUrl) {
-    let streamUrl = audioStreams
-      .filter(stream => stream.container === 'mp4' && stream.resolution === '720p')
-      .map(stream => stream.url)[0];
+    try {
+        const response = await axios.get(`https://wakame02m.glitch.me/api/login/${videoId}`);
+        const videoData = response.data;
+        console.log(videoData);
+
+        res.render('highquo', { videoData });
+    } catch (error) {
+        console.error('Error fetching video data:', error);
+        res.status(500).send('動画データの取得に失敗しました');
     }
-    
-    const audioUrl = audioStreams
-      .filter(stream => stream.container === 'm4a' && stream.audioQuality === 'AUDIO_QUALITY_MEDIUM')
-      .map(stream => stream.url)[0];
-
-    const templateData = {
-      stream_url: streamUrl,
-      audioUrl: audioUrl,
-      videoId: videoId,
-      channelId: videoInfo.authorId,
-      channelName: videoInfo.author,
-      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
-      videoTitle: videoInfo.title,
-      videoDes: videoInfo.descriptionHtml,
-      videoViews: videoInfo.viewCount,
-      likeCount: videoInfo.likeCount
-    };
-
-    res.render('highquo', templateData);
-  } catch (error) {
-        res.status(500).render('matte', { 
-      videoId, 
-      error: '動画を取得できません', 
-      details: error.message 
-    });
-  }
 });
 
 //音だけ再生
 app.get('/ll/:id', async (req, res) => {
   const videoId = req.params.id;
 
-  try {
-    const videoInfo = await fetchVideoInfoParallel(videoId);
-    
-    const audioStreams = videoInfo.formatStreams || [];
-    const streamUrl = audioStreams.map(audio => audio.url)[0];
+    try {
+        const response = await axios.get(`https://wakame02m.glitch.me/api/login/${videoId}`);
+        const videoData = response.data;
 
-    if (!streamUrl) {
-          res.status(500).render('matte', { 
-      videoId, 
-      error: 'ストリームURLが見つかりません',
-    });
+        res.render('listen', { videoData });
+    } catch (error) {
+        console.error('Error fetching video data:', error);
+        res.status(500).send('動画データの取得に失敗しました');
     }
-    if (!videoInfo.authorId) {
-      return res.redirect(`/redirect?p=ll&id=${videoId}`);
-    }
-
-    const templateData = {
-      audioUrl: streamUrl,
-      videoId: videoId,
-      videoTitle: videoInfo.title,
-    };
-
-    res.render('listen', templateData);
-  } catch (error) {
-        res.status(500).render('matte', { 
-      videoId, 
-      error: '動画を取得できません', 
-      details: error.message 
-    });
-  }
 });
 
 //埋め込み再生
@@ -204,16 +117,6 @@ app.get("/", (req, res) => {
 // サーチ
 app.get("/s", async (req, res) => {
 	let query = req.query.q;
-    if (query) {
-        if (!req.session.queries) {
-            req.session.queries = [];
-        }
-        req.session.queries.push(query);
-    } else if (req.session.queries && req.session.queries.length > 0) {
-        query = req.session.queries[req.session.queries.length - 1]; // 最新のクエリを取得
-    } else {
-        return res.redirect("/");
-    }
 	let page = Number(req.query.p || 2);
     let cookies = parseCookies(req);
     let wakames = cookies.wakames === 'true';
