@@ -39,7 +39,7 @@ app.get('/w/:id', async (req, res) => {
     res.redirect(`/umekomi/${videoId}`);
     }
     try {
-        const response = await axios.get(`https://vivid-healthy-treatment/api/${videoId}?token=wakameoishi`);
+        const response = await axios.get(`https://watawatawata.glitch.me/api/${videoId}?token=wakameoishi`);
         const videoData = response.data;
         console.log(videoData);
 
@@ -57,7 +57,7 @@ app.get('/w/:id', async (req, res) => {
 app.get('/www/:id', async (req, res) => {
   const videoId = req.params.id;
     try {
-        const response = await axios.get(`https://wakame02m.glitch.me/api/login/${videoId}`);
+        const response = await axios.get(`https://watawatawata.glitch.me/api/${videoId}?token=wakameoishi`);
         const videoData = response.data;
         console.log(videoData);
 
@@ -76,7 +76,7 @@ app.get('/ll/:id', async (req, res) => {
   const videoId = req.params.id;
 
     try {
-        const response = await axios.get(`https://wakame02m.glitch.me/api/login/${videoId}`);
+        const response = await axios.get(`https://watawatawata.glitch.me/api/${videoId}?token=wakameoishi`);
         const videoData = response.data;
 
         res.render('listen', { videoData });
