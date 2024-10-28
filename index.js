@@ -62,10 +62,13 @@ app.get('/www/:id', async (req, res) => {
         console.log(videoData);
 
         res.render('highquo', { videoData });
-    } catch (error) {
-        console.error('Error fetching video data:', error);
-        res.status(500).send('動画データの取得に失敗しました');
-    }
+  } catch (error) {
+        res.status(500).render('matte', { 
+      videoId, 
+      error: '動画を取得できません', 
+      details: error.message 
+    });
+  }
 });
 
 //音だけ再生
@@ -77,10 +80,13 @@ app.get('/ll/:id', async (req, res) => {
         const videoData = response.data;
 
         res.render('listen', { videoData });
-    } catch (error) {
-        console.error('Error fetching video data:', error);
-        res.status(500).send('動画データの取得に失敗しました');
-    }
+   } catch (error) {
+        res.status(500).render('matte', { 
+      videoId, 
+      error: '動画を取得できません', 
+      details: error.message 
+    });
+  }
 });
 
 //埋め込み再生

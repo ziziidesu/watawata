@@ -24,23 +24,14 @@
   "engines": {
     "node": "16.x"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://glitch.com/~wakame02m"
-  },
-  "author": "wakame",
+  "author": "wakame02",
   "private": false,
   "bugs": {
-    "url": "https://wakame02m.glitch.me/send",
     "email": "23h11008@gmail.com"
   },
-  "homepage": "https://wakame02m.glitch.me",
   "devDependencies": {},
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "和布"
-  ]
+  }
 }

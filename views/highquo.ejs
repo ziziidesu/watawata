@@ -37,39 +37,39 @@
 <div class="card">
   <div class="toolcard-header">
      <audio id="audio" controls>
-        <source src="<%= audioUrl %>">
+        <source src="<%= videoData.audioUrl %>">
     </audio>
     <button id="syncButton">オーディオの位置を動画に合わせる</button>
   </div>
   <div class="toolcard-header">
-    <small class="text-muted">ツール　　<button onclick="location.href='/pytdf/<%= videoId %>'">この動画をダウンロードする</button><button onclick="location.href='/ll/<%= videoId %>'">音のみで再生する</button></small>
+    <small class="text-muted">ツール　　<button onclick="location.href='/ll/<%= videoData.videoId %>'">音のみで再生する</button></small>
   </div>
   <div class="card-channel">
-    <a href="/c/<%= channelId %>">
+    <a href="/c/<%= videoData.channelId %>">
     <div class="container">
-    <img src="<%= channelImage %>" alt="画像">
-    <div class="text"><%= channelName %></div>
+    <img src="<%= videoData.channelImage %>" alt="画像">
+    <div class="text"><%= videoData.channelName %></div>
       </div></a>
   </div>
   <div class="toolcard-header">
     <small class="text-muted"></small>
-    <small class="text-muted float-right"><%= videoViews %>回再生</small>
+    <small class="text-muted float-right"><%= videoData.videoViews %>回再生</small>
   </div>
   <div class="card-body">
-    <h5><%= videoTitle %></h5>
-      <p><%- (videoDes || "").replace(/\n/g, "<br>") %></p>
+    <h5><%= videoData.videoTitle %></h5>
+      <p><%- (videoData.videoDes || "").replace(/\n/g, "<br>") %></p>
   </div>
 </div>
   <div class="comment-box">
     <h2>コメント</h2>
     <div class="iframe-container">
-      <iframe src="https://wakamecomment.glitch.me/wakame/<%= videoId %>" scrolling="yes"></iframe>
+      <iframe src="https://wakamecomment.glitch.me/wakame/<%= videoData.videoId %>" scrolling="yes"></iframe>
     </div>
   </div>
     <br>
   <div class="tube-box">
     <div class="iframe-container">
-<iframe src="https://wakamecomment.glitch.me/wakamer/<%= videoId %>" scrolling="yes"></iframe>
+<iframe src="https://wakamecomment.glitch.me/wakamer/<%= videoData.videoId %>" scrolling="yes"></iframe>
     </div>
   </div>
 <style>
