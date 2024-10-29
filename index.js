@@ -120,6 +120,7 @@ app.get('/umekomi/:id', async (req, res) => {
 
 // ホーム
 app.get("/", (req, res) => {
+   const charge = axios.get(`https://watawatawata.glitch.me/`);
    res.sendFile(__dirname + "/views/index.html");
 });
 
@@ -127,6 +128,7 @@ app.get("/", (req, res) => {
 app.get("/s", async (req, res) => {
 	let query = req.query.q;
 	let page = Number(req.query.p || 2);
+	const charge = axios.get(`https://watawatawata.glitch.me/`);
     let cookies = parseCookies(req);
     let wakames = cookies.wakames === 'true';
     if (wakames) {
@@ -171,6 +173,7 @@ app.get("/s", async (req, res) => {
 //プレイリスト
 app.get("/p/:id", async (req, res) => {
 	if (!req.params.id) return res.redirect("/");
+	const charge = axios.get(`https://watawatawata.glitch.me/`);
 	let page = Number(req.query.p || 1);
 	try {
 		res.render("playlist.ejs", {
@@ -190,6 +193,7 @@ app.get("/p/:id", async (req, res) => {
 app.get("/c/:id", async (req, res) => {
 	if (!req.params.id) return res.redirect("/");
 	let page = Number(req.query.p || 1);
+	const charge = axios.get(`https://watawatawata.glitch.me/`);
 	try {
 		res.render("channel.ejs", {
 			channel: await ytpl(req.params.id, { limit, pages: page }),
@@ -570,7 +574,7 @@ app.get('/okiniiri', (req, res) => {
 
 app.get('/wakamc/f', (req, res) => {
     let favorites = [];
-
+　　　const charge = axios.get(`https://watawatawata.glitch.me/`);
     const cookie = req.headers.cookie
         .split('; ')
         .find(row => row.startsWith('wakamemusicfavorites='));
@@ -589,7 +593,7 @@ app.get('/wakamc/f', (req, res) => {
 //お気に入り
 app.get('/wakameokini', (req, res) => {
     let favorites = [];
-
+　　　const charge = axios.get(`https://watawatawata.glitch.me/`);
     const cookie = req.headers.cookie
         .split('; ')
         .find(row => row.startsWith('wakametubefavorites='));
