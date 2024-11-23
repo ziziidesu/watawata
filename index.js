@@ -43,7 +43,7 @@ app.get('/w/:id', async (req, res) => {
         const videoData = response.data;
         console.log(videoData);
 
-        res.render('infowatch', { videoData });
+        res.render('infowatch', { videoData, videoId });
   } catch (error) {
         res.status(500).render('matte', { 
       videoId, 
@@ -60,7 +60,7 @@ app.get('/www/:id', async (req, res) => {
         const response = await axios.get(`https://watawatawata.glitch.me/api/${videoId}?token=wakameoishi`);
         const videoData = response.data;
 
-        res.render('highquo', { videoData });
+        res.render('highquo', { videoData, videoId });
   } catch (error) {
         res.status(500).render('matte', { 
       videoId, 
@@ -78,7 +78,7 @@ app.get('/ll/:id', async (req, res) => {
         const response = await axios.get(`https://watawatawata.glitch.me/api/${videoId}?token=wakameoishi`);
         const videoData = response.data;
 
-        res.render('listen', { videoData });
+        res.render('listen', { videoData, videoId });
    } catch (error) {
         res.status(500).render('matte', { 
       videoId, 
