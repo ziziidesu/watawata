@@ -1,11 +1,13 @@
 version: 1
 services:
   - type: web
-    name: わかめtube
+    name: rarirurero-wakame
+    repo: https://github.com/ziziidesu/watawata/
     env: node
     plan: free
     buildCommand: npm install
     startCommand: npm start
+    region: singapore
     autoDeploy: true
     envVars:
       - key: NODE_VERSION
