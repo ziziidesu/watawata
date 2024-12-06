@@ -3,7 +3,6 @@ version: 1
 services:
   - type: web
     name: rarirurero-wakame
-    repo: https://github.com/ziziidesu/watawata/
     env: node
     plan: free
     buildCommand: npm install
